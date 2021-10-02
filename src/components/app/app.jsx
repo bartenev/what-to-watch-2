@@ -11,7 +11,7 @@ const App = (props) => {
 };
 
 App.propTypes = {
-  filmNames: PropTypes.array.isRequired,
+  filmNames: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default App;

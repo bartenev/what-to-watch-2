@@ -160,7 +160,7 @@ const WelcomeScreen = (props) => {
 };
 
 WelcomeScreen.propTypes = {
-  filmNames: PropTypes.array.isRequired,
+  filmNames: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
 export default WelcomeScreen;

@@ -3,11 +3,11 @@ import ReactDOM from "react-dom";
 import App from "./components/app/app";
 
 const init = () => {
-  const films = [`Fantastic Beasts`, `Bohemian Rhapsody`, `Macbeth`, `Aviator`];
+  const filmNames = [`Fantastic Beasts`, `Bohemian Rhapsody`, `Macbeth`, `Aviator`];
 
   ReactDOM.render(
       <App
-        films={films}
+        filmNames={filmNames}
       />,
       document.querySelector(`#root`)
   );
