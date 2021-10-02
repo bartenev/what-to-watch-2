@@ -6,6 +6,7 @@ it(`Render WelcomeScreen`, () => {
   const tree = renderer
     .create(<WelcomeScreen
       filmNames={[`1`, `2`, `3`, `4`]}
+      onWelcomeButtonClick={() => {}}
     />)
     .toJSON();
 

@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const WelcomeScreen = (props) => {
-  const {filmNames} = props;
+  const {filmNames, onWelcomeButtonClick} = props;
 
   return <div>
     <section className="movie-card">
@@ -36,7 +36,11 @@ const WelcomeScreen = (props) => {
           </div>
 
           <div className="movie-card__desc">
-            <h2 className="movie-card__title">The Grand Budapest Hotel</h2>
+            <h2
+              className="movie-card__title"
+              onClick={onWelcomeButtonClick}>
+              The Grand Budapest Hotel
+            </h2>
             <p className="movie-card__meta">
               <span className="movie-card__genre">Drama</span>
               <span className="movie-card__year">2014</span>
@@ -161,6 +165,7 @@ const WelcomeScreen = (props) => {
 
 WelcomeScreen.propTypes = {
   filmNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onWelcomeButtonClick: PropTypes.func.isRequired,
 };
 
 export default WelcomeScreen;
