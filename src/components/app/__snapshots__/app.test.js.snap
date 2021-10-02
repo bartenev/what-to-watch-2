@@ -80,6 +80,7 @@ exports[`Render App 1`] = `
         >
           <h2
             className="movie-card__title"
+            onClick={[Function]}
           >
             The Grand Budapest Hotel
           </h2>
