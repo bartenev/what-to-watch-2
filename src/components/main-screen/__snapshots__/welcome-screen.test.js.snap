@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Render WelcomeScreen 1`] = `
+exports[`Render MainScreen 1`] = `
 <div>
   <section
     className="movie-card"

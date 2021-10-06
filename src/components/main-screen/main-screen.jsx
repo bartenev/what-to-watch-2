@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import ListOfFilms from "../list-of-films/list-of-films";
 
-const WelcomeScreen = (props) => {
+const MainScreen = (props) => {
   const {films, onWelcomeButtonClick} = props;
 
   return (
@@ -133,7 +133,7 @@ const WelcomeScreen = (props) => {
   );
 };
 
-WelcomeScreen.propTypes = {
+MainScreen.propTypes = {
   films: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
     picture: PropTypes.string.isRequired,
@@ -141,4 +141,4 @@ WelcomeScreen.propTypes = {
   onWelcomeButtonClick: PropTypes.func.isRequired,
 };
 
-export default WelcomeScreen;
+export default MainScreen;

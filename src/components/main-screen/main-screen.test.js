@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import WelcomeScreen from "./welcome-screen";
+import MainScreen from "./main-screen";
 
 const films = [
   {
@@ -25,9 +25,9 @@ const films = [
   },
 ];
 
-it(`Render WelcomeScreen`, () => {
+it(`Render MainScreen`, () => {
   const tree = renderer
-    .create(<WelcomeScreen
+    .create(<MainScreen
       films={films}
       onWelcomeButtonClick={() => {}}
     />)
