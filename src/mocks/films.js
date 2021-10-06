@@ -1,8 +1,4 @@
-import React from "react";
-import renderer from "react-test-renderer";
-import App from "./app";
-
-const films = [
+export default [
   {
     title: `Fantastic Beasts`,
     picture: `img/fantastic-beasts-the-crimes-of-grindelwald.jpg`
@@ -24,14 +20,3 @@ const films = [
     picture: `img/we-need-to-talk-about-kevin.jpg`
   },
 ];
-
-it(`Render App`, () => {
-  const tree = renderer
-    .create(<App
-      films={films}
-    />)
-    .toJSON();
-
-  expect(tree).toMatchSnapshot();
-});
-
