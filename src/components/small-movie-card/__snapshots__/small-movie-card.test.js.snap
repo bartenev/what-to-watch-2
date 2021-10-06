@@ -3,6 +3,7 @@
 exports[`SmallMovieCard is rendered correctly 1`] = `
 <article
   className="small-movie-card catalog__movies-card"
+  onMouseEnter={[Function]}
 >
   <div
     className="small-movie-card__image"
