@@ -5,16 +5,19 @@ import PropTypes from "prop-types";
 const welcomeButtonHandler = () => {};
 
 const App = (props) => {
-  const {filmNames} = props;
+  const {films} = props;
 
   return <WelcomeScreen
-    filmNames={filmNames}
+    films={films}
     onWelcomeButtonClick={welcomeButtonHandler}
   />;
 };
 
 App.propTypes = {
-  filmNames: PropTypes.arrayOf(PropTypes.string).isRequired,
+  films: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+  })).isRequired,
 };
 
 export default App;

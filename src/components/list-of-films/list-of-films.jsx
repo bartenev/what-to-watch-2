@@ -27,7 +27,7 @@ ListOfFilms.propTypes = {
   films: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
     picture: PropTypes.string.isRequired,
-  }))
+  })).isRequired,
 };
 
 export default ListOfFilms;
