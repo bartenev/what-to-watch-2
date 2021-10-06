@@ -17,14 +17,8 @@ class ListOfFilms extends PureComponent {
         <SmallMovieCard
           key={`${title}-${i}`}
           film={film}
-          onHover={this._hoverCardHandler}
+          onHover={() => {}}
         />);
-    });
-  }
-
-  _hoverCardHandler(film) {
-    this.setState({
-      activeCard: film,
     });
   }
 }
@@ -35,3 +29,5 @@ ListOfFilms.propTypes = {
     picture: PropTypes.string.isRequired,
   }))
 };
+
+export default ListOfFilms;
