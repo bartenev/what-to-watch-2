@@ -11,6 +11,7 @@ it(`SmallMovieCard is rendered correctly`, () => {
   const tree = renderer.create(
       <SmallMovieCard
         film={film}
+        onHover={() => {}}
       />
   ).toJSON();
 
