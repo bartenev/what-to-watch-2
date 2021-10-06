@@ -2,7 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const SmallMovieCard = (props) => {
-  const {title, picture} = props;
+  const {film} = props;
+  const {title, picture} = film;
   return (
     <article className="small-movie-card catalog__movies-card">
       <div className="small-movie-card__image">
@@ -16,6 +17,10 @@ const SmallMovieCard = (props) => {
 };
 
 SmallMovieCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  picture: PropTypes.string.isRequired,
+  film: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+  }).isRequired,
 };
+
+export default SmallMovieCard;
