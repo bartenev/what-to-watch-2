@@ -7,12 +7,38 @@ Enzyme.configure({
   adapter: new Adapter(),
 });
 
+const mock = {
+  films: [
+    {
+      title: `title-1`,
+      picture: `picture-1`
+    },
+    {
+      title: `title-`,
+      picture: `picture-2`
+    },
+    {
+      title: `title-`,
+      picture: `picture-3`
+    },
+    {
+      title: `title-`,
+      picture: `picture-4`
+    },
+    {
+      title: `title-`,
+      picture: `picture-5`
+    },
+  ],
+};
+
 it(`Should welcome button be pressed`, () => {
+  const {films} = mock;
   const onWelcomeButtonClick = jest.fn();
 
   const welcomeScreen = shallow(
       <WelcomeScreen
-        filmNames={[`1`, `2`, `3`, `4`]}
+        films={films}
         onWelcomeButtonClick={onWelcomeButtonClick}
       />
   );
