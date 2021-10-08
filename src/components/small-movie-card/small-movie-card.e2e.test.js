@@ -11,6 +11,7 @@ const mock = {
   film: {
     title: `name`,
     picture: `pic`,
+    previewSrc: `src`,
   }
 };
 

@@ -1,5 +1,5 @@
 import React from "react";
-import WelcomeScreen from "../welcome-screen/welcome-screen";
+import MainScreen from "../main-screen/main-screen";
 import PropTypes from "prop-types";
 
 const welcomeButtonHandler = () => {};
@@ -7,7 +7,7 @@ const welcomeButtonHandler = () => {};
 const App = (props) => {
   const {films} = props;
 
-  return <WelcomeScreen
+  return <MainScreen
     films={films}
     onWelcomeButtonClick={welcomeButtonHandler}
   />;
