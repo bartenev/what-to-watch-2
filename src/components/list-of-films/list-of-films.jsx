@@ -10,16 +10,14 @@ class ListOfFilms extends PureComponent {
   }
 
   render() {
-    const {films} = this.props;
+    const {films, onHover} = this.props;
     return films.map((film, i) => {
       const {title} = film;
       return (
         <SmallMovieCard
           key={`${title}-${i}`}
           film={film}
-          onHover={() => {
-
-          }}
+          onHover={onHover}
         />);
     });
   }
@@ -30,6 +28,7 @@ ListOfFilms.propTypes = {
     title: PropTypes.string.isRequired,
     picture: PropTypes.string.isRequired,
   })).isRequired,
+  onHover: PropTypes.func.isRequired,
 };
 
 export default ListOfFilms;

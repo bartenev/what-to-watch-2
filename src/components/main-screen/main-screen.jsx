@@ -1,82 +1,108 @@
-import React from "react";
+import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import ListOfFilms from "../list-of-films/list-of-films";
 import MovieCard from "../movie-card/movie-card";
 
-const MainScreen = (props) => {
-  const {films, onWelcomeButtonClick} = props;
+class MainScreen extends PureComponent {
+  constructor(props) {
+    super(props);
 
-  return (
-    <div>
-      <MovieCard
-        onWelcomeButtonClick={onWelcomeButtonClick}
-      />
+    this.state = {
+      activeFilm: null,
+    };
+  }
 
-      <div className="page-content">
-        <section className="catalog">
-          <h2 className="catalog__title visually-hidden">Catalog</h2>
+  render() {
+    const {films, onWelcomeButtonClick} = this.props;
+    const movieCard = this._getMovieCard(films, onWelcomeButtonClick);
 
-          <ul className="catalog__genres-list">
-            <li className="catalog__genres-item catalog__genres-item--active">
-              <a href="#" className="catalog__genres-link">All genres</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Comedies</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Crime</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Documentary</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Dramas</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Horror</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Kids & Family</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Romance</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Sci-Fi</a>
-            </li>
-            <li className="catalog__genres-item">
-              <a href="#" className="catalog__genres-link">Thrillers</a>
-            </li>
-          </ul>
+    return (
+      <div>
+        {movieCard}
+        <div className="page-content">
+          <section className="catalog">
+            <h2 className="catalog__title visually-hidden">Catalog</h2>
 
-          <div className="catalog__movies-list">
-            <ListOfFilms
-              films={films}
-            />
-          </div>
+            <ul className="catalog__genres-list">
+              <li className="catalog__genres-item catalog__genres-item--active">
+                <a href="#" className="catalog__genres-link">All genres</a>
+              </li>
+              <li className="catalog__genres-item">
+                <a href="#" className="catalog__genres-link">Comedies</a>
+              </li>
+              <li className="catalog__genres-item">
+                <a href="#" className="catalog__genres-link">Crime</a>
+              </li>
+              <li className="catalog__genres-item">
+                <a href="#" className="catalog__genres-link">Documentary</a>
+              </li>
+              <li className="catalog__genres-item">
+                <a href="#" className="catalog__genres-link">Dramas</a>
+              </li>
+              <li className="catalog__genres-item">
+                <a href="#" className="catalog__genres-link">Horror</a>
+              </li>
+              <li className="catalog__genres-item">
+                <a href="#" className="catalog__genres-link">Kids & Family</a>
+              </li>
+              <li className="catalog__genres-item">
+                <a href="#" className="catalog__genres-link">Romance</a>
+              </li>
+              <li className="catalog__genres-item">
+                <a href="#" className="catalog__genres-link">Sci-Fi</a>
+              </li>
+              <li className="catalog__genres-item">
+                <a href="#" className="catalog__genres-link">Thrillers</a>
+              </li>
+            </ul>
 
-          <div className="catalog__more">
-            <button className="catalog__button" type="button">Show more</button>
-          </div>
-        </section>
+            <div className="catalog__movies-list">
+              <ListOfFilms
+                films={films}
+                onHover={(film) => {
+                  this.setState({
+                    activeFilm: film,
+                  });
+                }}
+              />
+            </div>
 
-        <footer className="page-footer">
-          <div className="logo">
-            <a className="logo__link logo__link--light">
-              <span className="logo__letter logo__letter--1">W</span>
-              <span className="logo__letter logo__letter--2">T</span>
-              <span className="logo__letter logo__letter--3">W</span>
-            </a>
-          </div>
+            <div className="catalog__more">
+              <button className="catalog__button" type="button">Show more</button>
+            </div>
+          </section>
 
-          <div className="copyright">
-            <p>© 2019 What to watch Ltd.</p>
-          </div>
-        </footer>
+          <footer className="page-footer">
+            <div className="logo">
+              <a className="logo__link logo__link--light">
+                <span className="logo__letter logo__letter--1">W</span>
+                <span className="logo__letter logo__letter--2">T</span>
+                <span className="logo__letter logo__letter--3">W</span>
+              </a>
+            </div>
+
+            <div className="copyright">
+              <p>© 2019 What to watch Ltd.</p>
+            </div>
+          </footer>
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+
+  _getMovieCard(films, onWelcomeButtonClick) {
+    if (this.state.activeFilm) {
+      return (
+        <MovieCard
+          film={this.state.activeFilm}
+          onWelcomeButtonClick={onWelcomeButtonClick}
+        />
+      );
+    }
+
+    return null;
+  }
+}
 
 MainScreen.propTypes = {
   films: PropTypes.arrayOf(PropTypes.shape({

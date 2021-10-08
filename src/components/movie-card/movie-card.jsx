@@ -2,11 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const MovieCard = (props) => {
-  const {onWelcomeButtonClick} = props;
+  const {film, onWelcomeButtonClick} = props;
+  const {title, picture} = film;
   return (
     <section className="movie-card">
       <div className="movie-card__bg">
-        <img src="img/bg-the-grand-budapest-hotel.jpg" alt="The Grand Budapest Hotel"/>
+        <img src={picture} alt={title}/>
       </div>
 
       <h1 className="visually-hidden">WTW</h1>
@@ -30,7 +31,7 @@ const MovieCard = (props) => {
       <div className="movie-card__wrap">
         <div className="movie-card__info">
           <div className="movie-card__poster">
-            <img src="img/the-grand-budapest-hotel-poster.jpg" alt="The Grand Budapest Hotel poster" width="218"
+            <img src={picture} alt={title} width="218"
               height="327"/>
           </div>
 
@@ -38,7 +39,7 @@ const MovieCard = (props) => {
             <h2
               className="movie-card__title"
               onClick={onWelcomeButtonClick}>
-              The Grand Budapest Hotel
+              {title}
             </h2>
             <p className="movie-card__meta">
               <span className="movie-card__genre">Drama</span>
@@ -67,6 +68,11 @@ const MovieCard = (props) => {
 };
 
 MovieCard.propTypes = {
+  film: PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    picture: PropTypes.string.isRequired,
+    previewSrc: PropTypes.string.isRequired,
+  }).isRequired,
   onWelcomeButtonClick: PropTypes.func.isRequired,
 };
 
