@@ -9,6 +9,8 @@ class SmallMovieCard extends PureComponent {
     this.state = {
       isHovered: false,
     };
+
+    this.timerId = null;
   }
 
 
@@ -16,16 +18,14 @@ class SmallMovieCard extends PureComponent {
     const {film, onHover} = this.props;
     const {title, picture, previewSrc} = film;
 
-    let timer;
-
     return (
       <article className="small-movie-card catalog__movies-card"
         onMouseEnter={() => {
           onHover(film);
-          timer = setTimeout(() => this.setState({isHovered: true}), 1000);
+          this.timerId = setTimeout(() => this.setState({isHovered: true}), 1000);
         }}
         onMouseLeave={() => {
-          clearTimeout(timer);
+          clearTimeout(this.timerId);
           this.setState({isHovered: false});
         }}>
         <div className="small-movie-card__image">
