@@ -74,7 +74,6 @@ const getFilms = () => {
         preview: `https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm`,
         video: ``,
       },
-      previewSrc: `https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm`,
       director: getRandomElementOfArray(directors),
       starring: getRandomArrayOfSomething(getRandomElementOfArray, 6, 1, directors),
       reviews: getRandomArrayOfSomething(getReview, 6, 0),

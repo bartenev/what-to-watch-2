@@ -3,11 +3,13 @@ import PropTypes from "prop-types";
 
 const MovieCard = (props) => {
   const {film, onWelcomeButtonClick} = props;
-  const {title, picture} = film;
+  const {title, genre, released, src} = film;
+  const {poster} = src;
+
   return (
     <section className="movie-card">
       <div className="movie-card__bg">
-        <img src={picture} alt={title}/>
+        <img src={poster} alt={title}/>
       </div>
 
       <h1 className="visually-hidden">WTW</h1>
@@ -31,7 +33,7 @@ const MovieCard = (props) => {
       <div className="movie-card__wrap">
         <div className="movie-card__info">
           <div className="movie-card__poster">
-            <img src={picture} alt={title} width="218"
+            <img src={poster} alt={title} width="218"
               height="327"/>
           </div>
 
@@ -42,8 +44,8 @@ const MovieCard = (props) => {
               {title}
             </h2>
             <p className="movie-card__meta">
-              <span className="movie-card__genre">Drama</span>
-              <span className="movie-card__year">2014</span>
+              <span className="movie-card__genre">{genre}</span>
+              <span className="movie-card__year">{released}</span>
             </p>
 
             <div className="movie-card__buttons">
@@ -70,8 +72,28 @@ const MovieCard = (props) => {
 MovieCard.propTypes = {
   film: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    picture: PropTypes.string.isRequired,
-    previewSrc: PropTypes.string.isRequired,
+    runTime: PropTypes.number.isRequired,
+    genre: PropTypes.string.isRequired,
+    released: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
+    director: PropTypes.string.isRequired,
+    starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    src: PropTypes.shape({
+      poster: PropTypes.string.isRequired,
+      preview: PropTypes.string.isRequired,
+      video: PropTypes.string.isRequired,
+    }).isRequired,
+    rating: PropTypes.shape({
+      number: PropTypes.number.isRequired,
+      word: PropTypes.string.isRequired,
+      numberOfRatings: PropTypes.number.isRequired,
+    }).isRequired,
+    reviews: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+      rating: PropTypes.number.isRequired,
+    })).isRequired,
   }).isRequired,
   onWelcomeButtonClick: PropTypes.func.isRequired,
 };

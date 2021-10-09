@@ -16,7 +16,8 @@ class SmallMovieCard extends PureComponent {
 
   render() {
     const {film, onHover} = this.props;
-    const {title, picture, previewSrc} = film;
+    const {title, src} = film;
+    const {poster, preview} = src;
 
     return (
       <article className="small-movie-card catalog__movies-card"
@@ -32,8 +33,8 @@ class SmallMovieCard extends PureComponent {
           <VideoPlayer
             isPlaying={this.state.isHovered}
             isMuted={true}
-            previewSrc={previewSrc}
-            posterSrc={picture}
+            previewSrc={preview}
+            posterSrc={poster}
           />
         </div>
         <h3 className="small-movie-card__title">
@@ -47,8 +48,28 @@ class SmallMovieCard extends PureComponent {
 SmallMovieCard.propTypes = {
   film: PropTypes.shape({
     title: PropTypes.string.isRequired,
-    picture: PropTypes.string.isRequired,
-    previewSrc: PropTypes.string.isRequired,
+    runTime: PropTypes.number.isRequired,
+    genre: PropTypes.string.isRequired,
+    released: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
+    director: PropTypes.string.isRequired,
+    starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    src: PropTypes.shape({
+      poster: PropTypes.string.isRequired,
+      preview: PropTypes.string.isRequired,
+      video: PropTypes.string.isRequired,
+    }).isRequired,
+    rating: PropTypes.shape({
+      number: PropTypes.number.isRequired,
+      word: PropTypes.string.isRequired,
+      numberOfRatings: PropTypes.number.isRequired,
+    }).isRequired,
+    reviews: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
+      text: PropTypes.string.isRequired,
+      rating: PropTypes.number.isRequired,
+    })).isRequired,
   }).isRequired,
   onHover: PropTypes.func.isRequired,
 };
