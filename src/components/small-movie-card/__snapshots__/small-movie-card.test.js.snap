@@ -21,7 +21,7 @@ exports[`SmallMovieCard is rendered correctly 1`] = `
       className="small-movie-card__link"
       href="movie-page.html"
     >
-      We need to talk about Kevin
+      Macbeth
     </a>
   </h3>
 </article>

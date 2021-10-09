@@ -10,29 +10,83 @@ Enzyme.configure({
 const mock = {
   films: [
     {
-      title: `title-1`,
-      picture: `picture-1`,
-      previewSrc: `src-1`,
+      description: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Integer commodo enim eget ullamcorper faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer commodo enim eget ullamcorper faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. `,
+      director: `Christopher Nolan`,
+      genre: `Action`,
+      rating: {
+        number: 5,
+        numberOfRatings: 783,
+        word: `Excellent`,
+      },
+      released: 1956,
+      reviews: [
+        {
+          date: `23/1/2021`,
+          name: `Ivan`,
+          rating: 8,
+          text: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Vivamus elementum nisl eu elit cursus, id luctus justo posuere. Vivamus elementum nisl eu elit cursus, id luctus justo posuere. Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. `,
+        },
+        {
+          date: `13/3/2021`,
+          name: `Genka`,
+          rating: 0,
+          text: `Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. Quisque fringilla lacinia pulvinar. Donec vel semper nunc, ac posuere lorem. Nulla sed tortor nunc.. `,
+        },
+        {
+          date: `17/6/2021`,
+          name: `Cheba`,
+          rating: 5,
+          text: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Integer commodo enim eget ullamcorper faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. `,
+        },
+        {
+          date: `28/6/2021`,
+          name: `Cheba`,
+          rating: 5,
+          text: `Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. Praesent in nisi condimentum, aliquet nisl at, fermentum neque. Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. `,
+        }
+      ],
+      runTime: 240,
+      src: {
+        poster: `img/pulp-fiction.jpg`,
+        preview: `https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm`,
+        video: ``,
+      },
+      starring: [
+        `Quentin Tarantino`,
+        `David Fincher`,
+      ],
+      title: `Pulp Fiction`
     },
     {
-      title: `title-2`,
-      picture: `picture-2`,
-      previewSrc: `src-2`,
-    },
-    {
-      title: `title-3`,
-      picture: `picture-3`,
-      previewSrc: `src-3`,
-    },
-    {
-      title: `title-4`,
-      picture: `picture-4`,
-      previewSrc: `src-4`,
-    },
-    {
-      title: `title-5`,
-      picture: `picture-5`,
-      previewSrc: `src-5`,
+      description: `Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. Vivamus ex urna, tincidunt eget feugiat a, luctus ut arcu. Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. `,
+      director: `Christopher Nolan`,
+      genre: `Mystery`,
+      rating: {
+        number: 0,
+        numberOfRatings: 6354,
+        word: `Excellent`,
+      },
+      released: 1966,
+      reviews: [
+        {
+          date: `21/4/2021`,
+          name: `Vasya`,
+          rating: 4,
+          text: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. `,
+        },
+      ],
+      runTime: 220,
+      src: {
+        poster: `img/macbeth.jpg`,
+        preview: `https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm`,
+        video: ``,
+      },
+      starring: [
+        `Robert Zemeckis`,
+        `Christopher Nolan`,
+        `Clint Eastwood`,
+      ],
+      title: `Macbeth`,
     },
   ],
 };
