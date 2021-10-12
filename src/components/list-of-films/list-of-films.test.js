@@ -15,25 +15,25 @@ const films = [
     released: 1956,
     reviews: [
       {
-        date: `23/1/2021`,
+        date: new Date(),
         name: `Ivan`,
         rating: 8,
         text: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Vivamus elementum nisl eu elit cursus, id luctus justo posuere. Vivamus elementum nisl eu elit cursus, id luctus justo posuere. Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. `,
       },
       {
-        date: `13/3/2021`,
+        date: new Date(),
         name: `Genka`,
         rating: 0,
         text: `Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. Quisque fringilla lacinia pulvinar. Donec vel semper nunc, ac posuere lorem. Nulla sed tortor nunc.. `,
       },
       {
-        date: `17/6/2021`,
+        date: new Date(),
         name: `Cheba`,
         rating: 5,
         text: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Integer commodo enim eget ullamcorper faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. `,
       },
       {
-        date: `28/6/2021`,
+        date: new Date(),
         name: `Cheba`,
         rating: 5,
         text: `Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. Praesent in nisi condimentum, aliquet nisl at, fermentum neque. Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. `,
@@ -63,7 +63,7 @@ const films = [
     released: 1966,
     reviews: [
       {
-        date: `21/4/2021`,
+        date: new Date(),
         name: `Vasya`,
         rating: 4,
         text: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. `,
@@ -89,6 +89,7 @@ it(`ListOfFilms is rendered correctly`, () => {
     <ListOfFilms
       films={films}
       onHover={() => {}}
+      onClick={() => {}}
     />
   ), {
     createNodeMock: () => {

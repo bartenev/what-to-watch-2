@@ -14,7 +14,7 @@ const film = {
   released: 1966,
   reviews: [
     {
-      date: `21/4/2021`,
+      date: new Date(),
       name: `Vasya`,
       rating: 4,
       text: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. `,
@@ -35,7 +35,8 @@ const film = {
 };
 
 it(`VideoPlayer is rendered correctly`, () => {
-  const {poster, preview} = film;
+  const {src} = film;
+  const {poster, preview} = src;
   const tree = renderer.create((
     <VideoPlayer
       isPlaying={false}

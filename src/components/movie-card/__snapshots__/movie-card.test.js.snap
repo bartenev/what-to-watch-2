@@ -79,7 +79,6 @@ exports[`Render App 1`] = `
       >
         <h2
           className="movie-card__title"
-          onClick={[Function]}
         >
           Pulp Fiction
         </h2>

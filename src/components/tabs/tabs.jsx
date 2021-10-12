@@ -13,7 +13,7 @@ export default class Tabs extends PureComponent {
       activeTab: TabsType.OVERVIEW,
     };
 
-    this.currentFilm = null;
+    this._currentFilm = null;
   }
 
   render() {
@@ -22,8 +22,8 @@ export default class Tabs extends PureComponent {
 
     let newActiveTab = this.state.activeTab;
 
-    if (this.currentFilm === null || this.currentFilm !== film) {
-      this.currentFilm = film;
+    if (this._currentFilm === null || this._currentFilm !== film) {
+      this._currentFilm = film;
       newActiveTab = TabsType.OVERVIEW;
     }
 

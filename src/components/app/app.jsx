@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 const App = (props) => {
   const {films} = props;
-  console.log(films);
+  // console.log(films);
   return <MainScreen
     films={films}
   />;

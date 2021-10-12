@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import MovieCard from "./movie-card";
+import TabReviews from "./tab-reviews";
 
 const film = {
   description: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Integer commodo enim eget ullamcorper faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer commodo enim eget ullamcorper faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. `,
@@ -51,9 +51,9 @@ const film = {
   title: `Pulp Fiction`
 };
 
-it(`Render App`, () => {
+it(`TabReviews is rendered correctly`, () => {
   const tree = renderer.create((
-    <MovieCard
+    <TabReviews
       film={film}
     />
   ), {

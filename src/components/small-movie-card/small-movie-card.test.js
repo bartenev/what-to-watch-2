@@ -14,7 +14,7 @@ const film = {
   released: 1966,
   reviews: [
     {
-      date: `21/4/2021`,
+      date: new Date(),
       name: `Vasya`,
       rating: 4,
       text: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. `,
@@ -39,6 +39,7 @@ it(`SmallMovieCard is rendered correctly`, () => {
     <SmallMovieCard
       film={film}
       onHover={() => {}}
+      onClick={() => {}}
     />
   ), {
     createNodeMock: () => {

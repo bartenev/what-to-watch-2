@@ -1,7 +1,8 @@
 import React from "react";
 import {configure, shallow} from "enzyme";
 import Adapter from "enzyme-adapter-react-16";
-import SmallMovieCard from "./small-movie-card";
+import Tabs from "./tabs";
+import {TabsType} from "../../const";
 
 configure({
   adapter: new Adapter(),
@@ -45,38 +46,18 @@ const mockEvent = {
   preventDefault() {}
 };
 
-describe(`SmallMovieCard component`, () => {
-  it(`Hover on film card should pass to the callback data-object from which this film was created`, () => {
-    const {film} = mock;
-    const onHover = jest.fn();
-    const onClick = jest.fn();
+it(`Click on the tab-details should change the state to TabsType.DETAILS`, () => {
+  const {film} = mock;
 
-    const smallMovieCard = shallow(
-        <SmallMovieCard
-          film={film}
-          onHover={onHover}
-          onClick={onClick}/>
-    );
+  const tabs = shallow(
+      <Tabs
+        film={film}
+      />
+  );
 
-    smallMovieCard.simulate(`mouseEnter`);
-    expect(onHover).toHaveBeenCalledTimes(1);
-    expect(onHover.mock.calls[0][0]).toMatchObject(film);
-  });
-  it(`Click on film card should pass to the callback data-object from which this film was created`, () => {
-    const {film} = mock;
-    const onHover = jest.fn();
-    const onClick = jest.fn();
+  const tabDetails = tabs.find(`.movie-nav__link`).at(1);
+  expect(tabs.state(`activeTab`)).toBe(TabsType.OVERVIEW);
 
-    const smallMovieCard = shallow(
-        <SmallMovieCard
-          film={film}
-          onHover={onHover}
-          onClick={onClick}/>
-    );
-
-    const link = smallMovieCard.find(`.small-movie-card__link`);
-    link.simulate(`click`, mockEvent);
-    expect(onClick).toHaveBeenCalledTimes(1);
-    expect(onClick.mock.calls[0][0]).toMatchObject(film);
-  });
+  tabDetails.simulate(`click`, mockEvent);
+  expect(tabs.state(`activeTab`)).toBe(TabsType.DETAILS);
 });
