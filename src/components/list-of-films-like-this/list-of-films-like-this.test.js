@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import App from "./app";
+import ListOfFilmsLikeThis from "./list-of-films-like-this";
 
 const films = [
   {
@@ -84,10 +84,13 @@ const films = [
   },
 ];
 
-it(`Render App`, () => {
+it(`ListOfFilmsLikeThis is rendered correctly`, () => {
   const tree = renderer.create((
-    <App
+    <ListOfFilmsLikeThis
+      currentFilm={films[0]}
       films={films}
+      onHover={() => {}}
+      onClick={() => {}}
     />
   ), {
     createNodeMock: () => {
@@ -97,4 +100,3 @@ it(`Render App`, () => {
 
   expect(tree).toMatchSnapshot();
 });
-
