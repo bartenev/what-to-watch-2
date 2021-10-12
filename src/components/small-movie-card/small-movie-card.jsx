@@ -15,7 +15,7 @@ class SmallMovieCard extends PureComponent {
 
 
   render() {
-    const {film, onHover} = this.props;
+    const {film, onHover, onClick} = this.props;
     const {title, src} = film;
     const {poster, preview} = src;
 
@@ -28,7 +28,8 @@ class SmallMovieCard extends PureComponent {
         onMouseLeave={() => {
           clearTimeout(this.timerId);
           this.setState({isHovered: false});
-        }}>
+        }}
+      >
         <div className="small-movie-card__image">
           <VideoPlayer
             isPlaying={this.state.isHovered}
@@ -38,10 +39,20 @@ class SmallMovieCard extends PureComponent {
           />
         </div>
         <h3 className="small-movie-card__title">
-          <a className="small-movie-card__link" href="movie-page.html">{title}</a>
+          <a className="small-movie-card__link"
+            href="movie-page.html"
+            onClick={(evt) => {
+              evt.preventDefault();
+              onClick(film);
+            }}
+          >{title}</a>
         </h3>
       </article>
     );
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timerId);
   }
 }
 
@@ -60,18 +71,19 @@ SmallMovieCard.propTypes = {
       video: PropTypes.string.isRequired,
     }).isRequired,
     rating: PropTypes.shape({
-      number: PropTypes.number.isRequired,
-      word: PropTypes.string.isRequired,
-      numberOfRatings: PropTypes.number.isRequired,
+      score: PropTypes.number.isRequired,
+      level: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
     }).isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
-      date: PropTypes.string.isRequired,
+      date: PropTypes.instanceOf(Date),
       text: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
     })).isRequired,
   }).isRequired,
   onHover: PropTypes.func.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default SmallMovieCard;

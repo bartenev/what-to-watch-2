@@ -8,9 +8,9 @@ const films = [
     director: `Christopher Nolan`,
     genre: `Action`,
     rating: {
-      number: 5,
-      numberOfRatings: 783,
-      word: `Excellent`,
+      score: 5,
+      count: 783,
+      level: `Excellent`,
     },
     released: 1956,
     reviews: [
@@ -56,9 +56,9 @@ const films = [
     director: `Christopher Nolan`,
     genre: `Mystery`,
     rating: {
-      number: 0,
-      numberOfRatings: 6354,
-      word: `Excellent`,
+      score: 0,
+      count: 6354,
+      level: `Excellent`,
     },
     released: 1966,
     reviews: [

@@ -6,7 +6,7 @@ const welcomeButtonHandler = () => {};
 
 const App = (props) => {
   const {films} = props;
-
+console.log(films);
   return <MainScreen
     films={films}
     onWelcomeButtonClick={welcomeButtonHandler}
@@ -28,39 +28,17 @@ App.propTypes = {
       video: PropTypes.string.isRequired,
     }).isRequired,
     rating: PropTypes.shape({
-      number: PropTypes.number.isRequired,
-      word: PropTypes.string.isRequired,
-      numberOfRatings: PropTypes.number.isRequired,
+      score: PropTypes.number.isRequired,
+      level: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
     }).isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape({
       name: PropTypes.string.isRequired,
-      date: PropTypes.string.isRequired,
+      date: PropTypes.instanceOf(Date),
       text: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
     })).isRequired,
   })).isRequired,
 };
-
-// {
-//       title: filmName,
-//       src: {
-//         poster: `img/${filmName.toLowerCase().replace(/ /g, `-`)}.jpg`,
-//         preview: `https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm`,
-//         video: ``,
-//       },
-//       previewSrc: `https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm`,
-//       director: getRandomElementOfArray(directors),
-//       starring: getRandomArrayOfSomething(getRandomElementOfArray, 6, 1, directors),
-//       reviews: getRandomArrayOfSomething(getReview, 6, 0),
-//       runTime: getRandomNumber(300, 1),
-//       genre: getRandomElementOfArray(genres),
-//       released: getRandomNumber(2021, 1950),
-//       description: getRandomText(),
-//       rating: {
-//         number: getRandomNumber(10, 0),
-//         word: `Excellent`,
-//         numberOfRatings: getRandomNumber(10000),
-//       },
-//     }
 
 export default App;

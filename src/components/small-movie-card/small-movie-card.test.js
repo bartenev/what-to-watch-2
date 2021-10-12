@@ -7,9 +7,9 @@ const film = {
   director: `Christopher Nolan`,
   genre: `Mystery`,
   rating: {
-    number: 0,
-    numberOfRatings: 6354,
-    word: `Excellent`,
+    score: 5,
+    count: 783,
+    level: `Excellent`,
   },
   released: 1966,
   reviews: [

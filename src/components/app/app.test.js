@@ -8,14 +8,14 @@ const films = [
     director: `Christopher Nolan`,
     genre: `Action`,
     rating: {
-      number: 5,
-      numberOfRatings: 783,
-      word: `Excellent`,
+      score: 5,
+      count: 783,
+      level: `Excellent`,
     },
     released: 1956,
     reviews: [
       {
-        date: `23/1/2021`,
+        date: new Date(),
         name: `Ivan`,
         rating: 8,
         text: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Vivamus elementum nisl eu elit cursus, id luctus justo posuere. Vivamus elementum nisl eu elit cursus, id luctus justo posuere. Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. `,
@@ -56,9 +56,9 @@ const films = [
     director: `Christopher Nolan`,
     genre: `Mystery`,
     rating: {
-      number: 0,
-      numberOfRatings: 6354,
-      word: `Excellent`,
+      score: 0,
+      count: 6354,
+      level: `Excellent`,
     },
     released: 1966,
     reviews: [

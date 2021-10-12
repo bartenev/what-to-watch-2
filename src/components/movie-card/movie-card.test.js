@@ -7,9 +7,9 @@ const film = {
   director: `Christopher Nolan`,
   genre: `Action`,
   rating: {
-    number: 5,
-    numberOfRatings: 783,
-    word: `Excellent`,
+    score: 5,
+    count: 783,
+    level: `Excellent`,
   },
   released: 1956,
   reviews: [

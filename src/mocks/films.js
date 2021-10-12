@@ -40,10 +40,20 @@ const getRandomText = () => {
   return randomText;
 };
 
+const getRandomDate = () => {
+  const targetDate = new Date();
+  const rangeDays = 100;
+  const diffValue = -1 * getRandomNumber(rangeDays, 0);
+  targetDate.setDate(targetDate.getDate() + diffValue);
+  targetDate.setHours(getRandomNumber(23, 0));
+  targetDate.setMinutes(getRandomNumber(59, 0));
+  return targetDate;
+};
+
 const getReview = () => {
   return {
     name: names[getRandomNumber(names.length - 1)],
-    date: `${getRandomNumber(31, 1)}/${getRandomNumber(12, 1)}/2021`,
+    date: getRandomDate(),
     text: getRandomText(),
     rating: getRandomNumber(10),
   };
@@ -63,10 +73,21 @@ const getRandomArrayOfSomething = (getElement, max, min, array = []) => {
   return randomArray;
 };
 
-const filmsNames = [`Pulp Fiction`, `Bohemian Rhapsody`, `Macbeth`, `Aviator`, `We need to talk about Kevin`];
+const filmsNames = [`Bohemian Rhapsody`, `Macbeth`, `Aviator`, `We need to talk about Kevin`, `What We Do in the Shadows`,
+  `Revenant`, `Johnny English`, `Shutter Island`, `Pulp Fiction`, `No Country for Old Men`, `Snatch`, `Moonrise Kingdom`,
+  `Seven Years in Tibet`, `Midnight Special`, `War of the Worlds`, `Dardjeeling Limited`, `Orlando`, `Mindhunter`, `Midnight Special`];
 
 const getFilms = () => {
   return filmsNames.map((filmName) => {
+    const score = getRandomNumber(10, 0);
+    let level = `Excellent`;
+
+    if (score <= 6) {
+      level = `Bad`;
+    } else if (score <= 8) {
+      level = `Good`;
+    }
+
     return ({
       title: filmName,
       src: {
@@ -82,9 +103,9 @@ const getFilms = () => {
       released: getRandomNumber(2021, 1950),
       description: getRandomText(),
       rating: {
-        number: getRandomNumber(10, 0),
-        word: `Excellent`,
-        numberOfRatings: getRandomNumber(10000),
+        score,
+        level,
+        count: getRandomNumber(10000),
       },
     });
   });
