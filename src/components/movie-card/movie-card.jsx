@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 
 const MovieCard = (props) => {
-  const {film, onWelcomeButtonClick} = props;
+  const {film} = props;
   const {title, genre, released, src} = film;
   const {poster} = src;
 
@@ -38,9 +38,7 @@ const MovieCard = (props) => {
           </div>
 
           <div className="movie-card__desc">
-            <h2
-              className="movie-card__title"
-              onClick={onWelcomeButtonClick}>
+            <h2 className="movie-card__title">
               {title}
             </h2>
             <p className="movie-card__meta">
@@ -95,7 +93,6 @@ MovieCard.propTypes = {
       rating: PropTypes.number.isRequired,
     })).isRequired,
   }).isRequired,
-  onWelcomeButtonClick: PropTypes.func.isRequired,
 };
 
 export default MovieCard;

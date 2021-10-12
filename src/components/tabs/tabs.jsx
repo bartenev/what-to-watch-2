@@ -10,21 +10,22 @@ export default class Tabs extends PureComponent {
     super(props);
 
     this.state = {
-      currentTab: TabsType.OVERVIEW,
-      currentFilm: null,
+      activeTab: TabsType.OVERVIEW,
     };
+
+    this.currentFilm = null;
   }
 
   render() {
     const {film} = this.props;
     const allTabs = Object.values(TabsType);
 
-    // if (this.state.currentFilm === null || this.state.currentFilm !== film) {
-    //   this.setState({
-    //     currentTab: TabsType.OVERVIEW,
-    //     currentFilm: film,
-    //   });
-    // }
+    let newActiveTab = this.state.activeTab;
+
+    if (this.currentFilm === null || this.currentFilm !== film) {
+      this.currentFilm = film;
+      newActiveTab = TabsType.OVERVIEW;
+    }
 
     return (
       <div className="movie-card__desc">
@@ -32,14 +33,14 @@ export default class Tabs extends PureComponent {
           <ul className="movie-nav__list">
             {allTabs.map((tab) => {
               return (
-                <li key={tab} className={`movie-nav__item ${this.state.currentTab === tab ? `movie-nav__item--active` : ``}`}>
+                <li key={tab} className={`movie-nav__item ${newActiveTab === tab ? `movie-nav__item--active` : ``}`}>
                   <a
                     href="#"
                     className="movie-nav__link"
                     onClick={(evt) => {
                       evt.preventDefault();
                       this.setState({
-                        currentTab: tab
+                        activeTab: tab
                       });
                     }}
                   >{tab}</a>
@@ -48,13 +49,13 @@ export default class Tabs extends PureComponent {
             })}
           </ul>
         </nav>
-        {this._getTab(film)}
+        {this._getTab(film, newActiveTab)}
       </div>
     );
   }
 
-  _getTab(film) {
-    switch (this.state.currentTab) {
+  _getTab(film, activeTab) {
+    switch (activeTab) {
       case TabsType.OVERVIEW: return (
         <TabOverview
           film={film}

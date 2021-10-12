@@ -88,7 +88,6 @@ it(`Render MainScreen`, () => {
   const tree = renderer.create((
     <MainScreen
       films={films}
-      onWelcomeButtonClick={() => {}}
     />
   ), {
     createNodeMock: () => {

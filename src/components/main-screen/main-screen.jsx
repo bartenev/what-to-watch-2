@@ -16,8 +16,8 @@ class MainScreen extends PureComponent {
   }
 
   render() {
-    const {films, onWelcomeButtonClick} = this.props;
-    const movieCard = this._getMovieCard(films, onWelcomeButtonClick);
+    const {films} = this.props;
+    const movieCard = this._getMovieCard();
     const listOfFilms = this._getListOfFilms(films);
     return (
       <Fragment>
@@ -41,7 +41,7 @@ class MainScreen extends PureComponent {
     );
   }
 
-  _getMovieCard(films, onWelcomeButtonClick) {
+  _getMovieCard() {
     if (this.state.clickedFilm) {
       return (
         <MovieCardFull
@@ -58,7 +58,6 @@ class MainScreen extends PureComponent {
       return (
         <MovieCard
           film={this.state.hoveredFilm}
-          onWelcomeButtonClick={onWelcomeButtonClick}
         />
       );
     }
@@ -126,7 +125,6 @@ MainScreen.propTypes = {
       rating: PropTypes.number.isRequired,
     })).isRequired,
   })).isRequired,
-  onWelcomeButtonClick: PropTypes.func.isRequired,
 };
 
 export default MainScreen;
