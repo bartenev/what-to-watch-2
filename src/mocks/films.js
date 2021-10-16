@@ -1,3 +1,5 @@
+import {Genres} from "../const";
+
 const getRandomNumber = (max, min = 0) => {
   return min + Math.round(Math.random() * (max - min));
 };
@@ -17,7 +19,7 @@ const directors = [
   `Clint Eastwood`
 ];
 
-const genres = [`Action`, `Comedy`, `Drama`, `Fantasy`, `Horror`, `Mystery`, `Romance`, `Thriller`];
+const genres = Object.values(Genres);
 
 const text = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.

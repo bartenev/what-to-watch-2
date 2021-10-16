@@ -50,4 +50,4 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
-export {reducer, ActionType, ActionCreator};
+export {reducer, getFilmsOfSelectedGenre, ActionType, ActionCreator};
