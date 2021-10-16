@@ -1,6 +1,7 @@
 import React from "react";
 import MainScreen from "../main-screen/main-screen";
 import PropTypes from "prop-types";
+import {connect} from "react-redux";
 
 const App = (props) => {
   const {films} = props;
@@ -38,4 +39,10 @@ App.propTypes = {
   })).isRequired,
 };
 
-export default App;
+const mapStateToProps = (state) => ({
+  films: state.films,
+});
+
+export {App};
+
+export default connect(mapStateToProps)(App);
