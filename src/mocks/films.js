@@ -19,7 +19,7 @@ const directors = [
   `Clint Eastwood`
 ];
 
-const genres = Object.values(Genres);
+const genres = Object.values(Genres).filter((genre) => genre !== Genres.ALL_GENRES);
 
 const text = `
 Lorem ipsum dolor sit amet, consectetur adipiscing elit.

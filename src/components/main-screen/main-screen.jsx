@@ -4,6 +4,8 @@ import ListOfFilms from "../list-of-films/list-of-films";
 import MovieCard from "../movie-card/movie-card";
 import MovieCardFull from "../movie-card-full/movie-card-full";
 import ListOfFilmsLikeThis from "../list-of-films-like-this/list-of-films-like-this";
+import {ActionCreator} from "../../reducer";
+import {connect} from "react-redux";
 
 class MainScreen extends PureComponent {
   constructor(props) {
@@ -16,9 +18,9 @@ class MainScreen extends PureComponent {
   }
 
   render() {
-    const {films} = this.props;
-    const movieCard = this._getMovieCard();
-    const listOfFilms = this._getListOfFilms(films);
+    const {films, filteredFilms, resetFilter} = this.props;
+    const movieCard = this._getMovieCard(resetFilter);
+    const listOfFilms = this._getListOfFilms(films, filteredFilms);
     return (
       <Fragment>
         {movieCard}
@@ -41,12 +43,13 @@ class MainScreen extends PureComponent {
     );
   }
 
-  _getMovieCard() {
+  _getMovieCard(resetFilter) {
     if (this.state.clickedFilm) {
       return (
         <MovieCardFull
           film={this.state.clickedFilm}
           onLogoClick={() => {
+            resetFilter();
             this.setState({
               hoveredFilm: null,
               clickedFilm: null,
@@ -65,12 +68,12 @@ class MainScreen extends PureComponent {
     return null;
   }
 
-  _getListOfFilms(films) {
+  _getListOfFilms(films, filteredFilms) {
     if (this.state.clickedFilm) {
       return (
         <ListOfFilmsLikeThis
           currentFilm={this.state.clickedFilm}
-          films={films}
+          filteredFilms={filteredFilms}
           onHover={() => {}}
           onClick={(film) => {
             this.setState({
@@ -84,6 +87,7 @@ class MainScreen extends PureComponent {
     return (
       <ListOfFilms
         films={films}
+        filteredFilms={filteredFilms}
         onHover={(film) => {
           this.setState({
             hoveredFilm: film,
@@ -100,6 +104,31 @@ class MainScreen extends PureComponent {
 }
 
 MainScreen.propTypes = {
+  filteredFilms: PropTypes.arrayOf(PropTypes.shape({
+    title: PropTypes.string.isRequired,
+    runTime: PropTypes.number.isRequired,
+    genre: PropTypes.string.isRequired,
+    released: PropTypes.number.isRequired,
+    description: PropTypes.string.isRequired,
+    director: PropTypes.string.isRequired,
+    starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+    src: PropTypes.shape({
+      poster: PropTypes.string.isRequired,
+      preview: PropTypes.string.isRequired,
+      video: PropTypes.string.isRequired,
+    }).isRequired,
+    rating: PropTypes.shape({
+      score: PropTypes.number.isRequired,
+      level: PropTypes.string.isRequired,
+      count: PropTypes.number.isRequired,
+    }).isRequired,
+    reviews: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      date: PropTypes.instanceOf(Date),
+      text: PropTypes.string.isRequired,
+      rating: PropTypes.number.isRequired,
+    })).isRequired,
+  })).isRequired,
   films: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
@@ -125,6 +154,15 @@ MainScreen.propTypes = {
       rating: PropTypes.number.isRequired,
     })).isRequired,
   })).isRequired,
+  resetFilter: PropTypes.func.isRequired,
 };
 
-export default MainScreen;
+const mapDispatchToProps = (dispatch) => ({
+  resetFilter() {
+    dispatch(ActionCreator.resetFilter());
+  }
+});
+
+export {MainScreen};
+
+export default connect(null, mapDispatchToProps)(MainScreen);

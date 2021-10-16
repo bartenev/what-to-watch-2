@@ -4,11 +4,13 @@ import films from "./mocks/films";
 const initialState = {
   genre: Genres.ALL_GENRES,
   films,
+  filteredFilms: films,
 };
 
 const ActionType = {
   CHANGE_GENRE: `CHANGE_GENRE`,
   GET_FILMS: `GET_FILMS`,
+  RESET_FILTER: `RESET_FILTER`
 };
 
 const getFilmsOfSelectedGenre = (genre, allFilms) => {
@@ -31,6 +33,10 @@ const ActionCreator = {
   getFilms: () => ({
     type: ActionType.GET_FILMS,
   }),
+
+  resetFilter: () => ({
+    type: ActionType.RESET_FILTER,
+  }),
 };
 
 const reducer = (state = initialState, action) => {
@@ -43,8 +49,11 @@ const reducer = (state = initialState, action) => {
     case ActionType.GET_FILMS:
       const selectedFilms = getFilmsOfSelectedGenre(state.genre, films);
       return extend(state, {
-        films: selectedFilms,
+        filteredFilms: selectedFilms,
       });
+
+    case ActionType.RESET_FILTER:
+      return extend({}, initialState);
   }
 
   return state;
