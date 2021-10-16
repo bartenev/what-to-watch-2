@@ -4,7 +4,6 @@ import films from "./mocks/films";
 const initialState = {
   genre: Genres.ALL_GENRES,
   films,
-  allFilms: films,
 };
 
 const ActionType = {
@@ -13,7 +12,7 @@ const ActionType = {
 };
 
 const getFilmsOfSelectedGenre = (genre, allFilms) => {
-  let filmsOfSelectedGenre = [];
+  let filmsOfSelectedGenre;
   if (genre === Genres.ALL_GENRES) {
     filmsOfSelectedGenre = allFilms;
   } else {
@@ -42,7 +41,7 @@ const reducer = (state = initialState, action) => {
       });
 
     case ActionType.GET_FILMS:
-      const selectedFilms = getFilmsOfSelectedGenre(state.genre, state.allFilms);
+      const selectedFilms = getFilmsOfSelectedGenre(state.genre, films);
       return extend(state, {
         films: selectedFilms,
       });
