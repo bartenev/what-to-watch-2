@@ -39,3 +39,6 @@ export const Genres = {
 export const extend = (a, b) => {
   return Object.assign({}, a, b);
 };
+
+export const SHOW_MORE_BUTTON_INITIAL_VALUE = 8;
+export const SHOW_MORE_BUTTON_STEP = 20;

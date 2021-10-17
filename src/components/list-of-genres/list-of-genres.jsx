@@ -1,7 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {ActionCreator} from "../../reducer";
 
 const ListOfGenres = (props) => {
   const {genres, genre: selectedGenre, onFilterClick} = props;
@@ -15,7 +14,9 @@ const ListOfGenres = (props) => {
               className="catalog__genres-link"
               onClick={(evt) => {
                 evt.preventDefault();
-                onFilterClick(genre);
+                if (genre !== selectedGenre) {
+                  onFilterClick(genre);
+                }
               }}
             >{genre}</a>
           </li>
@@ -35,13 +36,6 @@ const mapStateToProps = (state) => ({
   genre: state.genre,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  onFilterClick(genre) {
-    dispatch(ActionCreator.changeGenre(genre));
-    dispatch(ActionCreator.getFilms());
-  },
-});
-
 export {ListOfGenres};
 
-export default connect(mapStateToProps, mapDispatchToProps)(ListOfGenres);
+export default connect(mapStateToProps)(ListOfGenres);
