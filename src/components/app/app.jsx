@@ -5,7 +5,7 @@ import {connect} from "react-redux";
 
 const App = (props) => {
   const {films, filteredFilms} = props;
-  console.log(films.filter((film) => film.reviews.length === 0));
+  // console.log(films.filter((film) => film.reviews.length === 0));
   return <MainScreen
     films={films}
     filteredFilms={filteredFilms}
