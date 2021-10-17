@@ -8,8 +8,8 @@ class ListOfFilmsLikeThis extends PureComponent {
   }
 
   render() {
-    const {films, onHover, onClick, currentFilm} = this.props;
-    const relatedFilms = films.filter((film) => film.genre === currentFilm.genre && film.title !== currentFilm.title).slice(0, 4);
+    const {filteredFilms, onHover, onClick, currentFilm} = this.props;
+    const relatedFilms = filteredFilms.filter((film) => film !== currentFilm).slice(0, 4);
 
     if (!relatedFilms.length) {
       return null;
@@ -65,7 +65,7 @@ ListOfFilmsLikeThis.propTypes = {
       rating: PropTypes.number.isRequired,
     })).isRequired,
   }).isRequired,
-  films: PropTypes.arrayOf(PropTypes.shape({
+  filteredFilms: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
     genre: PropTypes.string.isRequired,

@@ -1,12 +1,16 @@
-import React from "react";
-import renderer from "react-test-renderer";
-import {App} from "./app";
+import {
+  ActionCreator, ActionType,
+  getFilmsOfSelectedGenre,
+  reducer
+} from "./reducer";
+import {Genres} from "./const";
+import films from "./mocks/films";
 
-const films = [
+const mockFilms = [
   {
     description: `Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. Integer commodo enim eget ullamcorper faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer commodo enim eget ullamcorper faucibus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. `,
     director: `Christopher Nolan`,
-    genre: `Action`,
+    genre: `Comedies`,
     rating: {
       score: 5,
       count: 783,
@@ -54,7 +58,7 @@ const films = [
   {
     description: `Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. Vivamus ex urna, tincidunt eget feugiat a, luctus ut arcu. Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. `,
     director: `Christopher Nolan`,
-    genre: `Mystery`,
+    genre: `Crime`,
     rating: {
       score: 0,
       count: 6354,
@@ -84,17 +88,97 @@ const films = [
   },
 ];
 
-it(`Render App`, () => {
-  const tree = renderer.create((
-    <App
-      films={films}
-    />
-  ), {
-    createNodeMock: () => {
-      return {};
-    }
-  }).toJSON();
+describe(`Business logic is correct`, () => {
+  it(`Films filter worked is correctly`, () => {
+    expect(getFilmsOfSelectedGenre(Genres.COMEDIES, mockFilms)).toEqual([mockFilms[0]]);
+    expect(getFilmsOfSelectedGenre(Genres.CRIME, mockFilms)).toEqual([mockFilms[1]]);
+    expect(getFilmsOfSelectedGenre(Genres.DRAMAS, mockFilms)).toEqual([]);
+    expect(getFilmsOfSelectedGenre(Genres.ALL_GENRES, mockFilms)).toEqual(mockFilms);
+  });
+});
 
-  expect(tree).toMatchSnapshot();
+describe(`Action creators work correctly`, () => {
+  it(`Action creator for changing genre returns correct action`, () => {
+    expect(ActionCreator.changeGenre(Genres.HORROR)).toEqual({
+      type: ActionType.CHANGE_GENRE,
+      payload: Genres.HORROR,
+    });
+    expect(ActionCreator.changeGenre(Genres.ALL_GENRES)).toEqual({
+      type: ActionType.CHANGE_GENRE,
+      payload: Genres.ALL_GENRES,
+    });
+  });
+
+  it(`Action creator for getting films returns correct action`, () => {
+    expect(ActionCreator.getFilms()).toEqual({
+      type: ActionType.GET_FILMS,
+    });
+  });
+});
+
+describe(`Reducer works correctly`, () => {
+  it(`Reducer without additional parameters should return initial state`, () => {
+    expect(reducer(undefined, {})).toEqual({
+      genre: Genres.ALL_GENRES,
+      films,
+    });
+  });
+
+  it(`Reducer should change current genre on a given value`, () => {
+    expect(reducer({
+      genre: Genres.ALL_GENRES,
+      films,
+    }, {
+      type: `CHANGE_GENRE`,
+      payload: Genres.DOCUMENTARY,
+    })).toEqual({
+      genre: Genres.DOCUMENTARY,
+      films,
+    });
+
+    expect(reducer({
+      genre: Genres.ALL_GENRES,
+      films,
+    }, {
+      type: `CHANGE_GENRE`,
+      payload: Genres.ALL_GENRES,
+    })).toEqual({
+      genre: Genres.ALL_GENRES,
+      films,
+    });
+
+    expect(reducer({
+      genre: Genres.COMEDIES,
+      films,
+    }, {
+      type: `CHANGE_GENRE`,
+      payload: Genres.ALL_GENRES,
+    })).toEqual({
+      genre: Genres.ALL_GENRES,
+      films,
+    });
+  });
+
+  it(`Reducer should get selected films by genre`, () => {
+    expect(reducer({
+      genre: Genres.ALL_GENRES,
+      films,
+    }, {
+      type: `GET_FILMS`,
+    })).toEqual({
+      genre: Genres.ALL_GENRES,
+      films,
+    });
+
+    expect(reducer({
+      genre: Genres.COMEDIES,
+      films,
+    }, {
+      type: `GET_FILMS`,
+    })).toEqual({
+      genre: Genres.COMEDIES,
+      films: films.filter((film) => film.genre === Genres.COMEDIES),
+    });
+  });
 });
 
