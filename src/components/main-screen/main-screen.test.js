@@ -1,6 +1,9 @@
 import React from "react";
 import renderer from "react-test-renderer";
 import MainScreen from "./main-screen";
+import {createStore} from "redux";
+import {reducer} from "../../reducer";
+import {Provider} from "react-redux";
 
 const films = [
   {
@@ -85,10 +88,15 @@ const films = [
 ];
 
 it(`Render MainScreen`, () => {
+  const store = createStore(reducer);
+
   const tree = renderer.create((
-    <MainScreen
-      films={films}
-    />
+    <Provider store={store}>
+      <MainScreen
+        filteredFilms={films}
+        films={films}
+      />
+    </Provider>
   ), {
     createNodeMock: () => {
       return {};

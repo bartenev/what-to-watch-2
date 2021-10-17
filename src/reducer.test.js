@@ -3,7 +3,7 @@ import {
   getFilmsOfSelectedGenre,
   reducer
 } from "./reducer";
-import {Genres} from "./const";
+import {Genres, SHOW_MORE_BUTTON_INITIAL_VALUE, SHOW_MORE_BUTTON_STEP} from "./const";
 import films from "./mocks/films";
 
 const mockFilms = [
@@ -114,6 +114,25 @@ describe(`Action creators work correctly`, () => {
       type: ActionType.GET_FILMS,
     });
   });
+
+  it(`Action creator for increase number of shown films returns correct action`, () => {
+    expect(ActionCreator.increaseNumberOfShownFilms()).toEqual({
+      type: ActionType.INCREASE_NUMBER_OF_SHOWN_FILMS,
+      payload: SHOW_MORE_BUTTON_STEP,
+    });
+  });
+
+  it(`Action creator for setting default number of shown films returns correct action`, () => {
+    expect(ActionCreator.setDefaultNumberOfShownFilms()).toEqual({
+      type: ActionType.SET_DEFAULT_NUMBER_OF_SHOWN_FILMS,
+    });
+  });
+
+  it(`Action creator reset filter returns correct action`, () => {
+    expect(ActionCreator.resetFilter()).toEqual({
+      type: ActionType.RESET_FILTER,
+    });
+  });
 });
 
 describe(`Reducer works correctly`, () => {
@@ -121,6 +140,8 @@ describe(`Reducer works correctly`, () => {
     expect(reducer(undefined, {})).toEqual({
       genre: Genres.ALL_GENRES,
       films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     });
   });
 
@@ -128,34 +149,46 @@ describe(`Reducer works correctly`, () => {
     expect(reducer({
       genre: Genres.ALL_GENRES,
       films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     }, {
       type: `CHANGE_GENRE`,
       payload: Genres.DOCUMENTARY,
     })).toEqual({
       genre: Genres.DOCUMENTARY,
       films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     });
 
     expect(reducer({
       genre: Genres.ALL_GENRES,
       films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     }, {
       type: `CHANGE_GENRE`,
       payload: Genres.ALL_GENRES,
     })).toEqual({
       genre: Genres.ALL_GENRES,
       films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     });
 
     expect(reducer({
       genre: Genres.COMEDIES,
       films,
+      filteredFilms: films.filter((film) => film.genre === Genres.COMEDIES),
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     }, {
       type: `CHANGE_GENRE`,
       payload: Genres.ALL_GENRES,
     })).toEqual({
       genre: Genres.ALL_GENRES,
       films,
+      filteredFilms: films.filter((film) => film.genre === Genres.COMEDIES),
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     });
   });
 
@@ -163,21 +196,78 @@ describe(`Reducer works correctly`, () => {
     expect(reducer({
       genre: Genres.ALL_GENRES,
       films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     }, {
       type: `GET_FILMS`,
     })).toEqual({
       genre: Genres.ALL_GENRES,
       films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     });
 
     expect(reducer({
       genre: Genres.COMEDIES,
       films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     }, {
       type: `GET_FILMS`,
     })).toEqual({
       genre: Genres.COMEDIES,
-      films: films.filter((film) => film.genre === Genres.COMEDIES),
+      films,
+      filteredFilms: films.filter((film) => film.genre === Genres.COMEDIES),
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
+    });
+  });
+
+  it(`Reducer should increase number of shown films`, () => {
+    expect(reducer({
+      genre: Genres.ALL_GENRES,
+      films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
+    }, {
+      type: `INCREASE_NUMBER_OF_SHOWN_FILMS`,
+      payload: SHOW_MORE_BUTTON_STEP,
+    })).toEqual({
+      genre: Genres.ALL_GENRES,
+      films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE + SHOW_MORE_BUTTON_STEP,
+    });
+  });
+
+  it(`Reducer should setting default number of shown films`, () => {
+    expect(reducer({
+      genre: Genres.ALL_GENRES,
+      films,
+      filteredFilms: films,
+      numberOfShownFilms: 123,
+    }, {
+      type: `SET_DEFAULT_NUMBER_OF_SHOWN_FILMS`,
+    })).toEqual({
+      genre: Genres.ALL_GENRES,
+      films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
+    });
+  });
+
+  it(`Reducer should reset filter by default`, () => {
+    expect(reducer({
+      genre: Genres.COMEDIES,
+      films,
+      filteredFilms: films.filter((film) => film.genre === Genres.COMEDIES),
+      numberOfShownFilms: 123,
+    }, {
+      type: `RESET_FILTER`,
+    })).toEqual({
+      genre: Genres.ALL_GENRES,
+      films,
+      filteredFilms: films,
+      numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
     });
   });
 });

@@ -3,6 +3,9 @@ import SmallMovieCard from "../small-movie-card/small-movie-card";
 import PropTypes from "prop-types";
 import ListOfGenres from "../list-of-genres/list-of-genres";
 import {Genres} from "../../const";
+import ShowMore from "../show-more/show-more";
+import {ActionCreator} from "../../reducer";
+import {connect} from "react-redux";
 
 class ListOfFilms extends PureComponent {
   constructor(props) {
@@ -10,7 +13,8 @@ class ListOfFilms extends PureComponent {
   }
 
   render() {
-    const {films, filteredFilms, onHover, onClick} = this.props;
+    const {films, filteredFilms, numberOfShownFilms, increaseNumberOfShownFilms, onHover, onClick, onFilterClick} = this.props;
+
     let genres = [Genres.ALL_GENRES];
     films.forEach((film, i) => {
       if (films.findIndex((it) => it.genre === film.genre) === i) {
@@ -18,17 +22,20 @@ class ListOfFilms extends PureComponent {
       }
     });
 
+    const shownFilms = filteredFilms.slice(0, numberOfShownFilms);
+
     return (
       <section className="catalog">
         <h2 className="catalog__title visually-hidden">Catalog</h2>
 
         <ListOfGenres
           genres={genres}
+          onFilterClick={onFilterClick}
         />
 
         <div className="catalog__movies-list">
           {
-            filteredFilms.map((film, i) => {
+            shownFilms.map((film, i) => {
               const {title} = film;
               return (
                 <SmallMovieCard
@@ -41,11 +48,26 @@ class ListOfFilms extends PureComponent {
             })
           }
         </div>
-        <div className="catalog__more">
-          <button className="catalog__button" type="button">Show more</button>
-        </div>
+        {
+          this._getShowMoreButton(filteredFilms, numberOfShownFilms, increaseNumberOfShownFilms)
+        }
       </section>
     );
+  }
+
+  _getShowMoreButton(filteredFilms, numberOfShownFilms, increaseNumberOfShownFilms) {
+    if (filteredFilms.length > numberOfShownFilms) {
+      return (
+        <ShowMore
+          onClick={(evt) => {
+            evt.preventDefault();
+            increaseNumberOfShownFilms();
+          }}
+        />
+      );
+    }
+
+    return ``;
   }
 }
 
@@ -102,6 +124,26 @@ ListOfFilms.propTypes = {
   })).isRequired,
   onHover: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
+  onFilterClick: PropTypes.func.isRequired,
+  numberOfShownFilms: PropTypes.number.isRequired,
+  increaseNumberOfShownFilms: PropTypes.func.isRequired,
 };
 
-export default ListOfFilms;
+const mapStateToProps = (state) => ({
+  numberOfShownFilms: state.numberOfShownFilms,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  onFilterClick(genre) {
+    dispatch(ActionCreator.changeGenre(genre));
+    dispatch(ActionCreator.setDefaultNumberOfShownFilms());
+    dispatch(ActionCreator.getFilms());
+  },
+  increaseNumberOfShownFilms() {
+    dispatch(ActionCreator.increaseNumberOfShownFilms());
+  }
+});
+
+export {ListOfFilms};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ListOfFilms);

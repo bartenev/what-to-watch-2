@@ -1,6 +1,9 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import ListOfFilms from "./list-of-films";
+import {ListOfFilms} from "./list-of-films";
+import {createStore} from "redux";
+import {reducer} from "../../reducer";
+import {Provider} from "react-redux";
 
 const films = [
   {
@@ -85,12 +88,20 @@ const films = [
 ];
 
 it(`ListOfFilms is rendered correctly`, () => {
+  const store = createStore(reducer);
+
   const tree = renderer.create((
-    <ListOfFilms
-      films={films}
-      onHover={() => {}}
-      onClick={() => {}}
-    />
+    <Provider store={store}>
+      <ListOfFilms
+        films={films}
+        filteredFilms={films}
+        onHover={() => {}}
+        onClick={() => {}}
+        increaseNumberOfShownFilms={() => {}}
+        numberOfShownFilms={4}
+        onFilterClick={() => {}}
+      />
+    </Provider>
   ), {
     createNodeMock: () => {
       return {};

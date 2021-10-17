@@ -88,7 +88,7 @@ it(`ListOfFilmsLikeThis is rendered correctly`, () => {
   const tree = renderer.create((
     <ListOfFilmsLikeThis
       currentFilm={films[0]}
-      films={films}
+      filteredFilms={films}
       onHover={() => {}}
       onClick={() => {}}
     />
