@@ -12,20 +12,20 @@ export default class Tabs extends PureComponent {
     this.state = {
       activeTab: TabsType.OVERVIEW,
     };
+  }
 
-    this._currentFilm = null;
+  // eslint-disable-next-line no-unused-vars
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.film !== this.props.film) {
+      this.setState({
+        activeTab: TabsType.OVERVIEW,
+      });
+    }
   }
 
   render() {
     const {film} = this.props;
     const allTabs = Object.values(TabsType);
-
-    let newActiveTab = this.state.activeTab;
-
-    if (this._currentFilm === null || this._currentFilm !== film) {
-      this._currentFilm = film;
-      newActiveTab = TabsType.OVERVIEW;
-    }
 
     return (
       <div className="movie-card__desc">
@@ -37,7 +37,7 @@ export default class Tabs extends PureComponent {
               }
 
               return (
-                <li key={tab} className={`movie-nav__item ${newActiveTab === tab ? `movie-nav__item--active` : ``}`}>
+                <li key={tab} className={`movie-nav__item ${this.state.activeTab === tab ? `movie-nav__item--active` : ``}`}>
                   <a
                     href="#"
                     className="movie-nav__link"
@@ -53,7 +53,7 @@ export default class Tabs extends PureComponent {
             })}
           </ul>
         </nav>
-        {this._getTab(film, newActiveTab)}
+        {this._getTab(film, this.state.activeTab)}
       </div>
     );
   }

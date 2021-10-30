@@ -54,7 +54,7 @@ const films = [
   {
     description: `Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. Vivamus ex urna, tincidunt eget feugiat a, luctus ut arcu. Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. `,
     director: `Christopher Nolan`,
-    genre: `Mystery`,
+    genre: `Action`,
     rating: {
       score: 0,
       count: 6354,
@@ -88,7 +88,7 @@ it(`ListOfFilmsLikeThis is rendered correctly`, () => {
   const tree = renderer.create((
     <ListOfFilmsLikeThis
       currentFilm={films[0]}
-      filteredFilms={films}
+      films={films}
       onHover={() => {}}
       onClick={() => {}}
     />

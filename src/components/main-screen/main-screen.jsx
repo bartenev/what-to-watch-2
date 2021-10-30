@@ -73,7 +73,7 @@ class MainScreen extends PureComponent {
       return (
         <ListOfFilmsLikeThis
           currentFilm={this.state.clickedFilm}
-          filteredFilms={filteredFilms}
+          films={films}
           onHover={() => {}}
           onClick={(film) => {
             this.setState({
