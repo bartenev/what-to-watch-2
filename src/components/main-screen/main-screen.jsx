@@ -6,61 +6,94 @@ import MovieCardFull from "../movie-card-full/movie-card-full";
 import ListOfFilmsLikeThis from "../list-of-films-like-this/list-of-films-like-this";
 import {ActionCreator} from "../../reducer";
 import {connect} from "react-redux";
+import Player from "../player/player";
+
+const Mode = {
+  CLICK: `click`,
+  HOVER: `hover`
+};
 
 class MainScreen extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
-      hoveredFilm: null,
-      clickedFilm: null,
+      film: null,
+      mode: null,
+      playing: false,
     };
   }
 
   render() {
-    const {films, filteredFilms, resetFilter} = this.props;
-    const movieCard = this._getMovieCard(resetFilter);
-    const listOfFilms = this._getListOfFilms(films, filteredFilms);
-    return (
-      <Fragment>
-        {movieCard}
-        <div className="page-content">
-          {listOfFilms}
-          <footer className="page-footer">
-            <div className="logo">
-              <a className="logo__link logo__link--light">
-                <span className="logo__letter logo__letter--1">W</span>
-                <span className="logo__letter logo__letter--2">T</span>
-                <span className="logo__letter logo__letter--3">W</span>
-              </a>
-            </div>
-            <div className="copyright">
-              <p>© 2019 What to watch Ltd.</p>
-            </div>
-          </footer>
-        </div>
-      </Fragment>
-    );
+    if (this.state.playing) {
+      return (
+        <Player
+          film={this.state.film}
+          onCloseButtonClick={() => {
+            this.setState({
+              playing: false,
+            });
+          }}
+
+        />
+      );
+    } else {
+      const {films, filteredFilms, resetFilter} = this.props;
+      const movieCard = this._getMovieCard(resetFilter);
+      const listOfFilms = this._getListOfFilms(films, filteredFilms);
+
+      return (
+        <Fragment>
+          {movieCard}
+          <div className="page-content">
+            {listOfFilms}
+            <footer className="page-footer">
+              <div className="logo">
+                <a className="logo__link logo__link--light">
+                  <span className="logo__letter logo__letter--1">W</span>
+                  <span className="logo__letter logo__letter--2">T</span>
+                  <span className="logo__letter logo__letter--3">W</span>
+                </a>
+              </div>
+              <div className="copyright">
+                <p>© 2019 What to watch Ltd.</p>
+              </div>
+            </footer>
+          </div>
+        </Fragment>
+      );
+    }
   }
 
   _getMovieCard(resetFilter) {
-    if (this.state.clickedFilm) {
+    if (this.state.mode === Mode.CLICK) {
       return (
         <MovieCardFull
-          film={this.state.clickedFilm}
+          film={this.state.film}
           onLogoClick={() => {
             resetFilter();
             this.setState({
-              hoveredFilm: null,
-              clickedFilm: null,
+              film: null,
+              mode: null,
+              playing: false,
+            });
+          }}
+          onPlayClick={() => {
+            this.setState({
+              playing: true,
             });
           }}
         />
       );
-    } else if (this.state.hoveredFilm) {
+    } else if (this.state.mode === Mode.HOVER) {
       return (
         <MovieCard
-          film={this.state.hoveredFilm}
+          film={this.state.film}
+          onPlayClick={() => {
+            this.setState({
+              playing: true,
+            });
+          }}
         />
       );
     }
@@ -69,15 +102,17 @@ class MainScreen extends PureComponent {
   }
 
   _getListOfFilms(films, filteredFilms) {
-    if (this.state.clickedFilm) {
+    if (this.state.mode === Mode.CLICK) {
       return (
         <ListOfFilmsLikeThis
-          currentFilm={this.state.clickedFilm}
+          currentFilm={this.state.film}
           films={films}
           onHover={() => {}}
           onClick={(film) => {
             this.setState({
-              clickedFilm: film,
+              // clickedFilm: film,
+              film,
+              // mode: Mode.CLICK,
             });
           }}
         />
@@ -90,12 +125,16 @@ class MainScreen extends PureComponent {
         filteredFilms={filteredFilms}
         onHover={(film) => {
           this.setState({
-            hoveredFilm: film,
+            // hoveredFilm: film,
+            film,
+            mode: Mode.HOVER,
           });
         }}
         onClick={(film) => {
           this.setState({
-            clickedFilm: film,
+            // clickedFilm: film,
+            film,
+            mode: Mode.CLICK,
           });
         }}
       />
