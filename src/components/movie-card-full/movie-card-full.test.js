@@ -56,6 +56,7 @@ it(`MovieCardFull is rendered correctly`, () => {
     <MovieCardFull
       film={film}
       onLogoClick={() => {}}
+      onPlayClick={() => {}}
     />
   ), {
     createNodeMock: () => {

@@ -28,9 +28,9 @@ exports[`TabReviews is rendered correctly 1`] = `
           </cite>
           <time
             className="review__date"
-            dateTime="2021-10-17"
+            dateTime="2021-11-01"
           >
-            October 17, 2021
+            November 1, 2021
           </time>
         </footer>
       </blockquote>
@@ -61,9 +61,9 @@ exports[`TabReviews is rendered correctly 1`] = `
           </cite>
           <time
             className="review__date"
-            dateTime="2021-10-17"
+            dateTime="2021-11-01"
           >
-            October 17, 2021
+            November 1, 2021
           </time>
         </footer>
       </blockquote>
@@ -98,9 +98,9 @@ exports[`TabReviews is rendered correctly 1`] = `
           </cite>
           <time
             className="review__date"
-            dateTime="2021-10-17"
+            dateTime="2021-11-01"
           >
-            October 17, 2021
+            November 1, 2021
           </time>
         </footer>
       </blockquote>
@@ -131,9 +131,9 @@ exports[`TabReviews is rendered correctly 1`] = `
           </cite>
           <time
             className="review__date"
-            dateTime="2021-10-17"
+            dateTime="2021-11-01"
           >
-            October 17, 2021
+            November 1, 2021
           </time>
         </footer>
       </blockquote>

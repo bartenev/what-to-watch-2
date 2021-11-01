@@ -95,7 +95,7 @@ const getFilms = () => {
       src: {
         poster: `img/${filmName.toLowerCase().replace(/ /g, `-`)}.jpg`,
         preview: `https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm`,
-        video: ``,
+        video: `https://upload.wikimedia.org/wikipedia/commons/transcoded/b/b3/Big_Buck_Bunny_Trailer_400p.ogv/Big_Buck_Bunny_Trailer_400p.ogv.360p.webm`,
       },
       director: getRandomElementOfArray(directors),
       starring: getRandomArrayOfSomething(getRandomElementOfArray, 6, 1, directors),

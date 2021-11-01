@@ -51,6 +51,7 @@ exports[`ListOfFilms is rendered correctly 1`] = `
   >
     <article
       className="small-movie-card catalog__movies-card"
+      onClick={[Function]}
       onMouseEnter={[Function]}
       onMouseLeave={[Function]}
     >
@@ -68,7 +69,6 @@ exports[`ListOfFilms is rendered correctly 1`] = `
         <a
           className="small-movie-card__link"
           href="movie-page.html"
-          onClick={[Function]}
         >
           Pulp Fiction
         </a>
@@ -76,6 +76,7 @@ exports[`ListOfFilms is rendered correctly 1`] = `
     </article>
     <article
       className="small-movie-card catalog__movies-card"
+      onClick={[Function]}
       onMouseEnter={[Function]}
       onMouseLeave={[Function]}
     >
@@ -93,7 +94,6 @@ exports[`ListOfFilms is rendered correctly 1`] = `
         <a
           className="small-movie-card__link"
           href="movie-page.html"
-          onClick={[Function]}
         >
           Macbeth
         </a>
