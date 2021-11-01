@@ -40,7 +40,6 @@ class SmallMovieCard extends PureComponent {
             isMuted={true}
             videoSrc={preview}
             posterSrc={poster}
-            isPauseAllowed={false}
           />
         </div>
         <h3 className="small-movie-card__title">

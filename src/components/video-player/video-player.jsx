@@ -40,9 +40,7 @@ export default class VideoPlayer extends PureComponent {
       video.play();
     } else {
       video.pause();
-      if (!this.props.isPauseAllowed) {
-        video.load();
-      }
+      video.load();
     }
   }
 
@@ -59,5 +57,4 @@ VideoPlayer.propTypes = {
   isMuted: PropTypes.bool.isRequired,
   videoSrc: PropTypes.string.isRequired,
   posterSrc: PropTypes.string.isRequired,
-  isPauseAllowed: PropTypes.bool.isRequired,
 };

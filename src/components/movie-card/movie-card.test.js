@@ -55,7 +55,7 @@ it(`Render App`, () => {
   const tree = renderer.create((
     <MovieCard
       film={film}
-    />
+      onPlayClick={() => {}}/>
   ), {
     createNodeMock: () => {
       return {};

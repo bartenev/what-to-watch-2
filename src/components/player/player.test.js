@@ -1,6 +1,6 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import VideoPlayer from "./video-player";
+import Player from "./player";
 
 const film = {
   description: `Nunc sapien turpis, eleifend in odio at, ullamcorper efficitur lorem. Vivamus ex urna, tincidunt eget feugiat a, luctus ut arcu. Mauris interdum dolor a convallis pharetra. Fusce porttitor dictum mi, id tincidunt ligula lobortis eu. `,
@@ -34,15 +34,9 @@ const film = {
   title: `Macbeth`,
 };
 
-it(`VideoPlayer is rendered correctly`, () => {
-  const {src} = film;
-  const {poster, preview} = src;
+it(`Player is rendered correctly`, () => {
   const tree = renderer.create((
-    <VideoPlayer
-      isPlaying={false}
-      isMuted={false}
-      videoSrc={preview}
-      posterSrc={poster}
+    <Player film={film} onCloseButtonClick={() => {}}
     />
   ), {
     createNodeMock: () => {

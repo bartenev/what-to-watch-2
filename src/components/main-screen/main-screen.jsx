@@ -18,7 +18,7 @@ class MainScreen extends PureComponent {
     super(props);
 
     this.state = {
-      film: null,
+      film: props.films[0],
       mode: null,
       playing: false,
     };
@@ -34,7 +34,6 @@ class MainScreen extends PureComponent {
               playing: false,
             });
           }}
-
         />
       );
     } else {
@@ -65,7 +64,7 @@ class MainScreen extends PureComponent {
     }
   }
 
-  _getMovieCard(resetFilter, filteredFilms) {
+  _getMovieCard(resetFilter, films) {
     if (this.state.mode === Mode.CLICK) {
       return (
         <MovieCardFull
@@ -73,7 +72,7 @@ class MainScreen extends PureComponent {
           onLogoClick={() => {
             resetFilter();
             this.setState({
-              film: null,
+              film: films[0],
               mode: null,
               playing: false,
             });
@@ -85,21 +84,18 @@ class MainScreen extends PureComponent {
           }}
         />
       );
-    } // else if (true) {
-    // const randFilm = filteredFilms[Math.floor(Math.random() * filteredFilms.length)];
-    return (
-      <MovieCard
-        film={filteredFilms[0]}
-        onPlayClick={() => {
-          this.setState({
-            playing: true,
-          });
-        }}
-      />
-    );
-    // }
-
-    // return null;
+    } else {
+      return (
+        <MovieCard
+          film={this.state.film}
+          onPlayClick={() => {
+            this.setState({
+              playing: true,
+            });
+          }}
+        />
+      );
+    }
   }
 
   _getListOfFilms(films, filteredFilms) {
@@ -111,9 +107,7 @@ class MainScreen extends PureComponent {
           onHover={() => {}}
           onClick={(film) => {
             this.setState({
-              // clickedFilm: film,
               film,
-              // mode: Mode.CLICK,
             });
           }}
         />
@@ -124,16 +118,16 @@ class MainScreen extends PureComponent {
       <ListOfFilms
         films={films}
         filteredFilms={filteredFilms}
-        onHover={(film) => {
-          this.setState({
-            // hoveredFilm: film,
-            // film,
-            // mode: Mode.HOVER,
-          });
-        }}
+        onHover={ () => {}
+          // (film) => {
+          // this.setState({
+          // hoveredFilm: film,
+          // film,
+          // mode: Mode.HOVER,
+          // });
+        } // }
         onClick={(film) => {
           this.setState({
-            // clickedFilm: film,
             film,
             mode: Mode.CLICK,
           });

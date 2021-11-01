@@ -74,8 +74,8 @@ describe(`SmallMovieCard component`, () => {
           onClick={onClick}/>
     );
 
-    const link = smallMovieCard.find(`.small-movie-card__link`);
-    link.simulate(`click`, mockEvent);
+    const card = smallMovieCard.find(`.small-movie-card`);
+    card.simulate(`click`, mockEvent);
     expect(onClick).toHaveBeenCalledTimes(1);
     expect(onClick.mock.calls[0][0]).toMatchObject(film);
   });
