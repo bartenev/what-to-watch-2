@@ -39,7 +39,7 @@ class MainScreen extends PureComponent {
       );
     } else {
       const {films, filteredFilms, resetFilter} = this.props;
-      const movieCard = this._getMovieCard(resetFilter);
+      const movieCard = this._getMovieCard(resetFilter, filteredFilms);
       const listOfFilms = this._getListOfFilms(films, filteredFilms);
 
       return (
@@ -65,7 +65,7 @@ class MainScreen extends PureComponent {
     }
   }
 
-  _getMovieCard(resetFilter) {
+  _getMovieCard(resetFilter, filteredFilms) {
     if (this.state.mode === Mode.CLICK) {
       return (
         <MovieCardFull
@@ -85,20 +85,21 @@ class MainScreen extends PureComponent {
           }}
         />
       );
-    } else if (this.state.mode === Mode.HOVER) {
-      return (
-        <MovieCard
-          film={this.state.film}
-          onPlayClick={() => {
-            this.setState({
-              playing: true,
-            });
-          }}
-        />
-      );
-    }
+    } // else if (true) {
+    // const randFilm = filteredFilms[Math.floor(Math.random() * filteredFilms.length)];
+    return (
+      <MovieCard
+        film={filteredFilms[0]}
+        onPlayClick={() => {
+          this.setState({
+            playing: true,
+          });
+        }}
+      />
+    );
+    // }
 
-    return null;
+    // return null;
   }
 
   _getListOfFilms(films, filteredFilms) {
@@ -126,8 +127,8 @@ class MainScreen extends PureComponent {
         onHover={(film) => {
           this.setState({
             // hoveredFilm: film,
-            film,
-            mode: Mode.HOVER,
+            // film,
+            // mode: Mode.HOVER,
           });
         }}
         onClick={(film) => {

@@ -29,6 +29,10 @@ class SmallMovieCard extends PureComponent {
           clearTimeout(this.timerId);
           this.setState({isHovered: false});
         }}
+        onClick={(evt) => {
+          evt.preventDefault();
+          onClick(film);
+        }}
       >
         <div className="small-movie-card__image">
           <VideoPlayer
@@ -40,13 +44,7 @@ class SmallMovieCard extends PureComponent {
           />
         </div>
         <h3 className="small-movie-card__title">
-          <a className="small-movie-card__link"
-            href="movie-page.html"
-            onClick={(evt) => {
-              evt.preventDefault();
-              onClick(film);
-            }}
-          >{title}</a>
+          <a className="small-movie-card__link" href="movie-page.html">{title}</a>
         </h3>
       </article>
     );
