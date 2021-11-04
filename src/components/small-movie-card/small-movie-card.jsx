@@ -17,7 +17,7 @@ class SmallMovieCard extends PureComponent {
   render() {
     const {film, onHover, onClick} = this.props;
     const {title, src} = film;
-    const {poster, preview} = src;
+    const {previewImage, previewVideo} = src;
 
     return (
       <article className="small-movie-card catalog__movies-card"
@@ -38,8 +38,8 @@ class SmallMovieCard extends PureComponent {
           <VideoPlayer
             isPlaying={this.state.isHovered}
             isMuted={true}
-            videoSrc={preview}
-            posterSrc={poster}
+            videoSrc={previewVideo}
+            posterSrc={previewImage}
           />
         </div>
         <h3 className="small-movie-card__title">
@@ -56,6 +56,7 @@ class SmallMovieCard extends PureComponent {
 
 SmallMovieCard.propTypes = {
   film: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
     genre: PropTypes.string.isRequired,
@@ -65,12 +66,13 @@ SmallMovieCard.propTypes = {
     starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     src: PropTypes.shape({
       poster: PropTypes.string.isRequired,
-      preview: PropTypes.string.isRequired,
+      backgroundImage: PropTypes.string.isRequired,
+      previewImage: PropTypes.string.isRequired,
+      previewVideo: PropTypes.string.isRequired,
       video: PropTypes.string.isRequired,
     }).isRequired,
     rating: PropTypes.shape({
       score: PropTypes.number.isRequired,
-      level: PropTypes.string.isRequired,
       count: PropTypes.number.isRequired,
     }).isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape({
@@ -78,7 +80,9 @@ SmallMovieCard.propTypes = {
       date: PropTypes.instanceOf(Date),
       text: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-    })).isRequired,
+    })),
+    isFavorite: PropTypes.bool.isRequired,
+    backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
   onHover: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,

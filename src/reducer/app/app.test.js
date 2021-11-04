@@ -2,9 +2,9 @@ import {
   ActionCreator, ActionType,
   getFilmsOfSelectedGenre,
   reducer
-} from "./reducer";
-import {Genres, SHOW_MORE_BUTTON_INITIAL_VALUE, SHOW_MORE_BUTTON_STEP} from "./const";
-import films from "./mocks/films";
+} from "./app";
+import {Genres, SHOW_MORE_BUTTON_INITIAL_VALUE, SHOW_MORE_BUTTON_STEP} from "../../const";
+import films from "../../mocks/films";
 
 const mockFilms = [
   {

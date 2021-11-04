@@ -2,10 +2,16 @@ import React from "react";
 import MainScreen from "../main-screen/main-screen";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import {getFilms, getFilteredFilms} from "../../reducer/app/selectors";
 
 const App = (props) => {
   const {films, filteredFilms} = props;
   // console.log(films.filter((film) => film.reviews.length === 0));
+
+  if (!films.length) {
+    return null;
+  }
+
   return <MainScreen
     films={films}
     filteredFilms={filteredFilms}
@@ -14,6 +20,7 @@ const App = (props) => {
 
 App.propTypes = {
   films: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
     genre: PropTypes.string.isRequired,
@@ -23,12 +30,13 @@ App.propTypes = {
     starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     src: PropTypes.shape({
       poster: PropTypes.string.isRequired,
-      preview: PropTypes.string.isRequired,
+      backgroundImage: PropTypes.string.isRequired,
+      previewImage: PropTypes.string.isRequired,
+      previewVideo: PropTypes.string.isRequired,
       video: PropTypes.string.isRequired,
     }).isRequired,
     rating: PropTypes.shape({
       score: PropTypes.number.isRequired,
-      level: PropTypes.string.isRequired,
       count: PropTypes.number.isRequired,
     }).isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape({
@@ -36,9 +44,12 @@ App.propTypes = {
       date: PropTypes.instanceOf(Date),
       text: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-    })).isRequired,
+    })),
+    isFavorite: PropTypes.bool.isRequired,
+    backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
   filteredFilms: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
     genre: PropTypes.string.isRequired,
@@ -48,12 +59,13 @@ App.propTypes = {
     starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     src: PropTypes.shape({
       poster: PropTypes.string.isRequired,
-      preview: PropTypes.string.isRequired,
+      backgroundImage: PropTypes.string.isRequired,
+      previewImage: PropTypes.string.isRequired,
+      previewVideo: PropTypes.string.isRequired,
       video: PropTypes.string.isRequired,
     }).isRequired,
     rating: PropTypes.shape({
       score: PropTypes.number.isRequired,
-      level: PropTypes.string.isRequired,
       count: PropTypes.number.isRequired,
     }).isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape({
@@ -61,13 +73,15 @@ App.propTypes = {
       date: PropTypes.instanceOf(Date),
       text: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-    })).isRequired,
+    })),
+    isFavorite: PropTypes.bool.isRequired,
+    backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  films: state.films,
-  filteredFilms: state.filteredFilms,
+  films: getFilms(state),
+  filteredFilms: getFilteredFilms(state),
 });
 
 export {App};

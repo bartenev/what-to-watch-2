@@ -1,6 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
+import {getGenre} from "../../reducer/app/selectors";
 
 const ListOfGenres = (props) => {
   const {genres, genre: selectedGenre, onFilterClick} = props;
@@ -33,7 +34,7 @@ ListOfGenres.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  genre: state.genre,
+  genre: getGenre(state),
 });
 
 export {ListOfGenres};

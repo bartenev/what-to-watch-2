@@ -5,13 +5,13 @@ import Tabs from "../tabs/tabs";
 const MovieCardFull = (props) => {
   const {film, onLogoClick, onPlayClick} = props;
   const {title, genre, released, src} = film;
-  const {poster} = src;
+  const {poster, backgroundImage} = src;
 
   return (
     <section className="movie-card movie-card--full">
       <div className="movie-card__hero">
         <div className="movie-card__bg">
-          <img src={poster} alt={title}/>
+          <img src={backgroundImage} alt={title}/>
         </div>
 
         <h1 className="visually-hidden">WTW</h1>
@@ -90,6 +90,7 @@ const MovieCardFull = (props) => {
 
 MovieCardFull.propTypes = {
   film: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
     genre: PropTypes.string.isRequired,
@@ -99,12 +100,13 @@ MovieCardFull.propTypes = {
     starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     src: PropTypes.shape({
       poster: PropTypes.string.isRequired,
-      preview: PropTypes.string.isRequired,
+      backgroundImage: PropTypes.string.isRequired,
+      previewImage: PropTypes.string.isRequired,
+      previewVideo: PropTypes.string.isRequired,
       video: PropTypes.string.isRequired,
     }).isRequired,
     rating: PropTypes.shape({
       score: PropTypes.number.isRequired,
-      level: PropTypes.string.isRequired,
       count: PropTypes.number.isRequired,
     }).isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape({
@@ -112,7 +114,9 @@ MovieCardFull.propTypes = {
       date: PropTypes.instanceOf(Date),
       text: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-    })).isRequired,
+    })),
+    isFavorite: PropTypes.bool.isRequired,
+    backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
   onLogoClick: PropTypes.func.isRequired,
   onPlayClick: PropTypes.func.isRequired,

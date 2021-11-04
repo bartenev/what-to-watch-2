@@ -1,10 +1,23 @@
 import React, {Fragment} from "react";
 import PropTypes from "prop-types";
 
+const getLevel = (score) => {
+  if (score >= 8) {
+    return `Excellent`;
+  } else if (score >= 6) {
+    return `Good`;
+  } else {
+    return `Bad`;
+  }
+};
+
 const TabOverview = (props) => {
   const {film} = props;
   const {rating, description, director, starring} = film;
-  const {score, level, count} = rating;
+  const {score, count} = rating;
+
+  const level = getLevel(score);
+
   return (
     <Fragment>
       <div className="movie-rating">
@@ -28,6 +41,7 @@ const TabOverview = (props) => {
 
 TabOverview.propTypes = {
   film: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
     genre: PropTypes.string.isRequired,
@@ -37,12 +51,13 @@ TabOverview.propTypes = {
     starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     src: PropTypes.shape({
       poster: PropTypes.string.isRequired,
-      preview: PropTypes.string.isRequired,
+      backgroundImage: PropTypes.string.isRequired,
+      previewImage: PropTypes.string.isRequired,
+      previewVideo: PropTypes.string.isRequired,
       video: PropTypes.string.isRequired,
     }).isRequired,
     rating: PropTypes.shape({
       score: PropTypes.number.isRequired,
-      level: PropTypes.string.isRequired,
       count: PropTypes.number.isRequired,
     }).isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape({
@@ -50,7 +65,9 @@ TabOverview.propTypes = {
       date: PropTypes.instanceOf(Date),
       text: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-    })).isRequired,
+    })),
+    isFavorite: PropTypes.bool.isRequired,
+    backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
 };
 

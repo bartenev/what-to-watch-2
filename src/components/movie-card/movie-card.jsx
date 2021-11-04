@@ -4,12 +4,12 @@ import PropTypes from "prop-types";
 const MovieCard = (props) => {
   const {film, onPlayClick} = props;
   const {title, genre, released, src} = film;
-  const {poster} = src;
+  const {backgroundImage, poster} = src;
 
   return (
     <section className="movie-card">
       <div className="movie-card__bg">
-        <img src={poster} alt={title}/>
+        <img src={backgroundImage} alt={title}/>
       </div>
 
       <h1 className="visually-hidden">WTW</h1>
@@ -76,6 +76,7 @@ const MovieCard = (props) => {
 
 MovieCard.propTypes = {
   film: PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
     genre: PropTypes.string.isRequired,
@@ -85,12 +86,13 @@ MovieCard.propTypes = {
     starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     src: PropTypes.shape({
       poster: PropTypes.string.isRequired,
-      preview: PropTypes.string.isRequired,
+      backgroundImage: PropTypes.string.isRequired,
+      previewImage: PropTypes.string.isRequired,
+      previewVideo: PropTypes.string.isRequired,
       video: PropTypes.string.isRequired,
     }).isRequired,
     rating: PropTypes.shape({
       score: PropTypes.number.isRequired,
-      level: PropTypes.string.isRequired,
       count: PropTypes.number.isRequired,
     }).isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape({
@@ -98,7 +100,9 @@ MovieCard.propTypes = {
       date: PropTypes.instanceOf(Date),
       text: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-    })).isRequired,
+    })),
+    isFavorite: PropTypes.bool.isRequired,
+    backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
   onPlayClick: PropTypes.func.isRequired,
 };
