@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/reducer.js</title>
+    <title>Code coverage report for src/game.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../prettify.css" />
     <link rel="stylesheet" href="../base.css" />
@@ -15,41 +15,41 @@
         }
     </style>
 </head>
-    
+
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../index.html">All files</a> / <a href="index.html">src</a> reducer.js</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">src</a> game.js</h1>
         <div class='clearfix'>
-            
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">26.08% </span>
                 <span class="quiet">Statements</span>
                 <span class='fraction'>6/23</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Branches</span>
                 <span class='fraction'>0/8</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">12.5% </span>
                 <span class="quiet">Functions</span>
                 <span class='fraction'>1/8</span>
             </div>
-        
-            
+
+
             <div class='fl pad1y space-right2'>
                 <span class="strong">27.27% </span>
                 <span class="quiet">Lines</span>
                 <span class='fraction'>6/22</span>
             </div>
-        
-            
+
+
         </div>
         <p class="quiet">
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
@@ -281,7 +281,7 @@ const ActionCreator = {
   }),
 };
 &nbsp;
-const reducer = <span class="fstat-no" title="function not covered" >(s</span>tate = <span class="branch-0 cbranch-no" title="branch not covered" >initialState,</span> action) =&gt; {
+const game = <span class="fstat-no" title="function not covered" >(s</span>tate = <span class="branch-0 cbranch-no" title="branch not covered" >initialState,</span> action) =&gt; {
 <span class="cstat-no" title="statement not covered" >  switch (action.type) {</span>
     case ActionType.CHANGE_GENRE:
 <span class="cstat-no" title="statement not covered" >      return extend(state, {</span>
@@ -311,7 +311,7 @@ const reducer = <span class="fstat-no" title="function not covered" >(s</span>ta
 <span class="cstat-no" title="statement not covered" >  return state;</span>
 };
 &nbsp;
-export {reducer, getFilmsOfSelectedGenre, ActionType, ActionCreator};
+export {game, getFilmsOfSelectedGenre, ActionType, ActionCreator};
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -332,4 +332,3 @@ export {reducer, getFilmsOfSelectedGenre, ActionType, ActionCreator};
         <script src="../block-navigation.js"></script>
     </body>
 </html>
-    

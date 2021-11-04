@@ -15,7 +15,7 @@
         <line num="43" count="1" type="stmt"/>
         <line num="44" count="1" type="stmt"/>
       </file>
-      <file name="reducer.js" path="D:\Git\what-to-watch-2\src\reducer.js">
+      <file name="game.js" path="D:\Git\what-to-watch-2\src\game.js">
         <metrics statements="22" coveredstatements="6" conditionals="8" coveredconditionals="0" methods="8" coveredmethods="1"/>
         <line num="5" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
