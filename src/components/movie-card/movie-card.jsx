@@ -3,8 +3,10 @@ import PropTypes from "prop-types";
 
 const MovieCard = (props) => {
   const {film, onPlayClick} = props;
-  const {title, genre, released, src} = film;
+  const {title, genre, released, src, isFavorite} = film;
   const {backgroundImage, poster} = src;
+
+  const inListSvg = isFavorite ? `#in-list` : `#add`;
 
   return (
     <section className="movie-card">
@@ -62,7 +64,7 @@ const MovieCard = (props) => {
               </button>
               <button className="btn btn--list movie-card__button" type="button">
                 <svg viewBox="0 0 19 20" width="19" height="20">
-                  <use xlinkHref="#add"></use>
+                  <use xlinkHref={inListSvg}></use>
                 </svg>
                 <span>My list</span>
               </button>

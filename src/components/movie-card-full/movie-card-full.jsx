@@ -4,11 +4,13 @@ import Tabs from "../tabs/tabs";
 
 const MovieCardFull = (props) => {
   const {film, onLogoClick, onPlayClick} = props;
-  const {title, genre, released, src} = film;
+  const {title, genre, released, src, backgroundColor, isFavorite} = film;
   const {poster, backgroundImage} = src;
 
+  const inListSvg = isFavorite ? `#in-list` : `#add`;
+
   return (
-    <section className="movie-card movie-card--full">
+    <section className="movie-card movie-card--full" style={{backgroundColor}}>
       <div className="movie-card__hero">
         <div className="movie-card__bg">
           <img src={backgroundImage} alt={title}/>
@@ -63,7 +65,7 @@ const MovieCardFull = (props) => {
               </button>
               <button className="btn btn--list movie-card__button" type="button">
                 <svg viewBox="0 0 19 20" width="19" height="20">
-                  <use xlinkHref="#add"></use>
+                  <use xlinkHref={inListSvg}></use>
                 </svg>
                 <span>My list</span>
               </button>
