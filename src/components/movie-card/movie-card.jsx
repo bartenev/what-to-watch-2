@@ -1,15 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {getAuthorizationStatus} from "../../reducer/user/selectors";
-import {AuthorizationStatus, Operations} from "../../reducer/user/user";
+import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
+import {AuthorizationStatus} from "../../reducer/user/user";
 import {connect} from "react-redux";
 
-const getUserBlock = (authorizationStatus, onUserBlockClick) => {
+const getUserBlock = (authorizationStatus, userInfo, onUserBlockClick) => {
   if (authorizationStatus === AuthorizationStatus.AUTH) {
+    const {avatar} = userInfo;
     return (
       <div className="user-block__avatar">
         <img
-          src="img/avatar.jpg"
+          src={avatar}
           alt="User avatar"
           width="63"
           height="63"
@@ -35,12 +36,12 @@ const getUserBlock = (authorizationStatus, onUserBlockClick) => {
 };
 
 const MovieCard = (props) => {
-  const {film, onPlayClick, authorizationStatus, onUserBlockClick} = props;
+  const {film, onPlayClick, authorizationStatus, onUserBlockClick, userInfo} = props;
   const {title, genre, released, src, isFavorite} = film;
   const {backgroundImage, poster} = src;
 
   const inListSvg = isFavorite ? `#in-list` : `#add`;
-  const userBlock = getUserBlock(authorizationStatus, onUserBlockClick);
+  const userBlock = getUserBlock(authorizationStatus, userInfo, onUserBlockClick);
 
   return (
     <section className="movie-card">
@@ -141,10 +142,12 @@ MovieCard.propTypes = {
   onPlayClick: PropTypes.func.isRequired,
   authorizationStatus: PropTypes.oneOf([AuthorizationStatus.AUTH, AuthorizationStatus.NO_AUTH]).isRequired,
   onUserBlockClick: PropTypes.func.isRequired,
+  userInfo: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   authorizationStatus: getAuthorizationStatus(state),
+  userInfo: getUserInfo(state),
 });
 
 export {MovieCard};

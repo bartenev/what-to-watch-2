@@ -146,7 +146,6 @@ const mapDispatchToProps = (dispatch) => ({
   onFilterClick(genre) {
     dispatch(ActionCreator.changeGenre(genre));
     dispatch(ActionCreator.setDefaultNumberOfShownFilms());
-    dispatch(ActionCreator.getFilms());
   },
   increaseNumberOfShownFilms() {
     dispatch(ActionCreator.increaseNumberOfShownFilms());

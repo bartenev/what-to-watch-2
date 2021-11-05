@@ -57,7 +57,6 @@ class MainScreen extends PureComponent {
             onCloseButtonClick={() => {
               const currentType = this.state.type;
               this.setState({
-                // playing: false,
                 type: this.state.lastType,
                 lastType: currentType,
               });

@@ -6,3 +6,8 @@ export const getAuthorizationStatus = (state) => {
   return state[NAME_SPACE].authorizationStatus;
 };
 
+export const getUserInfo = (state) => {
+  return state[NAME_SPACE].userInfo;
+};
+
+
