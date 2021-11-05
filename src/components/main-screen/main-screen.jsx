@@ -5,12 +5,16 @@ import MovieCard from "../movie-card/movie-card";
 import MovieCardFull from "../movie-card-full/movie-card-full";
 import ListOfFilmsLikeThis from "../list-of-films-like-this/list-of-films-like-this";
 import {ActionCreator} from "../../reducer/app/app";
+import {ActionCreator as ActionCreatorUser, Operations} from "../../reducer/user/user";
 import {connect} from "react-redux";
 import Player from "../player/player";
+import {getAuthorizationStatus} from "../../reducer/user/selectors";
+import {AuthorizationStatus} from "../../reducer/user/user";
+import SignIn from "../sign-in/sign-in";
 
-const Mode = {
-  CLICK: `click`,
-  HOVER: `hover`
+const ScreenType = {
+  FULL_FILM_CARD: `FULL_FILM_CARD`,
+  AUTHORIZATION: `AUTHORIZATION`,
 };
 
 class MainScreen extends PureComponent {
@@ -19,12 +23,32 @@ class MainScreen extends PureComponent {
 
     this.state = {
       film: props.films[0],
-      mode: null,
+      type: null,
+      lastType: null,
       playing: false,
     };
   }
 
   render() {
+    const {authorizationStatus, checkAuth} = this.props;
+
+    checkAuth();
+
+    if (this.state.type === ScreenType.AUTHORIZATION ||
+      authorizationStatus === AuthorizationStatus.NO_AUTH
+    ) {
+      return (
+        <SignIn
+          onCloseButtonClick={() => {
+            this.setState({
+              type: this.state.lastType,
+              lastType: null,
+            });
+          }}
+        />
+      );
+    }
+
     if (this.state.playing) {
       return (
         <Player
@@ -65,7 +89,7 @@ class MainScreen extends PureComponent {
   }
 
   _getMovieCard(resetFilter, films) {
-    if (this.state.mode === Mode.CLICK) {
+    if (this.state.type === ScreenType.FULL_FILM_CARD) {
       return (
         <MovieCardFull
           film={this.state.film}
@@ -73,13 +97,19 @@ class MainScreen extends PureComponent {
             resetFilter();
             this.setState({
               film: films[0],
-              mode: null,
+              type: null,
               playing: false,
             });
           }}
           onPlayClick={() => {
             this.setState({
               playing: true,
+            });
+          }}
+          onUserBlockClick={() => {
+            this.setState({
+              lastType: this.state.type,
+              type: ScreenType.AUTHORIZATION,
             });
           }}
         />
@@ -93,13 +123,19 @@ class MainScreen extends PureComponent {
               playing: true,
             });
           }}
+          onUserBlockClick={() => {
+            this.setState({
+              lastType: this.state.type,
+              type: ScreenType.AUTHORIZATION,
+            });
+          }}
         />
       );
     }
   }
 
   _getListOfFilms(films, filteredFilms) {
-    if (this.state.mode === Mode.CLICK) {
+    if (this.state.type === ScreenType.FULL_FILM_CARD) {
       return (
         <ListOfFilmsLikeThis
           currentFilm={this.state.film}
@@ -118,18 +154,11 @@ class MainScreen extends PureComponent {
       <ListOfFilms
         films={films}
         filteredFilms={filteredFilms}
-        onHover={ () => {}
-          // (film) => {
-          // this.setState({
-          // hoveredFilm: film,
-          // film,
-          // mode: Mode.HOVER,
-          // });
-        } // }
+        onHover={ () => {}}
         onClick={(film) => {
           this.setState({
             film,
-            mode: Mode.CLICK,
+            type: ScreenType.FULL_FILM_CARD,
           });
         }}
       />
@@ -197,14 +226,23 @@ MainScreen.propTypes = {
     backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
   resetFilter: PropTypes.func.isRequired,
+  checkAuth: PropTypes.func.isRequired,
+  authorizationStatus: PropTypes.oneOf([AuthorizationStatus.AUTH, AuthorizationStatus.NO_AUTH]),
 };
+
+const mapStateToProps = (state) => ({
+  authorizationStatus: getAuthorizationStatus(state),
+});
 
 const mapDispatchToProps = (dispatch) => ({
   resetFilter() {
     dispatch(ActionCreator.resetFilter());
-  }
+  },
+  checkAuth() {
+    dispatch(Operations.checkAuth());
+  },
 });
 
 export {MainScreen};
 
-export default connect(null, mapDispatchToProps)(MainScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(MainScreen);

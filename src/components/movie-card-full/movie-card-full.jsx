@@ -1,13 +1,48 @@
 import React from "react";
 import PropTypes from "prop-types";
 import Tabs from "../tabs/tabs";
+import {AuthorizationStatus, Operations} from "../../reducer/user/user";
+import {getAuthorizationStatus} from "../../reducer/user/selectors";
+import {connect} from "react-redux";
+import {MovieCard} from "../movie-card/movie-card";
+
+const getUserBlock = (authorizationStatus, onUserBlockClick) => {
+  if (authorizationStatus === AuthorizationStatus.AUTH) {
+    return (
+      <div className="user-block__avatar">
+        <img
+          src="img/avatar.jpg"
+          alt="User avatar"
+          width="63"
+          height="63"
+          onClick={(evt) => {
+            evt.preventDefault();
+            onUserBlockClick();
+          }}
+        />
+      </div>
+    );
+  } else {
+    return (
+      <a
+        href="sign-in.html"
+        className="user-block__link"
+        onClick={(evt) => {
+          evt.preventDefault();
+          onUserBlockClick();
+        }}
+      >Sign in</a>
+    );
+  }
+};
 
 const MovieCardFull = (props) => {
-  const {film, onLogoClick, onPlayClick} = props;
+  const {film, onLogoClick, onPlayClick, authorizationStatus, onUserBlockClick} = props;
   const {title, genre, released, src, backgroundColor, isFavorite} = film;
   const {poster, backgroundImage} = src;
 
   const inListSvg = isFavorite ? `#in-list` : `#add`;
+  const userBlock = getUserBlock(authorizationStatus, onUserBlockClick);
 
   return (
     <section className="movie-card movie-card--full" style={{backgroundColor}}>
@@ -35,9 +70,7 @@ const MovieCardFull = (props) => {
           </div>
 
           <div className="user-block">
-            <div className="user-block__avatar">
-              <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-            </div>
+            {userBlock}
           </div>
         </header>
 
@@ -122,6 +155,15 @@ MovieCardFull.propTypes = {
   }).isRequired,
   onLogoClick: PropTypes.func.isRequired,
   onPlayClick: PropTypes.func.isRequired,
+  authorizationStatus: PropTypes.oneOf([AuthorizationStatus.AUTH, AuthorizationStatus.NO_AUTH]).isRequired,
+  onUserBlockClick: PropTypes.func.isRequired,
 };
 
-export default MovieCardFull;
+const mapStateToProps = (state) => ({
+  authorizationStatus: getAuthorizationStatus(state),
+});
+
+export {MovieCardFull};
+
+export default connect(mapStateToProps, null)(MovieCardFull);
+
