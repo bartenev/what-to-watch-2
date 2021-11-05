@@ -1,5 +1,4 @@
 import {extend, Genres} from "../../const";
-// import movies from "../../mocks/films";
 import {SHOW_MORE_BUTTON_INITIAL_VALUE, SHOW_MORE_BUTTON_STEP} from "../../const";
 
 const initialState = {
@@ -60,9 +59,7 @@ const Operations = {
   loadFilms: (dispatch, _getState, api) => {
     return api.get(`/films`)
       .then((response) => {
-        console.log(response.data);
         const films = response.data.map((film) => adapter(film));
-        console.log(films);
         dispatch(ActionCreator.loadFilms(films));
       });
   }

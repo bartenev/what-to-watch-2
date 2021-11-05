@@ -41,4 +41,4 @@ export const extend = (a, b) => {
 };
 
 export const SHOW_MORE_BUTTON_INITIAL_VALUE = 8;
-export const SHOW_MORE_BUTTON_STEP = 20;
+export const SHOW_MORE_BUTTON_STEP = 8;
