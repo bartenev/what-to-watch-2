@@ -5,7 +5,7 @@ import MovieCard from "../movie-card/movie-card";
 import MovieCardFull from "../movie-card-full/movie-card-full";
 import ListOfFilmsLikeThis from "../list-of-films-like-this/list-of-films-like-this";
 import {ActionCreator} from "../../reducer/app/app";
-import {ActionCreator as ActionCreatorUser, Operations} from "../../reducer/user/user";
+import {Operations} from "../../reducer/user/user";
 import {connect} from "react-redux";
 import Player from "../player/player";
 import {getAuthorizationStatus} from "../../reducer/user/selectors";
@@ -13,8 +13,11 @@ import {AuthorizationStatus} from "../../reducer/user/user";
 import SignIn from "../sign-in/sign-in";
 
 const ScreenType = {
-  FULL_FILM_CARD: `FULL_FILM_CARD`,
+  MAIN: `MAIN`,
+  FILM_PAGE: `FILM_PAGE`,
   AUTHORIZATION: `AUTHORIZATION`,
+  PLAYER: `PLAYER`,
+  MY_LIST: `MY_LIST`,
 };
 
 class MainScreen extends PureComponent {
@@ -23,73 +26,74 @@ class MainScreen extends PureComponent {
 
     this.state = {
       film: props.films[0],
-      type: null,
+      type: ScreenType.MAIN,
       lastType: null,
-      playing: false,
     };
   }
 
   render() {
-    const {authorizationStatus, checkAuth} = this.props;
-
+    const {checkAuth} = this.props;
     checkAuth();
 
-    if (this.state.type === ScreenType.AUTHORIZATION ||
-      authorizationStatus === AuthorizationStatus.NO_AUTH
-    ) {
-      return (
-        <SignIn
-          onCloseButtonClick={() => {
-            this.setState({
-              type: this.state.lastType,
-              lastType: null,
-            });
-          }}
-        />
-      );
+    switch (this.state.type) {
+
+      case ScreenType.AUTHORIZATION:
+        return (
+          <SignIn
+            onCloseButtonClick={() => {
+              const currentType = this.state.type;
+              this.setState({
+                type: this.state.lastType,
+                lastType: currentType,
+              });
+            }}
+          />
+        );
+
+      case ScreenType.PLAYER:
+        return (
+          <Player
+            film={this.state.film}
+            onCloseButtonClick={() => {
+              const currentType = this.state.type;
+              this.setState({
+                // playing: false,
+                type: this.state.lastType,
+                lastType: currentType,
+              });
+            }}
+          />
+        );
     }
 
-    if (this.state.playing) {
-      return (
-        <Player
-          film={this.state.film}
-          onCloseButtonClick={() => {
-            this.setState({
-              playing: false,
-            });
-          }}
-        />
-      );
-    } else {
-      const {films, filteredFilms, resetFilter} = this.props;
-      const movieCard = this._getMovieCard(resetFilter, filteredFilms);
-      const listOfFilms = this._getListOfFilms(films, filteredFilms);
+    const {films, filteredFilms, resetFilter} = this.props;
+    const movieCard = this._getMovieCard(resetFilter, filteredFilms);
+    const listOfFilms = this._getListOfFilms(films, filteredFilms);
 
-      return (
-        <Fragment>
-          {movieCard}
-          <div className="page-content">
-            {listOfFilms}
-            <footer className="page-footer">
-              <div className="logo">
-                <a className="logo__link logo__link--light">
-                  <span className="logo__letter logo__letter--1">W</span>
-                  <span className="logo__letter logo__letter--2">T</span>
-                  <span className="logo__letter logo__letter--3">W</span>
-                </a>
-              </div>
-              <div className="copyright">
-                <p>© 2019 What to watch Ltd.</p>
-              </div>
-            </footer>
-          </div>
-        </Fragment>
-      );
-    }
+    return (
+      <Fragment>
+        {movieCard}
+        <div className="page-content">
+          {listOfFilms}
+          <footer className="page-footer">
+            <div className="logo">
+              <a className="logo__link logo__link--light">
+                <span className="logo__letter logo__letter--1">W</span>
+                <span className="logo__letter logo__letter--2">T</span>
+                <span className="logo__letter logo__letter--3">W</span>
+              </a>
+            </div>
+            <div className="copyright">
+              <p>© 2019 What to watch Ltd.</p>
+            </div>
+          </footer>
+        </div>
+      </Fragment>
+    );
   }
 
   _getMovieCard(resetFilter, films) {
-    if (this.state.type === ScreenType.FULL_FILM_CARD) {
+    if (this.state.type === ScreenType.FILM_PAGE) {
       return (
         <MovieCardFull
           film={this.state.film}
@@ -97,13 +101,14 @@ class MainScreen extends PureComponent {
             resetFilter();
             this.setState({
               film: films[0],
-              type: null,
-              playing: false,
+              lastType: this.state.type,
+              type: ScreenType.MAIN,
             });
           }}
           onPlayClick={() => {
             this.setState({
-              playing: true,
+              lastType: this.state.type,
+              type: ScreenType.PLAYER,
             });
           }}
           onUserBlockClick={() => {
@@ -120,7 +125,8 @@ class MainScreen extends PureComponent {
           film={this.state.film}
           onPlayClick={() => {
             this.setState({
-              playing: true,
+              lastType: this.state.type,
+              type: ScreenType.PLAYER,
             });
           }}
           onUserBlockClick={() => {
@@ -135,7 +141,7 @@ class MainScreen extends PureComponent {
   }
 
   _getListOfFilms(films, filteredFilms) {
-    if (this.state.type === ScreenType.FULL_FILM_CARD) {
+    if (this.state.type === ScreenType.FILM_PAGE) {
       return (
         <ListOfFilmsLikeThis
           currentFilm={this.state.film}
@@ -144,6 +150,8 @@ class MainScreen extends PureComponent {
           onClick={(film) => {
             this.setState({
               film,
+              lastType: this.state.type,
+              type: ScreenType.FILM_PAGE,
             });
           }}
         />
@@ -158,7 +166,8 @@ class MainScreen extends PureComponent {
         onClick={(film) => {
           this.setState({
             film,
-            type: ScreenType.FULL_FILM_CARD,
+            lastType: this.state.type,
+            type: ScreenType.FILM_PAGE,
           });
         }}
       />
