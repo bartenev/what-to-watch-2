@@ -16,6 +16,10 @@ export const getGenre = (state) => {
   return state[NAME_SPACE].genre;
 };
 
+export const getComments = (state) => {
+  return state[NAME_SPACE].comments;
+};
+
 export const getFilteredFilms = createSelector(
     getFilms,
     getGenre,

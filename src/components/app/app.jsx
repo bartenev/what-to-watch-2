@@ -97,20 +97,22 @@ const getListOfFilms = (props) => {
 };
 
 const App = (props) => {
-  const {films, film, setFilm, screenType, setScreenType, setLastScreenType} = props;
+  const {films, film, setFilm, screenType, setScreenType, setLastScreenType, authorizationStatus} = props;
 
   if (!films.length) {
     return null;
   }
 
   useEffect(() => {
-    if (!film) {
-      setFilm(films[0]);
-    }
-  });
+    setFilm(films[0]);
+  }, []);
 
   if (!film) {
     return null;
+  }
+
+  if (screenType === ScreenType.ADD_REVIEW && authorizationStatus === AuthorizationStatus.NO_AUTH) {
+    setScreenType(ScreenType.AUTHORIZATION);
   }
 
   switch (screenType) {

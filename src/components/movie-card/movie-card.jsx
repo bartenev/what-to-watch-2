@@ -4,7 +4,7 @@ import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors"
 import {AuthorizationStatus} from "../../reducer/user/user";
 import {connect} from "react-redux";
 import Tabs from "../tabs/tabs";
-import {AddReview} from "../add-review/add-review";
+import AddReview from "../add-review/add-review";
 
 export const TypeOfMovieCardScreen = {
   MAIN: `MAIN`,
@@ -190,14 +190,18 @@ const MovieCard = (props) => {
                     </svg>
                     <span>My list</span>
                   </button>
-                  <a
-                    href="add-review.html"
-                    className="btn movie-card__button"
-                    onClick={(evt) => {
-                      evt.preventDefault();
-                      onAddReviewClick();
-                    }}
-                  >Add review</a>
+                  {
+                    authorizationStatus === AuthorizationStatus.AUTH ?
+                      <a
+                        href="add-review.html"
+                        className="btn movie-card__button"
+                        onClick={(evt) => {
+                          evt.preventDefault();
+                          onAddReviewClick();
+                        }}
+                      >Add review</a>
+                      : null
+                  }
                 </div>
               </div>
             </div>
@@ -260,7 +264,9 @@ const MovieCard = (props) => {
             </div>
           </div>
 
-          <AddReview />
+          <AddReview
+            film={film}
+          />
 
         </section>
       );

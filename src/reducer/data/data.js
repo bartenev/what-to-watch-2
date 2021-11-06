@@ -1,10 +1,12 @@
 import {extend, Genres} from "../../const";
 import {SHOW_MORE_BUTTON_INITIAL_VALUE, SHOW_MORE_BUTTON_STEP} from "../../const";
+import {ActionCreator as AppActionCreator} from "../app/app";
 
 const initialState = {
   genre: Genres.ALL_GENRES,
   films: [],
   numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
+  comments: [],
 };
 
 const ActionType = {
@@ -14,6 +16,8 @@ const ActionType = {
   SET_DEFAULT_NUMBER_OF_SHOWN_FILMS: `SET_DEFAULT_NUMBER_OF_SHOWN_FILMS`,
   LOAD_FILMS: `LOAD_FILMS`,
   LOAD_COMMENTS: `LOAD_COMMENTS`,
+  SEND_COMMENT: `SEND_COMMENT`,
+  RESET_COMMENTS: `RESET_COMMENTS`,
 };
 
 const filmAdapter = (film) => {
@@ -43,6 +47,17 @@ const filmAdapter = (film) => {
   });
 };
 
+const commentAdapter = (data) => ({
+  user: {
+    id: data.user.id,
+    name: data.user.name,
+  },
+  date: new Date(data.date),
+  text: data.comment,
+  rating: data.rating,
+  id: data.id,
+});
+
 const Operations = {
   loadFilms: (dispatch, _getState, api) => {
     return api.get(`/films`)
@@ -50,7 +65,25 @@ const Operations = {
         const films = response.data.map((film) => filmAdapter(film));
         dispatch(ActionCreator.loadFilms(films));
       });
-  }
+  },
+
+  loadComments: (id) => (dispatch, _getState, api) => {
+    return api.get(`/comments/${id}`)
+      .then((response) => {
+        const comments = response.data.map((comment) => commentAdapter(comment));
+        dispatch(ActionCreator.loadComments(comments));
+      });
+  },
+
+  sendComment: (comment, id) => (dispatch, _getState, api) => {
+    return api.post(`/comments/${id}`, {
+      comment: comment.text,
+      rating: comment.rating,
+    })
+      .then(() => {
+        dispatch(AppActionCreator.setLastScreenType());
+      });
+  },
 };
 
 const ActionCreator = {
@@ -81,6 +114,10 @@ const ActionCreator = {
   resetFilter: () => ({
     type: ActionType.RESET_FILTER,
   }),
+
+  resetComments: () => ({
+    type: ActionType.RESET_COMMENTS,
+  }),
 };
 
 const reducer = (state = initialState, action) => {
@@ -97,7 +134,12 @@ const reducer = (state = initialState, action) => {
 
     case ActionType.LOAD_COMMENTS:
       return extend(state, {
-        films: action.payload,
+        comments: action.payload,
+      });
+
+    case ActionType.SEND_COMMENT:
+      return extend(state, {
+        // comments: action.payload,
       });
 
     case ActionType.INCREASE_NUMBER_OF_SHOWN_FILMS:
@@ -114,6 +156,11 @@ const reducer = (state = initialState, action) => {
       return extend(state, {
         genre: initialState.genre,
         numberOfShownFilms: initialState.numberOfShownFilms,
+      });
+
+    case ActionType.RESET_COMMENTS:
+      return extend(state, {
+        comments: [],
       });
   }
 

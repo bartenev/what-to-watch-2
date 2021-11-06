@@ -1,15 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import PropTypes from "prop-types";
 import {MONTHS} from "../../const";
+import {connect} from "react-redux";
+import {ActionCreator, Operations} from "../../reducer/data/data";
+import {getComments} from "../../reducer/data/selectors";
 
 const getTwoDigitNumber = (number) => {
   return number < 10 ? `0${number}` : number;
 };
 
-const getReviews = (reviews) => {
+const getReviews = (comments) => {
   return (
-    reviews.map((review, i) => {
-      const {name, date, text, rating} = review;
+    comments.map((comment) => {
+      const {user, date, text, rating, id} = comment;
+      const {name} = user;
       const year = date.getFullYear();
       const month = date.getMonth();
       const day = date.getDate();
@@ -17,7 +21,7 @@ const getReviews = (reviews) => {
       const dateTime = `${year}-${getTwoDigitNumber(month + 1)}-${getTwoDigitNumber(day)}`;
 
       return (
-        <div key={`${name}-${i}`} className="review">
+        <div key={`${name}-${id}`} className="review">
           <blockquote className="review__quote">
             <p className="review__text">{text}</p>
 
@@ -34,19 +38,26 @@ const getReviews = (reviews) => {
 };
 
 const TabReviews = (props) => {
-  const {film} = props;
-  const {reviews} = film;
+  const {film, loadComments, comments, resetComments} = props;
 
-  const firstCol = Math.ceil(reviews.length / 2);
+  useEffect(() => {
+    loadComments(film.id);
+
+    return () => {
+      resetComments();
+    };
+  }, []);
+
+  const firstCol = Math.ceil(comments.length / 2);
 
   return (
     <div className="movie-card__reviews movie-card__row">
       <div className="movie-card__reviews-col">
-        {getReviews(reviews.slice(0, firstCol))}
+        {getReviews(comments.slice(0, firstCol))}
       </div>
 
       <div className="movie-card__reviews-col">
-        {getReviews(reviews.slice(firstCol))}
+        {getReviews(comments.slice(firstCol))}
       </div>
     </div>
   );
@@ -73,15 +84,36 @@ TabReviews.propTypes = {
       score: PropTypes.number.isRequired,
       count: PropTypes.number.isRequired,
     }).isRequired,
-    reviews: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      date: PropTypes.instanceOf(Date),
-      text: PropTypes.string.isRequired,
-      rating: PropTypes.number.isRequired,
-    })),
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
+  loadComments: PropTypes.func.isRequired,
+  comments: PropTypes.arrayOf(PropTypes.shape({
+    user: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+    }),
+    date: PropTypes.instanceOf(Date),
+    text: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+    id: PropTypes.number.isRequired,
+  })),
+  resetComments: PropTypes.func.isRequired,
 };
 
-export default TabReviews;
+const mapStateToProps = (state) => ({
+  comments: getComments(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  loadComments(id) {
+    dispatch(Operations.loadComments(id));
+  },
+  resetComments() {
+    dispatch(ActionCreator.resetComments());
+  }
+});
+
+export {TabReviews};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TabReviews);
