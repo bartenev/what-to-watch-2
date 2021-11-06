@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {getUserInfo} from "../../reducer/user/selectors";
+
 import {connect} from "react-redux";
 
 const AddReview = (props) => {

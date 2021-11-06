@@ -2,7 +2,7 @@ import {
   ActionCreator, ActionType,
   getFilmsOfSelectedGenre,
   reducer
-} from "./app";
+} from "./data";
 import {Genres, SHOW_MORE_BUTTON_INITIAL_VALUE, SHOW_MORE_BUTTON_STEP} from "../../const";
 import films from "../../mocks/films";
 

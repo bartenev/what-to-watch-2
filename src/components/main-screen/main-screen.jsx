@@ -2,34 +2,20 @@ import React, {Fragment, PureComponent} from "react";
 import PropTypes from "prop-types";
 import ListOfFilms from "../list-of-films/list-of-films";
 import ListOfFilmsLikeThis from "../list-of-films-like-this/list-of-films-like-this";
-import {ActionCreator} from "../../reducer/app/app";
-import {Operations} from "../../reducer/user/user";
+import {ActionCreator as DataActionCreator} from "../../reducer/data/data";
+import {Operations, AuthorizationStatus} from "../../reducer/user/user";
+import {ActionCreator as AppActionCreator, ScreenType} from "../../reducer/app/app";
 import {connect} from "react-redux";
 import Player from "../player/player";
 import {getAuthorizationStatus} from "../../reducer/user/selectors";
-import {AuthorizationStatus} from "../../reducer/user/user";
 import SignIn from "../sign-in/sign-in";
 import MovieCard from "../movie-card/movie-card";
 import {TypeOfMovieCardScreen} from "../movie-card/movie-card";
-
-const ScreenType = {
-  MAIN: `MAIN`,
-  FILM_PAGE: `FILM_PAGE`,
-  AUTHORIZATION: `AUTHORIZATION`,
-  PLAYER: `PLAYER`,
-  MY_LIST: `MY_LIST`,
-  ADD_REVIEW: `ADD_REVIEW`,
-};
+import {getFilm, getScreenType} from "../../reducer/app/selectors";
 
 class MainScreen extends PureComponent {
   constructor(props) {
     super(props);
-
-    this.state = {
-      film: props.films[0],
-      type: ScreenType.MAIN,
-      lastType: null,
-    };
 
     this._onLogoClick = this._onLogoClick.bind(this);
     this._onUserBlockClick = this._onUserBlockClick.bind(this);
@@ -37,11 +23,9 @@ class MainScreen extends PureComponent {
   }
 
   render() {
-    const {films, filteredFilms, checkAuth} = this.props;
+    const {films, filteredFilms, film, setFilm, screenType, setScreenType, setLastScreenType, checkAuth} = this.props;
 
-    checkAuth();
-
-    switch (this.state.type) {
+    switch (screenType) {
 
       case ScreenType.AUTHORIZATION:
         return (
@@ -53,13 +37,9 @@ class MainScreen extends PureComponent {
       case ScreenType.PLAYER:
         return (
           <Player
-            film={this.state.film}
+            film={film}
             onCloseButtonClick={() => {
-              const currentType = this.state.type;
-              this.setState({
-                type: this.state.lastType,
-                lastType: currentType,
-              });
+              setLastScreenType();
             }}
           />
         );
@@ -68,15 +48,11 @@ class MainScreen extends PureComponent {
         return (
           <MovieCard
             typeOfScreen={TypeOfMovieCardScreen.REVIEW}
-            film={this.state.film}
+            film={film}
             onLogoClick={this._onLogoClick}
             onUserBlockClick={this._onUserBlockClick}
             onFilmClick={() => {
-              const currentType = this.state.type;
-              this.setState({
-                type: this.state.lastType,
-                lastType: currentType,
-              });
+              setLastScreenType();
             }}
           />
         );
@@ -108,43 +84,34 @@ class MainScreen extends PureComponent {
   }
 
   _onLogoClick() {
-    const {resetFilter, films} = this.props;
+    const {resetFilter, films, setScreenType, setFilm} = this.props;
     resetFilter();
-    this.setState({
-      film: films[0],
-      lastType: this.state.type,
-      type: ScreenType.MAIN,
-    });
+    setFilm(films[0]);
+    setScreenType(ScreenType.MAIN);
   }
 
   _onUserBlockClick() {
-    this.setState({
-      lastType: this.state.type,
-      type: ScreenType.AUTHORIZATION,
-    });
+    const {setScreenType} = this.props;
+    setScreenType(ScreenType.AUTHORIZATION);
   }
 
   _onPlayClick() {
-    this.setState({
-      lastType: this.state.type,
-      type: ScreenType.PLAYER,
-    });
+    const {setScreenType} = this.props;
+    setScreenType(ScreenType.PLAYER);
   }
 
   _getMovieCard() {
-    if (this.state.type === ScreenType.FILM_PAGE) {
+    const {screenType, film, setScreenType} = this.props;
+    if (screenType === ScreenType.FILM_PAGE) {
       return (
         <MovieCard
           typeOfScreen={TypeOfMovieCardScreen.FULL}
-          film={this.state.film}
+          film={film}
           onLogoClick={this._onLogoClick}
           onPlayClick={this._onPlayClick}
           onUserBlockClick={this._onUserBlockClick}
           onAddReviewClick={() => {
-            this.setState({
-              lastType: this.state.type,
-              type: ScreenType.ADD_REVIEW,
-            });
+            setScreenType(ScreenType.ADD_REVIEW);
           }}
         />
       );
@@ -152,7 +119,7 @@ class MainScreen extends PureComponent {
       return (
         <MovieCard
           typeOfScreen={TypeOfMovieCardScreen.MAIN}
-          film={this.state.film}
+          film={film}
           onPlayClick={this._onPlayClick}
           onUserBlockClick={this._onUserBlockClick}
         />
@@ -161,18 +128,17 @@ class MainScreen extends PureComponent {
   }
 
   _getListOfFilms(films, filteredFilms) {
-    if (this.state.type === ScreenType.FILM_PAGE) {
+    const {screenType, setScreenType, film, setFilm} = this.props;
+
+    if (screenType === ScreenType.FILM_PAGE) {
       return (
         <ListOfFilmsLikeThis
-          currentFilm={this.state.film}
+          currentFilm={film}
           films={films}
           onHover={() => {}}
-          onClick={(film) => {
-            this.setState({
-              film,
-              lastType: this.state.type,
-              type: ScreenType.FILM_PAGE,
-            });
+          onClick={(newFilm) => {
+            setFilm(newFilm);
+            setScreenType(ScreenType.FILM_PAGE);
           }}
         />
       );
@@ -183,12 +149,9 @@ class MainScreen extends PureComponent {
         films={films}
         filteredFilms={filteredFilms}
         onHover={ () => {}}
-        onClick={(film) => {
-          this.setState({
-            film,
-            lastType: this.state.type,
-            type: ScreenType.FILM_PAGE,
-          });
+        onClick={(newFilm) => {
+          setFilm(newFilm);
+          setScreenType(ScreenType.FILM_PAGE);
         }}
       />
     );
@@ -254,22 +217,38 @@ MainScreen.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
+  film: PropTypes.object,
+  screenType: PropTypes.oneOf(Object.values(ScreenType)),
   resetFilter: PropTypes.func.isRequired,
   checkAuth: PropTypes.func.isRequired,
   authorizationStatus: PropTypes.oneOf([AuthorizationStatus.AUTH, AuthorizationStatus.NO_AUTH]),
+  setScreenType: PropTypes.func.isRequired,
+  setLastScreenType: PropTypes.func.isRequired,
+  setFilm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   authorizationStatus: getAuthorizationStatus(state),
+  film: getFilm(state),
+  screenType: getScreenType(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   resetFilter() {
-    dispatch(ActionCreator.resetFilter());
+    dispatch(DataActionCreator.resetFilter());
   },
   checkAuth() {
     dispatch(Operations.checkAuth());
   },
+  setScreenType(screenType) {
+    dispatch(AppActionCreator.setScreenType(screenType));
+  },
+  setLastScreenType() {
+    dispatch(AppActionCreator.setLastScreenType());
+  },
+  setFilm(film) {
+    dispatch(AppActionCreator.setFilm(film));
+  }
 });
 
 export {MainScreen};

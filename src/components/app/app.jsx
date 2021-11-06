@@ -1,13 +1,25 @@
-import React from "react";
+import React, {useEffect} from "react";
 import MainScreen from "../main-screen/main-screen";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
-import {getFilms, getFilteredFilms} from "../../reducer/app/selectors";
+import {getFilms, getFilteredFilms} from "../../reducer/data/selectors";
+import {getFilm} from "../../reducer/app/selectors";
+import {ActionCreator as AppActionCreator} from "../../reducer/app/app";
 
 const App = (props) => {
-  const {films, filteredFilms} = props;
+  const {films, film, filteredFilms, setFilm} = props;
 
   if (!films.length) {
+    return null;
+  }
+
+  useEffect(() => {
+    if (!film) {
+      setFilm(films[0]);
+    }
+  });
+
+  if (!film) {
     return null;
   }
 
@@ -76,13 +88,22 @@ App.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
+  film: PropTypes.object,
+  setFilm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   films: getFilms(state),
   filteredFilms: getFilteredFilms(state),
+  film: getFilm(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setFilm(film) {
+    dispatch(AppActionCreator.setFilm(film));
+  }
 });
 
 export {App};
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
