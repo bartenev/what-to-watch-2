@@ -1,8 +1,6 @@
 import React, {Fragment, PureComponent} from "react";
 import PropTypes from "prop-types";
 import ListOfFilms from "../list-of-films/list-of-films";
-import MovieCard from "../movie-card/movie-card";
-import MovieCardFull from "../movie-card-full/movie-card-full";
 import ListOfFilmsLikeThis from "../list-of-films-like-this/list-of-films-like-this";
 import {ActionCreator} from "../../reducer/app/app";
 import {Operations} from "../../reducer/user/user";
@@ -11,6 +9,8 @@ import Player from "../player/player";
 import {getAuthorizationStatus} from "../../reducer/user/selectors";
 import {AuthorizationStatus} from "../../reducer/user/user";
 import SignIn from "../sign-in/sign-in";
+import MovieCard from "../movie-card/movie-card";
+import {TypeOfMovieCardScreen} from "../movie-card/movie-card";
 
 const ScreenType = {
   MAIN: `MAIN`,
@@ -18,6 +18,7 @@ const ScreenType = {
   AUTHORIZATION: `AUTHORIZATION`,
   PLAYER: `PLAYER`,
   MY_LIST: `MY_LIST`,
+  ADD_REVIEW: `ADD_REVIEW`,
 };
 
 class MainScreen extends PureComponent {
@@ -29,10 +30,15 @@ class MainScreen extends PureComponent {
       type: ScreenType.MAIN,
       lastType: null,
     };
+
+    this._onLogoClick = this._onLogoClick.bind(this);
+    this._onUserBlockClick = this._onUserBlockClick.bind(this);
+    this._onPlayClick = this._onPlayClick.bind(this);
   }
 
   render() {
-    const {checkAuth} = this.props;
+    const {films, filteredFilms, checkAuth} = this.props;
+
     checkAuth();
 
     switch (this.state.type) {
@@ -40,13 +46,7 @@ class MainScreen extends PureComponent {
       case ScreenType.AUTHORIZATION:
         return (
           <SignIn
-            onCloseButtonClick={() => {
-              const currentType = this.state.type;
-              this.setState({
-                type: this.state.lastType,
-                lastType: currentType,
-              });
-            }}
+            onLogoClick={this._onLogoClick}
           />
         );
 
@@ -63,10 +63,26 @@ class MainScreen extends PureComponent {
             }}
           />
         );
+
+      case ScreenType.ADD_REVIEW:
+        return (
+          <MovieCard
+            typeOfScreen={TypeOfMovieCardScreen.REVIEW}
+            film={this.state.film}
+            onLogoClick={this._onLogoClick}
+            onUserBlockClick={this._onUserBlockClick}
+            onFilmClick={() => {
+              const currentType = this.state.type;
+              this.setState({
+                type: this.state.lastType,
+                lastType: currentType,
+              });
+            }}
+          />
+        );
     }
 
-    const {films, filteredFilms, resetFilter} = this.props;
-    const movieCard = this._getMovieCard(resetFilter, filteredFilms);
+    const movieCard = this._getMovieCard();
     const listOfFilms = this._getListOfFilms(films, filteredFilms);
 
     return (
@@ -91,29 +107,43 @@ class MainScreen extends PureComponent {
     );
   }
 
-  _getMovieCard(resetFilter, films) {
+  _onLogoClick() {
+    const {resetFilter, films} = this.props;
+    resetFilter();
+    this.setState({
+      film: films[0],
+      lastType: this.state.type,
+      type: ScreenType.MAIN,
+    });
+  }
+
+  _onUserBlockClick() {
+    this.setState({
+      lastType: this.state.type,
+      type: ScreenType.AUTHORIZATION,
+    });
+  }
+
+  _onPlayClick() {
+    this.setState({
+      lastType: this.state.type,
+      type: ScreenType.PLAYER,
+    });
+  }
+
+  _getMovieCard() {
     if (this.state.type === ScreenType.FILM_PAGE) {
       return (
-        <MovieCardFull
+        <MovieCard
+          typeOfScreen={TypeOfMovieCardScreen.FULL}
           film={this.state.film}
-          onLogoClick={() => {
-            resetFilter();
-            this.setState({
-              film: films[0],
-              lastType: this.state.type,
-              type: ScreenType.MAIN,
-            });
-          }}
-          onPlayClick={() => {
+          onLogoClick={this._onLogoClick}
+          onPlayClick={this._onPlayClick}
+          onUserBlockClick={this._onUserBlockClick}
+          onAddReviewClick={() => {
             this.setState({
               lastType: this.state.type,
-              type: ScreenType.PLAYER,
-            });
-          }}
-          onUserBlockClick={() => {
-            this.setState({
-              lastType: this.state.type,
-              type: ScreenType.AUTHORIZATION,
+              type: ScreenType.ADD_REVIEW,
             });
           }}
         />
@@ -121,19 +151,10 @@ class MainScreen extends PureComponent {
     } else {
       return (
         <MovieCard
+          typeOfScreen={TypeOfMovieCardScreen.MAIN}
           film={this.state.film}
-          onPlayClick={() => {
-            this.setState({
-              lastType: this.state.type,
-              type: ScreenType.PLAYER,
-            });
-          }}
-          onUserBlockClick={() => {
-            this.setState({
-              lastType: this.state.type,
-              type: ScreenType.AUTHORIZATION,
-            });
-          }}
+          onPlayClick={this._onPlayClick}
+          onUserBlockClick={this._onUserBlockClick}
         />
       );
     }

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import {connect} from "react-redux";
 
 const SignIn = (props) => {
-  const {logIn, onCloseButtonClick} = props;
+  const {logIn, onLogoClick} = props;
   const emailRef = createRef();
   const passwordRef = createRef();
 
@@ -16,7 +16,7 @@ const SignIn = (props) => {
             className="logo__link"
             onClick={(evt) => {
               evt.preventDefault();
-              onCloseButtonClick();
+              onLogoClick();
             }}
           >
             <span className="logo__letter logo__letter--1">W</span>
@@ -77,7 +77,7 @@ const SignIn = (props) => {
 
 SignIn.propTypes = {
   logIn: PropTypes.func.isRequired,
-  onCloseButtonClick: PropTypes.func.isRequired,
+  onLogoClick: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
