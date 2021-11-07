@@ -6,7 +6,6 @@ import {getFilms, getFilteredFilms} from "../../reducer/app/selectors";
 
 const App = (props) => {
   const {films, filteredFilms} = props;
-  // console.log(films.filter((film) => film.reviews.length === 0));
 
   if (!films.length) {
     return null;

@@ -4,28 +4,15 @@ import {SHOW_MORE_BUTTON_INITIAL_VALUE, SHOW_MORE_BUTTON_STEP} from "../../const
 const initialState = {
   genre: Genres.ALL_GENRES,
   films: [],
-  filteredFilms: [],
   numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
 };
 
 const ActionType = {
   CHANGE_GENRE: `CHANGE_GENRE`,
-  GET_FILMS: `GET_FILMS`,
   RESET_FILTER: `RESET_FILTER`,
   INCREASE_NUMBER_OF_SHOWN_FILMS: `INCREASE_NUMBER_OF_SHOWN_FILMS`,
   SET_DEFAULT_NUMBER_OF_SHOWN_FILMS: `SET_DEFAULT_NUMBER_OF_SHOWN_FILMS`,
   LOAD_FILMS: `LOAD_FILMS`,
-};
-
-const getFilmsOfSelectedGenre = (genre, allFilms) => {
-  let filmsOfSelectedGenre;
-  if (genre === Genres.ALL_GENRES) {
-    filmsOfSelectedGenre = allFilms;
-  } else {
-    filmsOfSelectedGenre = allFilms.filter((film) => film.genre === genre);
-  }
-
-  return filmsOfSelectedGenre;
 };
 
 const adapter = (film) => {
@@ -71,10 +58,6 @@ const ActionCreator = {
     payload: genre,
   }),
 
-  getFilms: () => ({
-    type: ActionType.GET_FILMS,
-  }),
-
   loadFilms: (films) => ({
     type: ActionType.LOAD_FILMS,
     payload: films,
@@ -101,16 +84,9 @@ const reducer = (state = initialState, action) => {
         genre: action.payload,
       });
 
-    case ActionType.GET_FILMS:
-      const selectedFilms = getFilmsOfSelectedGenre(state.genre, state.films);
-      return extend(state, {
-        filteredFilms: selectedFilms, // .slice(0, state.numberOfShownFilms),
-      });
-
     case ActionType.LOAD_FILMS:
       return extend(state, {
         films: action.payload,
-        filteredFilms: action.payload,
       });
 
     case ActionType.INCREASE_NUMBER_OF_SHOWN_FILMS:
@@ -126,7 +102,6 @@ const reducer = (state = initialState, action) => {
     case ActionType.RESET_FILTER:
       return extend(state, {
         genre: initialState.genre,
-        filteredFilms: state.films,
         numberOfShownFilms: initialState.numberOfShownFilms,
       });
   }
@@ -134,4 +109,4 @@ const reducer = (state = initialState, action) => {
   return state;
 };
 
-export {reducer, getFilmsOfSelectedGenre, ActionType, ActionCreator, Operations};
+export {reducer, ActionType, ActionCreator, Operations};

@@ -1,12 +1,47 @@
 import React from "react";
 import PropTypes from "prop-types";
+import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
+import {AuthorizationStatus} from "../../reducer/user/user";
+import {connect} from "react-redux";
+
+const getUserBlock = (authorizationStatus, userInfo, onUserBlockClick) => {
+  if (authorizationStatus === AuthorizationStatus.AUTH) {
+    const {avatar} = userInfo;
+    return (
+      <div className="user-block__avatar">
+        <img
+          src={avatar}
+          alt="User avatar"
+          width="63"
+          height="63"
+          onClick={(evt) => {
+            evt.preventDefault();
+            onUserBlockClick();
+          }}
+        />
+      </div>
+    );
+  } else {
+    return (
+      <a
+        href="sign-in.html"
+        className="user-block__link"
+        onClick={(evt) => {
+          evt.preventDefault();
+          onUserBlockClick();
+        }}
+      >Sign in</a>
+    );
+  }
+};
 
 const MovieCard = (props) => {
-  const {film, onPlayClick} = props;
+  const {film, onPlayClick, authorizationStatus, onUserBlockClick, userInfo} = props;
   const {title, genre, released, src, isFavorite} = film;
   const {backgroundImage, poster} = src;
 
   const inListSvg = isFavorite ? `#in-list` : `#add`;
+  const userBlock = getUserBlock(authorizationStatus, userInfo, onUserBlockClick);
 
   return (
     <section className="movie-card">
@@ -26,9 +61,7 @@ const MovieCard = (props) => {
         </div>
 
         <div className="user-block">
-          <div className="user-block__avatar">
-            <img src="img/avatar.jpg" alt="User avatar" width="63" height="63"/>
-          </div>
+          {userBlock}
         </div>
       </header>
 
@@ -107,6 +140,16 @@ MovieCard.propTypes = {
     backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
   onPlayClick: PropTypes.func.isRequired,
+  authorizationStatus: PropTypes.oneOf([AuthorizationStatus.AUTH, AuthorizationStatus.NO_AUTH]).isRequired,
+  onUserBlockClick: PropTypes.func.isRequired,
+  userInfo: PropTypes.object.isRequired,
 };
 
-export default MovieCard;
+const mapStateToProps = (state) => ({
+  authorizationStatus: getAuthorizationStatus(state),
+  userInfo: getUserInfo(state),
+});
+
+export {MovieCard};
+
+export default connect(mapStateToProps, null)(MovieCard);
