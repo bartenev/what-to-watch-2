@@ -4,8 +4,9 @@ import PropTypes from "prop-types";
 import ListOfGenres from "../list-of-genres/list-of-genres";
 import {Genres} from "../../const";
 import ShowMore from "../show-more/show-more";
-import {ActionCreator} from "../../reducer";
+import {ActionCreator} from "../../reducer/app/app";
 import {connect} from "react-redux";
+import {getNumberOfShownFilms} from "../../reducer/app/selectors";
 
 class ListOfFilms extends PureComponent {
   constructor(props) {
@@ -73,6 +74,7 @@ class ListOfFilms extends PureComponent {
 
 ListOfFilms.propTypes = {
   films: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
     genre: PropTypes.string.isRequired,
@@ -82,12 +84,13 @@ ListOfFilms.propTypes = {
     starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     src: PropTypes.shape({
       poster: PropTypes.string.isRequired,
-      preview: PropTypes.string.isRequired,
+      backgroundImage: PropTypes.string.isRequired,
+      previewImage: PropTypes.string.isRequired,
+      previewVideo: PropTypes.string.isRequired,
       video: PropTypes.string.isRequired,
     }).isRequired,
     rating: PropTypes.shape({
       score: PropTypes.number.isRequired,
-      level: PropTypes.string.isRequired,
       count: PropTypes.number.isRequired,
     }).isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape({
@@ -95,9 +98,12 @@ ListOfFilms.propTypes = {
       date: PropTypes.instanceOf(Date),
       text: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-    })).isRequired,
+    })),
+    isFavorite: PropTypes.bool.isRequired,
+    backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
   filteredFilms: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     runTime: PropTypes.number.isRequired,
     genre: PropTypes.string.isRequired,
@@ -107,12 +113,13 @@ ListOfFilms.propTypes = {
     starring: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     src: PropTypes.shape({
       poster: PropTypes.string.isRequired,
-      preview: PropTypes.string.isRequired,
+      backgroundImage: PropTypes.string.isRequired,
+      previewImage: PropTypes.string.isRequired,
+      previewVideo: PropTypes.string.isRequired,
       video: PropTypes.string.isRequired,
     }).isRequired,
     rating: PropTypes.shape({
       score: PropTypes.number.isRequired,
-      level: PropTypes.string.isRequired,
       count: PropTypes.number.isRequired,
     }).isRequired,
     reviews: PropTypes.arrayOf(PropTypes.shape({
@@ -120,7 +127,9 @@ ListOfFilms.propTypes = {
       date: PropTypes.instanceOf(Date),
       text: PropTypes.string.isRequired,
       rating: PropTypes.number.isRequired,
-    })).isRequired,
+    })),
+    isFavorite: PropTypes.bool.isRequired,
+    backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
   onHover: PropTypes.func.isRequired,
   onClick: PropTypes.func.isRequired,
@@ -130,7 +139,7 @@ ListOfFilms.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  numberOfShownFilms: state.numberOfShownFilms,
+  numberOfShownFilms: getNumberOfShownFilms(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

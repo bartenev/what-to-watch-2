@@ -2,7 +2,7 @@ import React from "react";
 import renderer from "react-test-renderer";
 import {App} from "./app";
 import {createStore} from "redux";
-import {reducer} from "../../reducer";
+import {reducer} from "../../reducer/app/app";
 import {Provider} from "react-redux";
 
 const films = [
