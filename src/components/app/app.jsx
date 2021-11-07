@@ -99,13 +99,9 @@ const getListOfFilms = (props) => {
 const App = (props) => {
   const {films, film, setFilm, screenType, setScreenType, setLastScreenType, authorizationStatus} = props;
 
-  if (!films.length) {
-    return null;
-  }
-
   useEffect(() => {
     setFilm(films[0]);
-  }, []);
+  }, [films, setFilm]);
 
   if (!film) {
     return null;

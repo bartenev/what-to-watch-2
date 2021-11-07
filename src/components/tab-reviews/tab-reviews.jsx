@@ -46,7 +46,7 @@ const TabReviews = (props) => {
     return () => {
       resetComments();
     };
-  }, []);
+  }, [film.id, loadComments, resetComments]);
 
   const firstCol = Math.ceil(comments.length / 2);
 
