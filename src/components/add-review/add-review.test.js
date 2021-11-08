@@ -1,11 +1,13 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import Tabs from "./tabs";
 import {testFilms} from "../../mocks/testFilms";
+import {AddReview} from "./add-review";
 
-it(`Tabs is rendered correctly`, () => {
+it(`AddReview is rendered correctly`, () => {
   const tree = renderer.create((
-    <Tabs
+
+    <AddReview
+      sendComment={() => {}}
       film={testFilms[0]}
     />
   ), {
@@ -16,3 +18,4 @@ it(`Tabs is rendered correctly`, () => {
 
   expect(tree).toMatchSnapshot();
 });
+

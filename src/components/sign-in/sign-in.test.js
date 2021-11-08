@@ -1,12 +1,13 @@
 import React from "react";
 import renderer from "react-test-renderer";
-import Tabs from "./tabs";
-import {testFilms} from "../../mocks/testFilms";
+import {SignIn} from "./sign-in";
 
-it(`Tabs is rendered correctly`, () => {
+it(`SignIn is rendered correctly`, () => {
   const tree = renderer.create((
-    <Tabs
-      film={testFilms[0]}
+
+    <SignIn
+      logIn={() => {}}
+      onLogoClick={() => {}}
     />
   ), {
     createNodeMock: () => {
@@ -16,3 +17,4 @@ it(`Tabs is rendered correctly`, () => {
 
   expect(tree).toMatchSnapshot();
 });
+

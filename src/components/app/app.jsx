@@ -10,7 +10,6 @@ import Player from "../player/player";
 import {getAuthorizationStatus} from "../../reducer/user/selectors";
 import SignIn from "../sign-in/sign-in";
 import MovieCard from "../movie-card/movie-card";
-import {TypeOfMovieCardScreen} from "../movie-card/movie-card";
 import {getFilm, getScreenType} from "../../reducer/app/selectors";
 import {getFilms, getFilteredFilms} from "../../reducer/data/selectors";
 
@@ -34,7 +33,7 @@ const getMovieCard = (props) => {
   if (screenType === ScreenType.FILM_PAGE) {
     return (
       <MovieCard
-        typeOfScreen={TypeOfMovieCardScreen.FULL}
+        typeOfScreen={ScreenType.FILM_PAGE}
         film={film}
         onLogoClick={() => {
           onLogoClick(props);
@@ -53,7 +52,7 @@ const getMovieCard = (props) => {
   } else {
     return (
       <MovieCard
-        typeOfScreen={TypeOfMovieCardScreen.MAIN}
+        typeOfScreen={ScreenType.MAIN}
         film={film}
         onPlayClick={() => {
           setScreenType(ScreenType.PLAYER);
@@ -135,7 +134,7 @@ const App = (props) => {
     case ScreenType.ADD_REVIEW:
       return (
         <MovieCard
-          typeOfScreen={TypeOfMovieCardScreen.REVIEW}
+          typeOfScreen={ScreenType.ADD_REVIEW}
           film={film}
           onLogoClick={() => {
             onLogoClick(props);

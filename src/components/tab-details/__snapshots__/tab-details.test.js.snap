@@ -71,7 +71,7 @@ exports[`TabDetails is rendered correctly 1`] = `
       <span
         className="movie-card__details-value"
       >
-        Action
+        Comedies
       </span>
     </p>
     <p

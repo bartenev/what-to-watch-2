@@ -5,12 +5,7 @@ import {AuthorizationStatus} from "../../reducer/user/user";
 import {connect} from "react-redux";
 import Tabs from "../tabs/tabs";
 import AddReview from "../add-review/add-review";
-
-export const TypeOfMovieCardScreen = {
-  MAIN: `MAIN`,
-  FULL: `FULL`,
-  REVIEW: `REVIEW`,
-};
+import {ScreenType} from "../../reducer/app/app";
 
 const getUserBlock = (authorizationStatus, userInfo, onUserBlockClick) => {
   if (authorizationStatus === AuthorizationStatus.AUTH) {
@@ -85,7 +80,7 @@ const MovieCard = (props) => {
 
   switch (typeOfScreen) {
 
-    case TypeOfMovieCardScreen.MAIN:
+    case ScreenType.MAIN:
       return (
         <section className="movie-card">
           <div className="movie-card__bg">
@@ -145,7 +140,7 @@ const MovieCard = (props) => {
         </section>
       );
 
-    case TypeOfMovieCardScreen.FULL:
+    case ScreenType.FILM_PAGE:
       return (
         <section className="movie-card movie-card--full" style={{backgroundColor}}>
           <div className="movie-card__hero">
@@ -221,7 +216,7 @@ const MovieCard = (props) => {
         </section>
       );
 
-    case TypeOfMovieCardScreen.REVIEW:
+    case ScreenType.ADD_REVIEW:
       return (
         <section className="movie-card movie-card--full" style={{backgroundColor}}>
           <div className="movie-card__header">
@@ -305,7 +300,7 @@ MovieCard.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
-  typeOfScreen: PropTypes.oneOf([TypeOfMovieCardScreen.FULL, TypeOfMovieCardScreen.MAIN, TypeOfMovieCardScreen.REVIEW]).isRequired,
+  typeOfScreen: PropTypes.oneOf([ScreenType.FILM_PAGE, ScreenType.MAIN, ScreenType.ADD_REVIEW]).isRequired,
   authorizationStatus: PropTypes.oneOf([AuthorizationStatus.AUTH, AuthorizationStatus.NO_AUTH]).isRequired,
   userInfo: PropTypes.object.isRequired,
   onPlayClick: PropTypes.func,
