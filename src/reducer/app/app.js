@@ -1,112 +1,60 @@
-import {extend, Genres} from "../../const";
-import {SHOW_MORE_BUTTON_INITIAL_VALUE, SHOW_MORE_BUTTON_STEP} from "../../const";
+import {extend} from "../../const";
+
+export const ScreenType = {
+  MAIN: `MAIN`,
+  FILM_PAGE: `FILM_PAGE`,
+  AUTHORIZATION: `AUTHORIZATION`,
+  PLAYER: `PLAYER`,
+  MY_LIST: `MY_LIST`,
+  ADD_REVIEW: `ADD_REVIEW`,
+};
 
 const initialState = {
-  genre: Genres.ALL_GENRES,
-  films: [],
-  numberOfShownFilms: SHOW_MORE_BUTTON_INITIAL_VALUE,
+  film: null,
+  screenType: ScreenType.MAIN,
+  lastScreenType: null,
 };
 
 const ActionType = {
-  CHANGE_GENRE: `CHANGE_GENRE`,
-  RESET_FILTER: `RESET_FILTER`,
-  INCREASE_NUMBER_OF_SHOWN_FILMS: `INCREASE_NUMBER_OF_SHOWN_FILMS`,
-  SET_DEFAULT_NUMBER_OF_SHOWN_FILMS: `SET_DEFAULT_NUMBER_OF_SHOWN_FILMS`,
-  LOAD_FILMS: `LOAD_FILMS`,
-};
-
-const adapter = (film) => {
-  return ({
-    id: film.id,
-    title: film.name,
-    src: {
-      poster: film.poster_image,
-      backgroundImage: film.background_image,
-      previewImage: film.preview_image,
-      previewVideo: film.preview_video_link,
-      video: film.video_link,
-    },
-    director: film.director,
-    starring: film.starring,
-    reviews: [],
-    runTime: film.run_time,
-    genre: film.genre,
-    released: film.released,
-    description: film.description,
-    rating: {
-      score: film.rating,
-      count: film.scores_count,
-    },
-    isFavorite: film.is_favorite,
-    backgroundColor: film.background_color,
-  });
-};
-
-const Operations = {
-  loadFilms: (dispatch, _getState, api) => {
-    return api.get(`/films`)
-      .then((response) => {
-        const films = response.data.map((film) => adapter(film));
-        dispatch(ActionCreator.loadFilms(films));
-      });
-  }
+  SET_SCREEN_TYPE: `SET_SCREEN_TYPE`,
+  SET_LAST_SCREEN_TYPE: `SET_LAST_SCREEN_TYPE`,
+  SET_FILM: `SET_FILM`,
 };
 
 const ActionCreator = {
-  changeGenre: (genre) => ({
-    type: ActionType.CHANGE_GENRE,
-    payload: genre,
+  setScreenType: (screenType) => ({
+    type: ActionType.SET_SCREEN_TYPE,
+    payload: screenType,
   }),
-
-  loadFilms: (films) => ({
-    type: ActionType.LOAD_FILMS,
-    payload: films,
+  setLastScreenType: () => ({
+    type: ActionType.SET_LAST_SCREEN_TYPE,
   }),
-
-  increaseNumberOfShownFilms: () => ({
-    type: ActionType.INCREASE_NUMBER_OF_SHOWN_FILMS,
-    payload: SHOW_MORE_BUTTON_STEP,
-  }),
-
-  setDefaultNumberOfShownFilms: () => ({
-    type: ActionType.SET_DEFAULT_NUMBER_OF_SHOWN_FILMS,
-  }),
-
-  resetFilter: () => ({
-    type: ActionType.RESET_FILTER,
+  setFilm: (film) => ({
+    type: ActionType.SET_FILM,
+    payload: film,
   }),
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case ActionType.CHANGE_GENRE:
+    case ActionType.SET_SCREEN_TYPE:
       return extend(state, {
-        genre: action.payload,
+        lastScreenType: state.screenType,
+        screenType: action.payload,
       });
-
-    case ActionType.LOAD_FILMS:
+    case ActionType.SET_LAST_SCREEN_TYPE:
+      const currentScreenType = state.screenType;
       return extend(state, {
-        films: action.payload,
+        screenType: state.lastScreenType,
+        lastScreenType: currentScreenType,
       });
-
-    case ActionType.INCREASE_NUMBER_OF_SHOWN_FILMS:
+    case ActionType.SET_FILM:
       return extend(state, {
-        numberOfShownFilms: state.numberOfShownFilms + action.payload,
-      });
-
-    case ActionType.SET_DEFAULT_NUMBER_OF_SHOWN_FILMS:
-      return extend(state, {
-        numberOfShownFilms: initialState.numberOfShownFilms,
-      });
-
-    case ActionType.RESET_FILTER:
-      return extend(state, {
-        genre: initialState.genre,
-        numberOfShownFilms: initialState.numberOfShownFilms,
+        film: action.payload,
       });
   }
 
   return state;
 };
 
-export {reducer, ActionType, ActionCreator, Operations};
+export {reducer, ActionType, ActionCreator};

@@ -1,13 +1,14 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./components/app/app";
 import {Provider} from "react-redux";
 import {applyMiddleware, createStore} from "redux";
-import {Operations} from "./reducer/app/app";
+import {Operations as DataOperations} from "./reducer/data/data";
+import {Operations as UserOperations} from "./reducer/user/user";
 import reducer from "./reducer";
 import {createApi} from "./api";
 import {compose} from "recompose";
 import thunk from "redux-thunk";
+import App from "./components/app/app";
 
 const init = () => {
 
@@ -21,11 +22,12 @@ const init = () => {
       )
   );
 
-  store.dispatch(Operations.loadFilms);
+  store.dispatch(DataOperations.loadFilms);
+  store.dispatch(UserOperations.checkAuth());
 
   ReactDOM.render(
       <Provider store={store}>
-        <App/>
+        <App />
       </Provider>,
       document.querySelector(`#root`)
   );

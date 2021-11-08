@@ -1,8 +1,3 @@
-export const ScreenType = {
-  MAIN: `main`,
-  MOVIE: `movie`,
-};
-
 export const TabsType = {
   OVERVIEW: `Overview`,
   DETAILS: `Details`,

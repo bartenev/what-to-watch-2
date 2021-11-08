@@ -4,9 +4,9 @@ import PropTypes from "prop-types";
 import ListOfGenres from "../list-of-genres/list-of-genres";
 import {Genres} from "../../const";
 import ShowMore from "../show-more/show-more";
-import {ActionCreator} from "../../reducer/app/app";
+import {ActionCreator} from "../../reducer/data/data";
 import {connect} from "react-redux";
-import {getNumberOfShownFilms} from "../../reducer/app/selectors";
+import {getNumberOfShownFilms} from "../../reducer/data/selectors";
 
 class ListOfFilms extends PureComponent {
   constructor(props) {

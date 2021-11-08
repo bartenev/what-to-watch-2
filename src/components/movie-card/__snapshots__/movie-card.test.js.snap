@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Render App 1`] = `
+exports[`Render MovieCard 1`] = `
 <section
   className="movie-card"
 >
@@ -25,6 +25,8 @@ exports[`Render App 1`] = `
     >
       <a
         className="logo__link"
+        href="main.html"
+        onClick={[Function]}
       >
         <span
           className="logo__letter logo__letter--1"
@@ -52,7 +54,7 @@ exports[`Render App 1`] = `
         <img
           alt="User avatar"
           height="63"
-          src="img/avatar.jpg"
+          onClick={[Function]}
           width="63"
         />
       </div>
@@ -88,7 +90,7 @@ exports[`Render App 1`] = `
           <span
             className="movie-card__genre"
           >
-            Action
+            Comedies
           </span>
           <span
             className="movie-card__year"
@@ -127,7 +129,7 @@ exports[`Render App 1`] = `
               width="19"
             >
               <use
-                xlinkHref="#add"
+                xlinkHref="#in-list"
               />
             </svg>
             <span>

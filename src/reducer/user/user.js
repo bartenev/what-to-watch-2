@@ -1,4 +1,5 @@
 import {extend} from "../../const";
+import {ActionCreator as AppActionCreator} from "../app/app";
 
 export const AuthorizationStatus = {
   AUTH: `AUTH`,
@@ -17,7 +18,6 @@ const initialState = {
 
 const ActionType = {
   REQUIRED_AUTHORIZATION: `REQUIRED_AUTHORIZATION`,
-  // LOG_IN: `LOG_IN`,
   SET_USER_INFO: `SET_USER_INFO`,
 };
 
@@ -25,10 +25,6 @@ const ActionCreator = {
   requireAuthorization: (status) => ({
     type: ActionType.REQUIRED_AUTHORIZATION,
     payload: status,
-  }),
-  logIn: (data) => ({
-    type: ActionType.LOG_IN,
-    payload: data,
   }),
   setUserInfo: (userInfo) => ({
     type: ActionType.SET_USER_INFO,
@@ -63,6 +59,7 @@ const Operations = {
       .then((response) => {
         dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
         dispatch(ActionCreator.setUserInfo(userInfoAdapter(response.data)));
+        dispatch(AppActionCreator.setLastScreenType());
       });
   },
 };
@@ -73,10 +70,6 @@ const reducer = (state = initialState, action) => {
       return extend(state, {
         authorizationStatus: action.payload,
       });
-    // case ActionType.LOG_IN:
-    //   return extend(state, {
-    //     loginInfo: action.payload,
-    //   });
     case ActionType.SET_USER_INFO:
       return extend(state, {
         userInfo: action.payload,

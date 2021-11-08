@@ -32,9 +32,6 @@ export default class Tabs extends PureComponent {
         <nav className="movie-nav movie-card__nav">
           <ul className="movie-nav__list">
             {allTabs.map((tab) => {
-              if (!film.reviews.length && tab === TabsType.REVIEWS) {
-                return null;
-              }
 
               return (
                 <li key={tab} className={`movie-nav__item ${this.state.activeTab === tab ? `movie-nav__item--active` : ``}`}>
