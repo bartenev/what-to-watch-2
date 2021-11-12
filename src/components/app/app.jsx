@@ -10,15 +10,17 @@ import Player from "../player/player";
 import {getAuthorizationStatus} from "../../reducer/user/selectors";
 import SignIn from "../sign-in/sign-in";
 import MovieCard from "../movie-card/movie-card";
-import {getFilm, getScreenType} from "../../reducer/app/selectors";
-import {getFilms, getFilteredFilms} from "../../reducer/data/selectors";
+// import {getFilm, getScreenType} from "../../reducer/app/selectors";
+import {getFilm, getFilms, getFilteredFilms} from "../../reducer/data/selectors";
+import {Switch, Route, Redirect} from "react-router-dom";
+import {AppRoute} from "../../const";
 
-const onLogoClick = (props) => {
-  const {resetFilter, films, setScreenType, setFilm} = props;
-  resetFilter();
-  setFilm(films[0]);
-  setScreenType(ScreenType.MAIN);
-};
+// const onLogoClick = (props) => {
+//   const {resetFilter} = props;
+//   resetFilter();
+//   // setFilm(films[0]);
+//   // setScreenType(ScreenType.MAIN);
+// };
 
 // const onUserBlockClick = (setScreenType) => {
 //   setScreenType(ScreenType.AUTHORIZATION);
@@ -29,36 +31,40 @@ const onLogoClick = (props) => {
 // };
 
 const getMovieCard = (props) => {
-  const {screenType, film, setScreenType} = props;
+  const {screenType, getFilmById, resetFilter} = props;
+
   if (screenType === ScreenType.FILM_PAGE) {
+    const id = Number(props.match.params.id);
+    const film = getFilmById(id);
+
     return (
       <MovieCard
-        typeOfScreen={ScreenType.FILM_PAGE}
+        typeOfScreen={screenType}
         film={film}
-        onLogoClick={() => {
-          onLogoClick(props);
-        }}
+        onLogoClick={resetFilter}
         onPlayClick={() => {
-          setScreenType(ScreenType.PLAYER);
+          // setScreenType(ScreenType.PLAYER);
         }}
         onUserBlockClick={() => {
-          setScreenType(ScreenType.AUTHORIZATION);
+          // setScreenType(ScreenType.AUTHORIZATION);
         }}
         onAddReviewClick={() => {
-          setScreenType(ScreenType.ADD_REVIEW);
+          // setScreenType(ScreenType.ADD_REVIEW);
         }}
       />
     );
   } else {
+    const {films} = props;
+
     return (
       <MovieCard
-        typeOfScreen={ScreenType.MAIN}
-        film={film}
+        typeOfScreen={screenType}
+        film={films[0]}
         onPlayClick={() => {
-          setScreenType(ScreenType.PLAYER);
+          // setScreenType(ScreenType.PLAYER);
         }}
         onUserBlockClick={() => {
-          setScreenType(ScreenType.AUTHORIZATION);
+          // setScreenType(ScreenType.AUTHORIZATION);
         }}
       />
     );
@@ -66,17 +72,21 @@ const getMovieCard = (props) => {
 };
 
 const getListOfFilms = (props) => {
-  const {films, filteredFilms, screenType, setScreenType, film, setFilm} = props;
+  const {films, filteredFilms, screenType, getFilmById} = props;
+
 
   if (screenType === ScreenType.FILM_PAGE) {
+    const id = Number(props.match.params.id);
+    const film = getFilmById(id);
+
     return (
       <ListOfFilmsLikeThis
         currentFilm={film}
         films={films}
         onHover={() => {}}
         onClick={(newFilm) => {
-          setFilm(newFilm);
-          setScreenType(ScreenType.FILM_PAGE);
+          // setFilm(newFilm);
+          // setScreenType(ScreenType.FILM_PAGE);
         }}
       />
     );
@@ -88,54 +98,131 @@ const getListOfFilms = (props) => {
       filteredFilms={filteredFilms}
       onHover={ () => {}}
       onClick={(newFilm) => {
-        setFilm(newFilm);
-        setScreenType(ScreenType.FILM_PAGE);
+        // setFilm(newFilm);
+        // setScreenType(ScreenType.FILM_PAGE);
       }}
     />
   );
 };
 
+const getScreen = (props, screenType, moreProps = null) => {
+  const unitedProps = Object.assign({}, props, {screenType}, moreProps);
+
+  // if (moreProps) {
+  //   console.log(newProps);
+  // }
+  // const {films, film, setFilm, setScreenType, setLastScreenType, authorizationStatus} = props;
+
+  // switch (screenType) {
+
+  // case ScreenType.AUTHORIZATION:
+  //   return (
+  //     <SignIn
+  //       onLogoClick={() => {
+  //         onLogoClick(props);
+  //       }}
+  //     />
+  //   );
+
+  // case ScreenType.PLAYER:
+  //   return (
+  //     <Player
+  //       film={film}
+  //       onCloseButtonClick={() => {
+  //         setLastScreenType();
+  //       }}
+  //     />
+  //   );
+  //
+  // case ScreenType.ADD_REVIEW:
+  //   return (
+  //     <MovieCard
+  //       typeOfScreen={ScreenType.ADD_REVIEW}
+  //       film={film}
+  //       onLogoClick={() => {
+  //         onLogoClick(props);
+  //       }}
+  //       onUserBlockClick={() => {
+  //         setScreenType(ScreenType.AUTHORIZATION);
+  //       }}
+  //       onFilmClick={() => {
+  //         setLastScreenType();
+  //       }}
+  //     />
+  //   );
+
+  // default:
+
+  const movieCard = getMovieCard(unitedProps);
+  const listOfFilms = getListOfFilms(unitedProps);
+
+  return (
+    <Fragment>
+      {movieCard}
+      <div className="page-content">
+        {listOfFilms}
+        <footer className="page-footer">
+          <div className="logo">
+            <a className="logo__link logo__link--light">
+              <span className="logo__letter logo__letter--1">W</span>
+              <span className="logo__letter logo__letter--2">T</span>
+              <span className="logo__letter logo__letter--3">W</span>
+            </a>
+          </div>
+          <div className="copyright">
+            <p>© 2019 What to watch Ltd.</p>
+          </div>
+        </footer>
+      </div>
+    </Fragment>
+  );
+  // }
+};
+
 const App = (props) => {
-  const {films, film, setFilm, screenType, setScreenType, setLastScreenType, authorizationStatus} = props;
+  const {films, setFilm, setScreenType, setLastScreenType, authorizationStatus} = props;
 
-  useEffect(() => {
-    setFilm(films[0]);
-  }, [films, setFilm]);
 
-  if (!film) {
+  // useEffect(() => {
+  //   setFilm(films[0]);
+  // }, [films, setFilm]);
+  //
+  if (!films.length) {
     return null;
   }
 
-  if (screenType === ScreenType.ADD_REVIEW && authorizationStatus === AuthorizationStatus.NO_AUTH) {
-    setScreenType(ScreenType.AUTHORIZATION);
-  }
+  // if (screenType === ScreenType.ADD_REVIEW && authorizationStatus === AuthorizationStatus.NO_AUTH) {
+  //   setScreenType(ScreenType.AUTHORIZATION);
+  // }
 
-  switch (screenType) {
+  // const screen = getScreen(props, screenType);
 
-    case ScreenType.AUTHORIZATION:
-      return (
+  return (
+    <Switch>
+      <Route path={AppRoute.ROOT} exact render={() => getScreen(props, ScreenType.MAIN)} />
+      <Route path={`${AppRoute.FILMS}/:id`} exact render={(moreProps) => getScreen(props, ScreenType.FILM_PAGE, moreProps)}
+      />
+      <Route path={AppRoute.LOGIN} exact render={() => (
         <SignIn
           onLogoClick={() => {
             onLogoClick(props);
           }}
         />
-      );
-
-    case ScreenType.PLAYER:
-      return (
+      )}
+      />
+      <Route path={`${AppRoute.FILMS}/:id${AppRoute.PLAYER}`} exact render={() => (
         <Player
-          film={film}
+          // film={film}
           onCloseButtonClick={() => {
             setLastScreenType();
           }}
         />
-      );
-
-    case ScreenType.ADD_REVIEW:
-      return (
+      )}
+      />
+      <Route path={AppRoute.ADD_REVIEW} exact render={() => (
         <MovieCard
           typeOfScreen={ScreenType.ADD_REVIEW}
-          film={film}
+          // film={film}
           onLogoClick={() => {
             onLogoClick(props);
           }}
@@ -146,33 +233,10 @@ const App = (props) => {
             setLastScreenType();
           }}
         />
-      );
-
-    default:
-      const movieCard = getMovieCard(props);
-      const listOfFilms = getListOfFilms(props);
-
-      return (
-        <Fragment>
-          {movieCard}
-          <div className="page-content">
-            {listOfFilms}
-            <footer className="page-footer">
-              <div className="logo">
-                <a className="logo__link logo__link--light">
-                  <span className="logo__letter logo__letter--1">W</span>
-                  <span className="logo__letter logo__letter--2">T</span>
-                  <span className="logo__letter logo__letter--3">W</span>
-                </a>
-              </div>
-              <div className="copyright">
-                <p>© 2019 What to watch Ltd.</p>
-              </div>
-            </footer>
-          </div>
-        </Fragment>
-      );
-  }
+      )}
+      />
+    </Switch>
+  );
 };
 
 App.propTypes = {
@@ -234,8 +298,8 @@ App.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
-  film: PropTypes.object,
-  screenType: PropTypes.oneOf(Object.values(ScreenType)).isRequired,
+  // film: PropTypes.object,
+  // screenType: PropTypes.oneOf(Object.values(ScreenType)).isRequired,
   resetFilter: PropTypes.func.isRequired,
   checkAuth: PropTypes.func.isRequired,
   authorizationStatus: PropTypes.oneOf([AuthorizationStatus.AUTH, AuthorizationStatus.NO_AUTH]).isRequired,
@@ -248,8 +312,9 @@ const mapStateToProps = (state) => ({
   authorizationStatus: getAuthorizationStatus(state),
   films: getFilms(state),
   filteredFilms: getFilteredFilms(state),
-  film: getFilm(state),
-  screenType: getScreenType(state),
+  getFilmById: getFilm(state),
+  // film: getFilm(state),
+  // screenType: getScreenType(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

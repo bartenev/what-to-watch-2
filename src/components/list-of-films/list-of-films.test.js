@@ -14,7 +14,6 @@ it(`ListOfFilms is rendered correctly`, () => {
       numberOfShownFilms={4}
       onFilterClick={() => {}}
     />
-
   ), {
     createNodeMock: () => {
       return {};

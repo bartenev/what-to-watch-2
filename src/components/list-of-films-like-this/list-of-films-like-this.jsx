@@ -8,7 +8,8 @@ class ListOfFilmsLikeThis extends PureComponent {
   }
 
   render() {
-    const {films, onHover, onClick, currentFilm} = this.props;
+    const {films, currentFilm, onHover, onClick} = this.props;
+
     const relatedFilms = films.filter((film) => {
       return film.genre === currentFilm.genre && film !== currentFilm;
     }).slice(0, 4);
@@ -23,12 +24,12 @@ class ListOfFilmsLikeThis extends PureComponent {
 
         <div className="catalog__movies-list">
           {
-            relatedFilms.map((film, i) => {
-              const {title} = film;
+            relatedFilms.map((relatedFilm, i) => {
+              const {title} = relatedFilm;
               return (
                 <SmallMovieCard
                   key={`${title}-${i}`}
-                  film={film}
+                  film={relatedFilm}
                   onHover={onHover}
                   onClick={onClick}
                 />

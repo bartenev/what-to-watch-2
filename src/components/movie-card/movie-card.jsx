@@ -6,6 +6,8 @@ import {connect} from "react-redux";
 import Tabs from "../tabs/tabs";
 import AddReview from "../add-review/add-review";
 import {ScreenType} from "../../reducer/app/app";
+import {Link} from "react-router-dom";
+import {AppRoute} from "../../const";
 
 const getUserBlock = (authorizationStatus, userInfo, onUserBlockClick) => {
   if (authorizationStatus === AuthorizationStatus.AUTH) {
@@ -17,23 +19,18 @@ const getUserBlock = (authorizationStatus, userInfo, onUserBlockClick) => {
           alt="User avatar"
           width="63"
           height="63"
-          onClick={(evt) => {
-            evt.preventDefault();
-            onUserBlockClick();
-          }}
+          onClick={onUserBlockClick}
         />
       </div>
     );
   } else {
     return (
-      <a
-        href="sign-in.html"
+      <Link
+        to={AppRoute.LOGIN}
+        // href="sign-in.html"
         className="user-block__link"
-        onClick={(evt) => {
-          evt.preventDefault();
-          onUserBlockClick();
-        }}
-      >Sign in</a>
+        // onClick={onUserBlockClick}
+      >Sign in</Link>
     );
   }
 };
@@ -41,24 +38,20 @@ const getUserBlock = (authorizationStatus, userInfo, onUserBlockClick) => {
 const getLogoBlock = (onLogoClick) => {
   return (
     <div className="logo">
-      <a
-        href="main.html"
+      <Link
+        to={AppRoute.ROOT}
         className="logo__link"
-        onClick={(evt) => {
-          evt.preventDefault();
-          onLogoClick();
-        }}
+        onClick={onLogoClick}
       >
         <span className="logo__letter logo__letter--1">W</span>
         <span className="logo__letter logo__letter--2">T</span>
         <span className="logo__letter logo__letter--3">W</span>
-      </a>
+      </Link>
     </div>
   );
 };
 
 const MovieCard = (props) => {
-
   const {
     typeOfScreen,
     film,
@@ -114,19 +107,17 @@ const MovieCard = (props) => {
                 </p>
 
                 <div className="movie-card__buttons">
-                  <button
+                  <Link
+                    to={`${AppRoute.FILMS}/${film.id}${AppRoute.PLAYER}`}
                     className="btn btn--play movie-card__button"
-                    type="button"
-                    onClick={(evt) => {
-                      evt.preventDefault();
-                      onPlayClick();
-                    }}
+                    // type="button"
+                    onClick={onPlayClick}
                   >
                     <svg viewBox="0 0 19 19" width="19" height="19">
                       <use xlinkHref="#play-s"></use>
                     </svg>
                     <span>Play</span>
-                  </button>
+                  </Link>
                   <button className="btn btn--list movie-card__button" type="button">
                     <svg viewBox="0 0 19 20" width="19" height="20">
                       <use xlinkHref={inListSvg}></use>
@@ -166,9 +157,10 @@ const MovieCard = (props) => {
                 </p>
 
                 <div className="movie-card__buttons">
-                  <button
+                  <Link
                     className="btn btn--play movie-card__button"
-                    type="button"
+                    to={`${AppRoute.FILMS}/${film.id}${AppRoute.PLAYER}`}
+                    // type="button"
                     onClick={(evt) => {
                       evt.preventDefault();
                       onPlayClick();
@@ -178,7 +170,7 @@ const MovieCard = (props) => {
                       <use xlinkHref="#play-s"></use>
                     </svg>
                     <span>Play</span>
-                  </button>
+                  </Link>
                   <button className="btn btn--list movie-card__button" type="button">
                     <svg viewBox="0 0 19 20" width="19" height="20">
                       <use xlinkHref={inListSvg}></use>

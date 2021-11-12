@@ -9,6 +9,8 @@ import {createApi} from "./api";
 import {compose} from "recompose";
 import thunk from "redux-thunk";
 import App from "./components/app/app";
+import {Router} from "react-router-dom";
+import history from "./history";
 
 const init = () => {
 
@@ -26,9 +28,11 @@ const init = () => {
   store.dispatch(UserOperations.checkAuth());
 
   ReactDOM.render(
-      <Provider store={store}>
-        <App />
-      </Provider>,
+      <Router history={history}>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </Router>,
       document.querySelector(`#root`)
   );
 };

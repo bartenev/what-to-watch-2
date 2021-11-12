@@ -1,6 +1,8 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import VideoPlayer from "../video-player/video-player";
+import {Link} from "react-router-dom";
+import {AppRoute} from "../../const";
 
 class SmallMovieCard extends PureComponent {
   constructor(props) {
@@ -29,10 +31,10 @@ class SmallMovieCard extends PureComponent {
           clearTimeout(this.timerId);
           this.setState({isHovered: false});
         }}
-        onClick={(evt) => {
-          evt.preventDefault();
-          onClick(film);
-        }}
+        // onClick={(evt) => {
+        //   evt.preventDefault();
+        //   onClick(film);
+        // }}
       >
         <div className="small-movie-card__image">
           <VideoPlayer
@@ -43,7 +45,11 @@ class SmallMovieCard extends PureComponent {
           />
         </div>
         <h3 className="small-movie-card__title">
-          <a className="small-movie-card__link" href="movie-page.html">{title}</a>
+          <Link
+            to={`${AppRoute.FILMS}/${film.id}`}
+            className="small-movie-card__link"
+            href="movie-page.html"
+          >{title}</Link>
         </h3>
       </article>
     );
