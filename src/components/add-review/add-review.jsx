@@ -1,13 +1,15 @@
 import React, {createRef, Fragment} from "react";
 import PropTypes from "prop-types";
-
 import {connect} from "react-redux";
 import {Operations} from "../../reducer/data/data";
+
+const DEFAULT_RATING = 4;
 
 const AddReview = (props) => {
   const {film, sendComment} = props;
   const {id} = film;
-  let rating = null;
+
+  let rating = DEFAULT_RATING;
 
   const textRef = createRef();
 
@@ -34,7 +36,14 @@ const AddReview = (props) => {
             {[1, 2, 3, 4, 5].map((it) => {
               return (
                 <Fragment key={it}>
-                  <input className="rating__input" id={`star-${it}`} type="radio" name="rating" value={it}/>
+                  <input
+                    className="rating__input"
+                    id={`star-${it}`}
+                    type="radio"
+                    name="rating"
+                    value={it}
+                    defaultChecked={it === DEFAULT_RATING}
+                  />
                   <label className="rating__label" htmlFor={`star-${it}`}>`Rating ${it}`</label>
                 </Fragment>
               );

@@ -1,6 +1,5 @@
-import {extend, Genres} from "../../const";
+import {extend, FavoriteFilmAction, Genres} from "../../const";
 import {SHOW_MORE_BUTTON_INITIAL_VALUE, SHOW_MORE_BUTTON_STEP} from "../../const";
-import {ActionCreator as AppActionCreator} from "../app/app";
 
 const initialState = {
   genre: Genres.ALL_GENRES,
@@ -18,6 +17,7 @@ const ActionType = {
   LOAD_COMMENTS: `LOAD_COMMENTS`,
   SEND_COMMENT: `SEND_COMMENT`,
   RESET_COMMENTS: `RESET_COMMENTS`,
+  ADD_FAVORITE_FILM: `ADD_FAVORITE_FILM`,
 };
 
 const filmAdapter = (film) => {
@@ -81,7 +81,16 @@ const Operations = {
       rating: comment.rating,
     })
       .then(() => {
-        dispatch(AppActionCreator.setLastScreenType());
+        history.back();
+        // console.log(response);
+        // dispatch(AppActionCreator.setLastScreenType());
+      });
+  },
+
+  addFavoriteFilm: (id, action) => (dispatch, _getState, api) => {
+    return api.post(`/favorite/${id}/${action === FavoriteFilmAction.ADD ? 1 : 0}`)
+      .catch((response) => {
+        throw new Error(response);
       });
   },
 };

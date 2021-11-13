@@ -6,9 +6,10 @@ import {connect} from "react-redux";
 import Tabs from "../tabs/tabs";
 import AddReview from "../add-review/add-review";
 import {Link} from "react-router-dom";
-import {AppRoute, ScreenType} from "../../const";
+import {AppRoute, FavoriteFilmAction, ScreenType} from "../../const";
 import Logo from "../logo/logo";
 import UserBlock from "../user-block/user-block";
+import {Operations} from "../../reducer/data/data";
 
 const MovieCard = (props) => {
   const {
@@ -19,6 +20,7 @@ const MovieCard = (props) => {
     onPlayClick,
     onAddReviewClick,
     onFilmClick,
+    addFavoriteFilm,
   } = props;
 
   const {title, genre, released, src, isFavorite, backgroundColor} = film;
@@ -69,7 +71,14 @@ const MovieCard = (props) => {
                     </svg>
                     <span>Play</span>
                   </Link>
-                  <button className="btn btn--list movie-card__button" type="button">
+                  <button
+                    className="btn btn--list movie-card__button"
+                    type="button"
+                    onClick={() => {
+                      const action = isFavorite ? FavoriteFilmAction.DELETE : FavoriteFilmAction.ADD;
+                      addFavoriteFilm(film.id, action);
+                    }}
+                  >
                     <svg viewBox="0 0 19 20" width="19" height="20">
                       <use xlinkHref={inListSvg}/>
                     </svg>
@@ -120,7 +129,14 @@ const MovieCard = (props) => {
                     </svg>
                     <span>Play</span>
                   </Link>
-                  <button className="btn btn--list movie-card__button" type="button">
+                  <button
+                    className="btn btn--list movie-card__button"
+                    type="button"
+                    onClick={() => {
+                      const action = isFavorite ? FavoriteFilmAction.DELETE : FavoriteFilmAction.ADD;
+                      addFavoriteFilm(film.id, action);
+                    }}
+                  >
                     <svg viewBox="0 0 19 20" width="19" height="20">
                       <use xlinkHref={inListSvg}/>
                     </svg>
@@ -246,12 +262,20 @@ MovieCard.propTypes = {
   onLogoClick: PropTypes.func,
   onAddReviewClick: PropTypes.func,
   onFilmClick: PropTypes.func,
+  addFavoriteFilm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   authorizationStatus: getAuthorizationStatus(state),
 });
 
+const mapDispatchToProps = (dispatch) => ({
+  addFavoriteFilm(id, action) {
+    dispatch(Operations.addFavoriteFilm(id, action));
+    dispatch(Operations.loadFilms);
+  },
+});
+
 export {MovieCard};
 
-export default connect(mapStateToProps, null)(MovieCard);
+export default connect(mapStateToProps, mapDispatchToProps)(MovieCard);

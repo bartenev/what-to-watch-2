@@ -55,3 +55,8 @@ export const ScreenType = {
   MY_LIST: `MY_LIST`,
   ADD_REVIEW: `ADD_REVIEW`,
 };
+
+export const FavoriteFilmAction = {
+  ADD: `ADD`,
+  DELETE: `DELETE`,
+};
