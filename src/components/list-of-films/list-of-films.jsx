@@ -1,5 +1,4 @@
-import React, {PureComponent} from "react";
-import SmallMovieCard from "../small-movie-card/small-movie-card";
+import React from "react";
 import PropTypes from "prop-types";
 import ListOfGenres from "../list-of-genres/list-of-genres";
 import {Genres} from "../../const";
@@ -7,70 +6,50 @@ import ShowMore from "../show-more/show-more";
 import {ActionCreator} from "../../reducer/data/data";
 import {connect} from "react-redux";
 import {getNumberOfShownFilms} from "../../reducer/data/selectors";
+import FilmsList from "../films-list/films-list";
 
-class ListOfFilms extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
+const ListOfFilms = (props) => {
 
-  render() {
-    const {films, filteredFilms, numberOfShownFilms, increaseNumberOfShownFilms, onHover, onClick, onFilterClick} = this.props;
+  const {films, filteredFilms, numberOfShownFilms, increaseNumberOfShownFilms, onHover, onClick, onFilterClick} = props;
 
-    let genres = [Genres.ALL_GENRES];
-    films.forEach((film, i) => {
-      if (films.findIndex((it) => it.genre === film.genre) === i) {
-        genres.push(film.genre);
-      }
-    });
-
-    const shownFilms = filteredFilms.slice(0, numberOfShownFilms);
-
-    return (
-      <section className="catalog">
-        <h2 className="catalog__title visually-hidden">Catalog</h2>
-
-        <ListOfGenres
-          genres={genres}
-          onFilterClick={onFilterClick}
-        />
-
-        <div className="catalog__movies-list">
-          {
-            shownFilms.map((film, i) => {
-              const {title} = film;
-              return (
-                <SmallMovieCard
-                  key={`${title}-${i}`}
-                  film={film}
-                  onHover={onHover}
-                  onClick={onClick}
-                />
-              );
-            })
-          }
-        </div>
-        {
-          this._getShowMoreButton(filteredFilms, numberOfShownFilms, increaseNumberOfShownFilms)
-        }
-      </section>
-    );
-  }
-
-  _getShowMoreButton(filteredFilms, numberOfShownFilms, increaseNumberOfShownFilms) {
-    if (filteredFilms.length > numberOfShownFilms) {
-      return (
-        <ShowMore
-          onClick={(evt) => {
-            evt.preventDefault();
-            increaseNumberOfShownFilms();
-          }}
-        />
-      );
+  let genres = [Genres.ALL_GENRES];
+  films.forEach((film, i) => {
+    if (films.findIndex((it) => it.genre === film.genre) === i) {
+      genres.push(film.genre);
     }
+  });
 
-    return ``;
-  }
-}
+  const shownFilms = filteredFilms.slice(0, numberOfShownFilms);
+
+  return (
+    <section className="catalog">
+      <h2 className="catalog__title visually-hidden">Catalog</h2>
+
+      <ListOfGenres
+        genres={genres}
+        onFilterClick={onFilterClick}
+      />
+
+      <FilmsList
+        films={shownFilms}
+        onHover={onHover}
+        onClick={onClick}
+      />
+
+      {
+        filteredFilms.length > numberOfShownFilms
+          ?
+          <ShowMore
+            onClick={(evt) => {
+              evt.preventDefault();
+              increaseNumberOfShownFilms();
+            }}
+          />
+          : ``
+      }
+    </section>
+  );
+};
 
 ListOfFilms.propTypes = {
   films: PropTypes.arrayOf(PropTypes.shape({

@@ -1,13 +1,4 @@
-import {extend} from "../../const";
-
-export const ScreenType = {
-  MAIN: `MAIN`,
-  FILM_PAGE: `FILM_PAGE`,
-  AUTHORIZATION: `AUTHORIZATION`,
-  PLAYER: `PLAYER`,
-  MY_LIST: `MY_LIST`,
-  ADD_REVIEW: `ADD_REVIEW`,
-};
+import {extend, ScreenType} from "../../const";
 
 const initialState = {
   film: null,

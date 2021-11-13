@@ -1,6 +1,6 @@
 import React, {PureComponent} from "react";
-import SmallMovieCard from "../small-movie-card/small-movie-card";
 import PropTypes from "prop-types";
+import FilmsList from "../films-list/films-list";
 
 class ListOfFilmsLikeThis extends PureComponent {
   constructor(props) {
@@ -22,21 +22,12 @@ class ListOfFilmsLikeThis extends PureComponent {
       <section className="catalog catalog--like-this">
         <h2 className="catalog__title">More like this</h2>
 
-        <div className="catalog__movies-list">
-          {
-            relatedFilms.map((relatedFilm, i) => {
-              const {title} = relatedFilm;
-              return (
-                <SmallMovieCard
-                  key={`${title}-${i}`}
-                  film={relatedFilm}
-                  onHover={onHover}
-                  onClick={onClick}
-                />
-              );
-            })
-          }
-        </div>
+        <FilmsList
+          films={relatedFilms}
+          onHover={onHover}
+          onClick={onClick}
+        />
+
       </section>
     );
   }

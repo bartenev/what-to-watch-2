@@ -32,6 +32,12 @@ const ActionCreator = {
   })
 };
 
+// для тестов редакса
+// {
+//     type: `REQUIRED_AUTHORIZATION`,
+//     payload: `AUTH`,
+//   }
+
 const userInfoAdapter = (data) => ({
   id: data.id,
   email: data.email,
@@ -59,7 +65,7 @@ const Operations = {
       .then((response) => {
         dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
         dispatch(ActionCreator.setUserInfo(userInfoAdapter(response.data)));
-        dispatch(AppActionCreator.setLastScreenType());
+        // dispatch(AppActionCreator.setLastScreenType());
       });
   },
 };

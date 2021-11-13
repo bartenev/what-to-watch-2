@@ -6,7 +6,7 @@ import {App} from "./app";
 // import {Provider} from "react-redux";
 import {testFilms} from "../../mocks/testFilms";
 import {AuthorizationStatus} from "../../reducer/user/user";
-import {ScreenType} from "../../reducer/app/app";
+import {ScreenType} from "../../const";
 
 it(`Render App`, () => {
   // const store = createStore(reducer);

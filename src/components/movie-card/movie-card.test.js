@@ -3,8 +3,8 @@ import renderer from "react-test-renderer";
 import {MovieCard} from "./movie-card";
 import {testFilms} from "../../mocks/testFilms";
 import {AuthorizationStatus} from "../../reducer/user/user";
-import {ScreenType} from "../../reducer/app/app";
 import {UserInfo} from "../../mocks/userInfo";
+import {ScreenType} from "../../const";
 
 it(`Render MovieCard`, () => {
   const tree = renderer.create((

@@ -1,5 +1,7 @@
 import React, {createRef, PureComponent} from "react";
 import PropTypes from "prop-types";
+import {Link} from "react-router-dom";
+import {AppRoute} from "../../const";
 
 class Player extends PureComponent {
   constructor(props) {
@@ -60,19 +62,20 @@ class Player extends PureComponent {
           ref={this._videoRef}
         />
 
-        <button
-          type="button"
+        <Link
+          to={`${AppRoute.FILMS}/${film.id}`}
+          // type="button"
           className="player__exit"
           onClick={(evt) => {
-            evt.preventDefault();
-            onCloseButtonClick();
+            // evt.preventDefault();
+            // onCloseButtonClick();
           }}
-        >Exit</button>
+        >Exit</Link>
 
         <div className="player__controls">
           <div className="player__controls-row">
             <div className="player__time">
-              <progress className="player__progress" value={percent} max="100"></progress>
+              <progress className="player__progress" value={percent} max="100"/>
               <div className="player__toggler" style={{left: `${percent}%`}}>Toggler</div>
             </div>
             <div className="player__time-value">{restOfTimeString}</div>
@@ -89,7 +92,7 @@ class Player extends PureComponent {
               }}
             >
               <svg viewBox="0 0 19 19" width="19" height="19">
-                <use xlinkHref={playButtonSvg}></use>
+                <use xlinkHref={playButtonSvg}/>
               </svg>
               <span>Play</span>
             </button>
@@ -107,7 +110,7 @@ class Player extends PureComponent {
               }}
             >
               <svg viewBox="0 0 27 27" width="27" height="27">
-                <use xlinkHref="#full-screen"></use>
+                <use xlinkHref="#full-screen"/>
               </svg>
               <span>Full screen</span>
             </button>
