@@ -31,3 +31,14 @@ export const getFilteredFilms = createSelector(
       return film.genre === genre;
     })
 );
+
+export const getFilm = (state) => (id) => {
+  const films = getFilms(state);
+  return films.find((film) => film.id === id);
+};
+
+export const getFirstFilm = (state) => {
+  const films = getFilms(state);
+  return films[0];
+};
+

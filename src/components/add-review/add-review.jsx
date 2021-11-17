@@ -1,13 +1,15 @@
-import React, {createRef} from "react";
+import React, {createRef, Fragment} from "react";
 import PropTypes from "prop-types";
-
 import {connect} from "react-redux";
 import {Operations} from "../../reducer/data/data";
+
+const DEFAULT_RATING = 4;
 
 const AddReview = (props) => {
   const {film, sendComment} = props;
   const {id} = film;
-  let rating = null;
+
+  let rating = DEFAULT_RATING;
 
   const textRef = createRef();
 
@@ -30,20 +32,23 @@ const AddReview = (props) => {
             onChange={(evt) => {
               rating = evt.target.value;
             }}>
-            <input className="rating__input" id="star-1" type="radio" name="rating" value="1"/>
-            <label className="rating__label" htmlFor="star-1">Rating 1</label>
 
-            <input className="rating__input" id="star-2" type="radio" name="rating" value="2"/>
-            <label className="rating__label" htmlFor="star-2">Rating 2</label>
+            {[1, 2, 3, 4, 5].map((it) => {
+              return (
+                <Fragment key={it}>
+                  <input
+                    className="rating__input"
+                    id={`star-${it}`}
+                    type="radio"
+                    name="rating"
+                    value={it}
+                    defaultChecked={it === DEFAULT_RATING}
+                  />
+                  <label className="rating__label" htmlFor={`star-${it}`}>`Rating ${it}`</label>
+                </Fragment>
+              );
+            })}
 
-            <input className="rating__input" id="star-3" type="radio" name="rating" value="3"/>
-            <label className="rating__label" htmlFor="star-3">Rating 3</label>
-
-            <input className="rating__input" id="star-4" type="radio" name="rating" value="4"/>
-            <label className="rating__label" htmlFor="star-4">Rating 4</label>
-
-            <input className="rating__input" id="star-5" type="radio" name="rating" value="5"/>
-            <label className="rating__label" htmlFor="star-5">Rating 5</label>
           </div>
         </div>
 

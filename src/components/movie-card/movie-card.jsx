@@ -1,82 +1,29 @@
 import React from "react";
 import PropTypes from "prop-types";
-import {getAuthorizationStatus, getUserInfo} from "../../reducer/user/selectors";
+import {getAuthorizationStatus} from "../../reducer/user/selectors";
 import {AuthorizationStatus} from "../../reducer/user/user";
 import {connect} from "react-redux";
 import Tabs from "../tabs/tabs";
 import AddReview from "../add-review/add-review";
-import {ScreenType} from "../../reducer/app/app";
-
-const getUserBlock = (authorizationStatus, userInfo, onUserBlockClick) => {
-  if (authorizationStatus === AuthorizationStatus.AUTH) {
-    const {avatar} = userInfo;
-    return (
-      <div className="user-block__avatar">
-        <img
-          src={avatar}
-          alt="User avatar"
-          width="63"
-          height="63"
-          onClick={(evt) => {
-            evt.preventDefault();
-            onUserBlockClick();
-          }}
-        />
-      </div>
-    );
-  } else {
-    return (
-      <a
-        href="sign-in.html"
-        className="user-block__link"
-        onClick={(evt) => {
-          evt.preventDefault();
-          onUserBlockClick();
-        }}
-      >Sign in</a>
-    );
-  }
-};
-
-const getLogoBlock = (onLogoClick) => {
-  return (
-    <div className="logo">
-      <a
-        href="main.html"
-        className="logo__link"
-        onClick={(evt) => {
-          evt.preventDefault();
-          onLogoClick();
-        }}
-      >
-        <span className="logo__letter logo__letter--1">W</span>
-        <span className="logo__letter logo__letter--2">T</span>
-        <span className="logo__letter logo__letter--3">W</span>
-      </a>
-    </div>
-  );
-};
+import {Link} from "react-router-dom";
+import {AppRoute, FavoriteFilmAction, ScreenType} from "../../const";
+import Logo from "../logo/logo";
+import UserBlock from "../user-block/user-block";
+import {Operations} from "../../reducer/data/data";
 
 const MovieCard = (props) => {
-
   const {
     typeOfScreen,
     film,
     authorizationStatus,
-    userInfo,
     onLogoClick,
-    onPlayClick,
-    onAddReviewClick,
-    onUserBlockClick,
-    onFilmClick,
+    addFavoriteFilm,
   } = props;
 
   const {title, genre, released, src, isFavorite, backgroundColor} = film;
   const {backgroundImage, poster} = src;
 
   const inListSvg = isFavorite ? `#in-list` : `#add`;
-
-  const userBlock = getUserBlock(authorizationStatus, userInfo, onUserBlockClick);
 
   switch (typeOfScreen) {
 
@@ -90,11 +37,8 @@ const MovieCard = (props) => {
           <h1 className="visually-hidden">WTW</h1>
 
           <header className="page-header movie-card__head">
-            {getLogoBlock(() => {})}
-
-            <div className="user-block">
-              {userBlock}
-            </div>
+            <Logo onClick={() => {}} />
+            <UserBlock />
           </header>
 
           <div className="movie-card__wrap">
@@ -114,22 +58,25 @@ const MovieCard = (props) => {
                 </p>
 
                 <div className="movie-card__buttons">
-                  <button
+                  <Link
+                    to={`${AppRoute.FILMS}/${film.id}${AppRoute.PLAYER}`}
                     className="btn btn--play movie-card__button"
-                    type="button"
-                    onClick={(evt) => {
-                      evt.preventDefault();
-                      onPlayClick();
-                    }}
                   >
                     <svg viewBox="0 0 19 19" width="19" height="19">
-                      <use xlinkHref="#play-s"></use>
+                      <use xlinkHref="#play-s"/>
                     </svg>
                     <span>Play</span>
-                  </button>
-                  <button className="btn btn--list movie-card__button" type="button">
+                  </Link>
+                  <button
+                    className="btn btn--list movie-card__button"
+                    type="button"
+                    onClick={() => {
+                      const action = isFavorite ? FavoriteFilmAction.DELETE : FavoriteFilmAction.ADD;
+                      addFavoriteFilm(film.id, action);
+                    }}
+                  >
                     <svg viewBox="0 0 19 20" width="19" height="20">
-                      <use xlinkHref={inListSvg}></use>
+                      <use xlinkHref={inListSvg}/>
                     </svg>
                     <span>My list</span>
                   </button>
@@ -151,10 +98,8 @@ const MovieCard = (props) => {
             <h1 className="visually-hidden">WTW</h1>
 
             <header className="page-header movie-card__head">
-              {getLogoBlock(onLogoClick)}
-              <div className="user-block">
-                {userBlock}
-              </div>
+              <Logo onClick={onLogoClick} />
+              <UserBlock />
             </header>
 
             <div className="movie-card__wrap">
@@ -166,35 +111,34 @@ const MovieCard = (props) => {
                 </p>
 
                 <div className="movie-card__buttons">
-                  <button
+                  <Link
                     className="btn btn--play movie-card__button"
-                    type="button"
-                    onClick={(evt) => {
-                      evt.preventDefault();
-                      onPlayClick();
-                    }}
+                    to={`${AppRoute.FILMS}/${film.id}${AppRoute.PLAYER}`}
                   >
                     <svg viewBox="0 0 19 19" width="19" height="19">
-                      <use xlinkHref="#play-s"></use>
+                      <use xlinkHref="#play-s"/>
                     </svg>
                     <span>Play</span>
-                  </button>
-                  <button className="btn btn--list movie-card__button" type="button">
+                  </Link>
+                  <button
+                    className="btn btn--list movie-card__button"
+                    type="button"
+                    onClick={() => {
+                      const action = isFavorite ? FavoriteFilmAction.DELETE : FavoriteFilmAction.ADD;
+                      addFavoriteFilm(film.id, action);
+                    }}
+                  >
                     <svg viewBox="0 0 19 20" width="19" height="20">
-                      <use xlinkHref={inListSvg}></use>
+                      <use xlinkHref={inListSvg}/>
                     </svg>
                     <span>My list</span>
                   </button>
                   {
                     authorizationStatus === AuthorizationStatus.AUTH ?
-                      <a
-                        href="add-review.html"
+                      <Link
+                        to={`${AppRoute.FILMS}/${film.id}${AppRoute.ADD_REVIEW}`}
                         className="btn movie-card__button"
-                        onClick={(evt) => {
-                          evt.preventDefault();
-                          onAddReviewClick();
-                        }}
-                      >Add review</a>
+                      >Add review</Link>
                       : null
                   }
                 </div>
@@ -228,19 +172,15 @@ const MovieCard = (props) => {
 
             <header className="page-header">
 
-              {getLogoBlock(onLogoClick)}
+              <Logo onClick={onLogoClick} />
 
               <nav className="breadcrumbs">
                 <ul className="breadcrumbs__list">
                   <li className="breadcrumbs__item">
-                    <a
-                      href="movie-page.html"
+                    <Link
+                      to={`${AppRoute.FILMS}/${film.id}`}
                       className="breadcrumbs__link"
-                      onClick={(evt) => {
-                        evt.preventDefault();
-                        onFilmClick();
-                      }}
-                    >{title}</a>
+                    >{title}</Link>
                   </li>
                   <li className="breadcrumbs__item">
                     <a className="breadcrumbs__link">Add review</a>
@@ -248,9 +188,8 @@ const MovieCard = (props) => {
                 </ul>
               </nav>
 
-              <div className="user-block">
-                {userBlock}
-              </div>
+              <UserBlock />
+
             </header>
 
             <div className="movie-card__poster movie-card__poster--small">
@@ -302,19 +241,21 @@ MovieCard.propTypes = {
   }).isRequired,
   typeOfScreen: PropTypes.oneOf([ScreenType.FILM_PAGE, ScreenType.MAIN, ScreenType.ADD_REVIEW]).isRequired,
   authorizationStatus: PropTypes.oneOf([AuthorizationStatus.AUTH, AuthorizationStatus.NO_AUTH]).isRequired,
-  userInfo: PropTypes.object.isRequired,
-  onPlayClick: PropTypes.func,
   onLogoClick: PropTypes.func,
-  onUserBlockClick: PropTypes.func.isRequired,
-  onAddReviewClick: PropTypes.func,
-  onFilmClick: PropTypes.func,
+  addFavoriteFilm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   authorizationStatus: getAuthorizationStatus(state),
-  userInfo: getUserInfo(state),
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  addFavoriteFilm(id, action) {
+    dispatch(Operations.addFavoriteFilm(id, action));
+    dispatch(Operations.loadFilms);
+  },
 });
 
 export {MovieCard};
 
-export default connect(mapStateToProps, null)(MovieCard);
+export default connect(mapStateToProps, mapDispatchToProps)(MovieCard);

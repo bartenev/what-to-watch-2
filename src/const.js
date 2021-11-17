@@ -37,3 +37,26 @@ export const extend = (a, b) => {
 
 export const SHOW_MORE_BUTTON_INITIAL_VALUE = 8;
 export const SHOW_MORE_BUTTON_STEP = 8;
+
+export const AppRoute = {
+  LOGIN: `/login`,
+  ROOT: `/`,
+  FILMS: `/films`,
+  PLAYER: `/player`,
+  MY_LIST: `/my-list`,
+  ADD_REVIEW: `/add-review`,
+};
+
+export const ScreenType = {
+  MAIN: `MAIN`,
+  FILM_PAGE: `FILM_PAGE`,
+  AUTHORIZATION: `AUTHORIZATION`,
+  PLAYER: `PLAYER`,
+  MY_LIST: `MY_LIST`,
+  ADD_REVIEW: `ADD_REVIEW`,
+};
+
+export const FavoriteFilmAction = {
+  ADD: `ADD`,
+  DELETE: `DELETE`,
+};

@@ -1,6 +1,8 @@
 import React, {PureComponent} from "react";
 import PropTypes from "prop-types";
 import VideoPlayer from "../video-player/video-player";
+import {Link} from "react-router-dom";
+import {AppRoute} from "../../const";
 
 class SmallMovieCard extends PureComponent {
   constructor(props) {
@@ -13,25 +15,19 @@ class SmallMovieCard extends PureComponent {
     this.timerId = null;
   }
 
-
   render() {
-    const {film, onHover, onClick} = this.props;
+    const {film} = this.props;
     const {title, src} = film;
     const {previewImage, previewVideo} = src;
 
     return (
       <article className="small-movie-card catalog__movies-card"
         onMouseEnter={() => {
-          onHover(film);
           this.timerId = setTimeout(() => this.setState({isHovered: true}), 1000);
         }}
         onMouseLeave={() => {
           clearTimeout(this.timerId);
           this.setState({isHovered: false});
-        }}
-        onClick={(evt) => {
-          evt.preventDefault();
-          onClick(film);
         }}
       >
         <div className="small-movie-card__image">
@@ -43,7 +39,10 @@ class SmallMovieCard extends PureComponent {
           />
         </div>
         <h3 className="small-movie-card__title">
-          <a className="small-movie-card__link" href="movie-page.html">{title}</a>
+          <Link
+            to={`${AppRoute.FILMS}/${film.id}`}
+            className="small-movie-card__link"
+          >{title}</Link>
         </h3>
       </article>
     );
@@ -84,8 +83,6 @@ SmallMovieCard.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
-  onHover: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default SmallMovieCard;

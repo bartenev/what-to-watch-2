@@ -1,83 +1,31 @@
-import React, {Fragment, useEffect} from "react";
+import React, {Fragment} from "react";
 import PropTypes from "prop-types";
 import ListOfFilms from "../list-of-films/list-of-films";
 import ListOfFilmsLikeThis from "../list-of-films-like-this/list-of-films-like-this";
 import {ActionCreator as DataActionCreator} from "../../reducer/data/data";
 import {Operations, AuthorizationStatus} from "../../reducer/user/user";
-import {ActionCreator as AppActionCreator, ScreenType} from "../../reducer/app/app";
 import {connect} from "react-redux";
 import Player from "../player/player";
 import {getAuthorizationStatus} from "../../reducer/user/selectors";
 import SignIn from "../sign-in/sign-in";
 import MovieCard from "../movie-card/movie-card";
-import {getFilm, getScreenType} from "../../reducer/app/selectors";
-import {getFilms, getFilteredFilms} from "../../reducer/data/selectors";
+import {getFilm, getFilms, getFilteredFilms} from "../../reducer/data/selectors";
+import {Switch, Route, Redirect} from "react-router-dom";
+import {AppRoute, ScreenType} from "../../const";
+import Footer from "../footer/footer";
+import MyList from "../my-list/my-list";
 
-const onLogoClick = (props) => {
-  const {resetFilter, films, setScreenType, setFilm} = props;
-  resetFilter();
-  setFilm(films[0]);
-  setScreenType(ScreenType.MAIN);
-};
-
-// const onUserBlockClick = (setScreenType) => {
-//   setScreenType(ScreenType.AUTHORIZATION);
-// };
-//
-// const onPlayClick = (setScreenType) => {
-//   setScreenType(ScreenType.PLAYER);
-// };
-
-const getMovieCard = (props) => {
-  const {screenType, film, setScreenType} = props;
-  if (screenType === ScreenType.FILM_PAGE) {
-    return (
-      <MovieCard
-        typeOfScreen={ScreenType.FILM_PAGE}
-        film={film}
-        onLogoClick={() => {
-          onLogoClick(props);
-        }}
-        onPlayClick={() => {
-          setScreenType(ScreenType.PLAYER);
-        }}
-        onUserBlockClick={() => {
-          setScreenType(ScreenType.AUTHORIZATION);
-        }}
-        onAddReviewClick={() => {
-          setScreenType(ScreenType.ADD_REVIEW);
-        }}
-      />
-    );
-  } else {
-    return (
-      <MovieCard
-        typeOfScreen={ScreenType.MAIN}
-        film={film}
-        onPlayClick={() => {
-          setScreenType(ScreenType.PLAYER);
-        }}
-        onUserBlockClick={() => {
-          setScreenType(ScreenType.AUTHORIZATION);
-        }}
-      />
-    );
-  }
-};
-
-const getListOfFilms = (props) => {
-  const {films, filteredFilms, screenType, setScreenType, film, setFilm} = props;
+const getListOfFilms = (props, screenType) => {
+  const {films, filteredFilms, getFilmById} = props;
 
   if (screenType === ScreenType.FILM_PAGE) {
+    const id = Number(props.match.params.id);
+    const film = getFilmById(id);
+
     return (
       <ListOfFilmsLikeThis
         currentFilm={film}
         films={films}
-        onHover={() => {}}
-        onClick={(newFilm) => {
-          setFilm(newFilm);
-          setScreenType(ScreenType.FILM_PAGE);
-        }}
       />
     );
   }
@@ -86,38 +34,28 @@ const getListOfFilms = (props) => {
     <ListOfFilms
       films={films}
       filteredFilms={filteredFilms}
-      onHover={ () => {}}
-      onClick={(newFilm) => {
-        setFilm(newFilm);
-        setScreenType(ScreenType.FILM_PAGE);
-      }}
     />
   );
 };
 
-const App = (props) => {
-  const {films, film, setFilm, screenType, setScreenType, setLastScreenType, authorizationStatus} = props;
+const getScreen = (props, screenType) => {
+  const {films, getFilmById, resetFilter} = props;
 
-  useEffect(() => {
-    setFilm(films[0]);
-  }, [films, setFilm]);
+  const listOfFilms = getListOfFilms(props, screenType);
 
-  if (!film) {
-    return null;
-  }
-
-  if (screenType === ScreenType.ADD_REVIEW && authorizationStatus === AuthorizationStatus.NO_AUTH) {
-    setScreenType(ScreenType.AUTHORIZATION);
+  let film = films[0];
+  if (screenType !== ScreenType.MAIN) {
+    const id = Number(props.match.params.id);
+    film = getFilmById(id);
   }
 
   switch (screenType) {
-
-    case ScreenType.AUTHORIZATION:
+    case ScreenType.ADD_REVIEW:
       return (
-        <SignIn
-          onLogoClick={() => {
-            onLogoClick(props);
-          }}
+        <MovieCard
+          typeOfScreen={ScreenType.ADD_REVIEW}
+          film={film}
+          onLogoClick={resetFilter}
         />
       );
 
@@ -125,54 +63,63 @@ const App = (props) => {
       return (
         <Player
           film={film}
-          onCloseButtonClick={() => {
-            setLastScreenType();
-          }}
         />
-      );
-
-    case ScreenType.ADD_REVIEW:
-      return (
-        <MovieCard
-          typeOfScreen={ScreenType.ADD_REVIEW}
-          film={film}
-          onLogoClick={() => {
-            onLogoClick(props);
-          }}
-          onUserBlockClick={() => {
-            setScreenType(ScreenType.AUTHORIZATION);
-          }}
-          onFilmClick={() => {
-            setLastScreenType();
-          }}
-        />
-      );
-
-    default:
-      const movieCard = getMovieCard(props);
-      const listOfFilms = getListOfFilms(props);
-
-      return (
-        <Fragment>
-          {movieCard}
-          <div className="page-content">
-            {listOfFilms}
-            <footer className="page-footer">
-              <div className="logo">
-                <a className="logo__link logo__link--light">
-                  <span className="logo__letter logo__letter--1">W</span>
-                  <span className="logo__letter logo__letter--2">T</span>
-                  <span className="logo__letter logo__letter--3">W</span>
-                </a>
-              </div>
-              <div className="copyright">
-                <p>© 2019 What to watch Ltd.</p>
-              </div>
-            </footer>
-          </div>
-        </Fragment>
       );
   }
+
+  return (
+    <Fragment>
+      <MovieCard
+        typeOfScreen={screenType}
+        film={film}
+        onLogoClick={resetFilter}
+      />
+      <div className="page-content">
+        {listOfFilms}
+
+        <Footer />
+      </div>
+    </Fragment>
+  );
+};
+
+const App = (props) => {
+  const {films, resetFilter, authorizationStatus} = props;
+
+  if (!films.length) {
+    return null;
+  }
+
+  return (
+    <Switch>
+      <Route path={AppRoute.ROOT} exact render={() => getScreen(props, ScreenType.MAIN)} />
+      <Route path={`${AppRoute.FILMS}/:id`} exact
+        render={(moreProps) => getScreen(Object.assign({}, props, moreProps), ScreenType.FILM_PAGE)}
+      />
+      <Route path={`${AppRoute.FILMS}/:id${AppRoute.PLAYER}`} exact
+        render={(moreProps) => getScreen(Object.assign({}, props, moreProps), ScreenType.PLAYER)}
+      />
+      <Route path={`${AppRoute.FILMS}/:id${AppRoute.ADD_REVIEW}`} exact
+        render={(moreProps) =>
+          authorizationStatus === AuthorizationStatus.AUTH
+            ? getScreen(Object.assign({}, props, moreProps), ScreenType.ADD_REVIEW)
+            : <Redirect to={AppRoute.LOGIN} />}
+      />
+      <Route path={AppRoute.LOGIN} exact
+        render={() => (
+          <SignIn
+            onLogoClick={resetFilter}
+          />
+        )}
+      />
+      <Route path={AppRoute.MY_LIST} exact
+        render={() => (
+          <MyList films={films} onLogoClick={resetFilter} />
+        )}
+      />
+
+    </Switch>
+  );
 };
 
 App.propTypes = {
@@ -234,22 +181,16 @@ App.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
-  film: PropTypes.object,
-  screenType: PropTypes.oneOf(Object.values(ScreenType)).isRequired,
   resetFilter: PropTypes.func.isRequired,
   checkAuth: PropTypes.func.isRequired,
   authorizationStatus: PropTypes.oneOf([AuthorizationStatus.AUTH, AuthorizationStatus.NO_AUTH]).isRequired,
-  setScreenType: PropTypes.func.isRequired,
-  setLastScreenType: PropTypes.func.isRequired,
-  setFilm: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   authorizationStatus: getAuthorizationStatus(state),
   films: getFilms(state),
   filteredFilms: getFilteredFilms(state),
-  film: getFilm(state),
-  screenType: getScreenType(state),
+  getFilmById: getFilm(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
@@ -258,15 +199,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   checkAuth() {
     dispatch(Operations.checkAuth());
-  },
-  setScreenType(screenType) {
-    dispatch(AppActionCreator.setScreenType(screenType));
-  },
-  setLastScreenType() {
-    dispatch(AppActionCreator.setLastScreenType());
-  },
-  setFilm(film) {
-    dispatch(AppActionCreator.setFilm(film));
   },
 });
 

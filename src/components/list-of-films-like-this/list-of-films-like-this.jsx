@@ -1,6 +1,6 @@
 import React, {PureComponent} from "react";
-import SmallMovieCard from "../small-movie-card/small-movie-card";
 import PropTypes from "prop-types";
+import FilmsList from "../films-list/films-list";
 
 class ListOfFilmsLikeThis extends PureComponent {
   constructor(props) {
@@ -8,7 +8,8 @@ class ListOfFilmsLikeThis extends PureComponent {
   }
 
   render() {
-    const {films, onHover, onClick, currentFilm} = this.props;
+    const {films, currentFilm} = this.props;
+
     const relatedFilms = films.filter((film) => {
       return film.genre === currentFilm.genre && film !== currentFilm;
     }).slice(0, 4);
@@ -21,21 +22,10 @@ class ListOfFilmsLikeThis extends PureComponent {
       <section className="catalog catalog--like-this">
         <h2 className="catalog__title">More like this</h2>
 
-        <div className="catalog__movies-list">
-          {
-            relatedFilms.map((film, i) => {
-              const {title} = film;
-              return (
-                <SmallMovieCard
-                  key={`${title}-${i}`}
-                  film={film}
-                  onHover={onHover}
-                  onClick={onClick}
-                />
-              );
-            })
-          }
-        </div>
+        <FilmsList
+          films={relatedFilms}
+        />
+
       </section>
     );
   }
@@ -100,8 +90,6 @@ ListOfFilmsLikeThis.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
-  onHover: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default ListOfFilmsLikeThis;
