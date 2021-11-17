@@ -15,26 +15,20 @@ class SmallMovieCard extends PureComponent {
     this.timerId = null;
   }
 
-
   render() {
-    const {film, onHover, onClick} = this.props;
+    const {film} = this.props;
     const {title, src} = film;
     const {previewImage, previewVideo} = src;
 
     return (
       <article className="small-movie-card catalog__movies-card"
         onMouseEnter={() => {
-          onHover(film);
           this.timerId = setTimeout(() => this.setState({isHovered: true}), 1000);
         }}
         onMouseLeave={() => {
           clearTimeout(this.timerId);
           this.setState({isHovered: false});
         }}
-        // onClick={(evt) => {
-        //   evt.preventDefault();
-        //   onClick(film);
-        // }}
       >
         <div className="small-movie-card__image">
           <VideoPlayer
@@ -48,7 +42,6 @@ class SmallMovieCard extends PureComponent {
           <Link
             to={`${AppRoute.FILMS}/${film.id}`}
             className="small-movie-card__link"
-            href="movie-page.html"
           >{title}</Link>
         </h3>
       </article>
@@ -90,8 +83,6 @@ SmallMovieCard.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
-  onHover: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default SmallMovieCard;

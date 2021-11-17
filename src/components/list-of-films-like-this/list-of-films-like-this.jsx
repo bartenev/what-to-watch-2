@@ -8,7 +8,7 @@ class ListOfFilmsLikeThis extends PureComponent {
   }
 
   render() {
-    const {films, currentFilm, onHover, onClick} = this.props;
+    const {films, currentFilm} = this.props;
 
     const relatedFilms = films.filter((film) => {
       return film.genre === currentFilm.genre && film !== currentFilm;
@@ -24,8 +24,6 @@ class ListOfFilmsLikeThis extends PureComponent {
 
         <FilmsList
           films={relatedFilms}
-          onHover={onHover}
-          onClick={onClick}
         />
 
       </section>
@@ -92,8 +90,6 @@ ListOfFilmsLikeThis.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
-  onHover: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default ListOfFilmsLikeThis;

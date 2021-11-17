@@ -1,5 +1,4 @@
 import {extend} from "../../const";
-import {ActionCreator as AppActionCreator} from "../app/app";
 
 export const AuthorizationStatus = {
   AUTH: `AUTH`,
@@ -32,12 +31,6 @@ const ActionCreator = {
   })
 };
 
-// для тестов редакса
-// {
-//     type: `REQUIRED_AUTHORIZATION`,
-//     payload: `AUTH`,
-//   }
-
 const userInfoAdapter = (data) => ({
   id: data.id,
   email: data.email,
@@ -53,7 +46,7 @@ const Operations = {
         dispatch(ActionCreator.setUserInfo(userInfoAdapter(response.data)));
       })
       .catch((err) => {
-        throw err;
+        // throw err;
       });
   },
 
@@ -65,7 +58,7 @@ const Operations = {
       .then((response) => {
         dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.AUTH));
         dispatch(ActionCreator.setUserInfo(userInfoAdapter(response.data)));
-        // dispatch(AppActionCreator.setLastScreenType());
+        history.back();
       });
   },
 };

@@ -10,7 +10,7 @@ import FilmsList from "../films-list/films-list";
 
 const ListOfFilms = (props) => {
 
-  const {films, filteredFilms, numberOfShownFilms, increaseNumberOfShownFilms, onHover, onClick, onFilterClick} = props;
+  const {films, filteredFilms, numberOfShownFilms, increaseNumberOfShownFilms, onFilterClick} = props;
 
   let genres = [Genres.ALL_GENRES];
   films.forEach((film, i) => {
@@ -32,8 +32,6 @@ const ListOfFilms = (props) => {
 
       <FilmsList
         films={shownFilms}
-        onHover={onHover}
-        onClick={onClick}
       />
 
       {
@@ -110,8 +108,6 @@ ListOfFilms.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
-  onHover: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
   onFilterClick: PropTypes.func.isRequired,
   numberOfShownFilms: PropTypes.number.isRequired,
   increaseNumberOfShownFilms: PropTypes.func.isRequired,

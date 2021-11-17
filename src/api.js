@@ -1,7 +1,8 @@
 import axios from "axios";
-// import {ActionCreator} from "./reducer/user/user";
+import {ActionCreator, AuthorizationStatus} from "./reducer/user/user";
+import {AppRoute} from "./const";
+import history from "./history";
 
-// eslint-disable-next-line no-unused-vars
 export const createApi = (dispatch) => {
   const api = axios.create({
     baseURL: `https://5.react.pages.academy/wtw`,
@@ -9,15 +10,18 @@ export const createApi = (dispatch) => {
     withCredentials: true,
   });
 
-  // const onSuccess = (response) => response;
-  // const onFail = (err) => {
-  //   if (err.response.status === 403) {
-  //     dispatch(ActionCreator.requireAuthorization());
-  //   }
-  //   return err;
-  // };
-  //
-  // api.interceptors.response.use(onSuccess, onFail);
+  const onSuccess = (response) => response;
+  const onFail = (err) => {
+    if (err.response.status === 401) {
+      dispatch(ActionCreator.requireAuthorization(AuthorizationStatus.NO_AUTH));
+      if (err.response.config.method !== `get`) {
+        history.push(AppRoute.LOGIN);
+      }
+    }
+    return err;
+  };
+
+  api.interceptors.response.use(onSuccess, onFail);
 
   return api;
 };

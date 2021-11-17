@@ -17,9 +17,6 @@ const MovieCard = (props) => {
     film,
     authorizationStatus,
     onLogoClick,
-    onPlayClick,
-    onAddReviewClick,
-    onFilmClick,
     addFavoriteFilm,
   } = props;
 
@@ -64,7 +61,6 @@ const MovieCard = (props) => {
                   <Link
                     to={`${AppRoute.FILMS}/${film.id}${AppRoute.PLAYER}`}
                     className="btn btn--play movie-card__button"
-                    onClick={onPlayClick}
                   >
                     <svg viewBox="0 0 19 19" width="19" height="19">
                       <use xlinkHref="#play-s"/>
@@ -118,11 +114,6 @@ const MovieCard = (props) => {
                   <Link
                     className="btn btn--play movie-card__button"
                     to={`${AppRoute.FILMS}/${film.id}${AppRoute.PLAYER}`}
-                    // type="button"
-                    onClick={(evt) => {
-                      // evt.preventDefault();
-                      // onPlayClick();
-                    }}
                   >
                     <svg viewBox="0 0 19 19" width="19" height="19">
                       <use xlinkHref="#play-s"/>
@@ -147,10 +138,6 @@ const MovieCard = (props) => {
                       <Link
                         to={`${AppRoute.FILMS}/${film.id}${AppRoute.ADD_REVIEW}`}
                         className="btn movie-card__button"
-                        onClick={(evt) => {
-                          // evt.preventDefault();
-                          // onAddReviewClick();
-                        }}
                       >Add review</Link>
                       : null
                   }
@@ -193,10 +180,6 @@ const MovieCard = (props) => {
                     <Link
                       to={`${AppRoute.FILMS}/${film.id}`}
                       className="breadcrumbs__link"
-                      onClick={(evt) => {
-                        // evt.preventDefault();
-                        // onFilmClick();
-                      }}
                     >{title}</Link>
                   </li>
                   <li className="breadcrumbs__item">
@@ -258,10 +241,7 @@ MovieCard.propTypes = {
   }).isRequired,
   typeOfScreen: PropTypes.oneOf([ScreenType.FILM_PAGE, ScreenType.MAIN, ScreenType.ADD_REVIEW]).isRequired,
   authorizationStatus: PropTypes.oneOf([AuthorizationStatus.AUTH, AuthorizationStatus.NO_AUTH]).isRequired,
-  onPlayClick: PropTypes.func,
   onLogoClick: PropTypes.func,
-  onAddReviewClick: PropTypes.func,
-  onFilmClick: PropTypes.func,
   addFavoriteFilm: PropTypes.func.isRequired,
 };
 

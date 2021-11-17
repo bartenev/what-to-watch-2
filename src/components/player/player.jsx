@@ -41,7 +41,7 @@ class Player extends PureComponent {
   }
 
   render() {
-    const {film, onCloseButtonClick} = this.props;
+    const {film} = this.props;
     const {title, runTime} = film;
     const video = this._videoRef.current;
 
@@ -64,12 +64,7 @@ class Player extends PureComponent {
 
         <Link
           to={`${AppRoute.FILMS}/${film.id}`}
-          // type="button"
           className="player__exit"
-          onClick={(evt) => {
-            // evt.preventDefault();
-            // onCloseButtonClick();
-          }}
         >Exit</Link>
 
         <div className="player__controls">
@@ -168,7 +163,6 @@ Player.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   }).isRequired,
-  onCloseButtonClick: PropTypes.func.isRequired,
 };
 
 export default Player;

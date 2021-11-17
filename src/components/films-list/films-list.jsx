@@ -3,7 +3,7 @@ import SmallMovieCard from "../small-movie-card/small-movie-card";
 import PropTypes from "prop-types";
 
 const FilmsList = (props) => {
-  const {films, onHover, onClick} = props;
+  const {films} = props;
 
   return (
     <div className="catalog__movies-list">
@@ -14,8 +14,6 @@ const FilmsList = (props) => {
             <SmallMovieCard
               key={`${title}-${i}`}
               film={film}
-              onHover={onHover}
-              onClick={onClick}
             />
           );
         })
@@ -54,8 +52,6 @@ FilmsList.propTypes = {
     isFavorite: PropTypes.bool.isRequired,
     backgroundColor: PropTypes.string.isRequired,
   })).isRequired,
-  onHover: PropTypes.func.isRequired,
-  onClick: PropTypes.func.isRequired,
 };
 
 export default FilmsList;
